@@ -22,3 +22,9 @@ Helpoin tapa omasta mielestä:
 3. kirjoita "npm run dev" joka käynnistää "serverin"
 ja ctrl+left click saa sovelluksen auki linkkiä klikkaamalla. 
 4. serveri sulkeutuu ctrl+c ja sama näppäinyhdistelmä toimii myös terminaalissa serverin sulkemiselle
+
+## Muistutus
+git pull
+git add --all
+git commit -m "..."
+git push
