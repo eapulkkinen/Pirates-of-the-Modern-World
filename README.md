@@ -15,3 +15,20 @@ Helpoin tapa omasta mielestä:
 3. kirjoita "npm run dev" joka käynnistää "serverin"
 ja ctrl+left click saa sovelluksen auki linkkiä klikkaamalla. 
 4. serveri sulkeutuu ctrl+c ja sama näppäinyhdistelmä toimii myös terminaalissa serverin sulkemiselle
+
+## Git Ohjeet
+Aluksi
+ git pull
+
+Siirry omaan branchiin
+git checkout [omanimi]
+
+Kun haluat tallentaa 
+git add --all
+git commit -m "..."
+git push
+
+Kun haluat siirtää mainiin (Muista tallentaa branchiin)
+git checkout main
+git merge -m "..." [omanimi]
+git push
