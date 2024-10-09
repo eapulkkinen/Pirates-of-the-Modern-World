@@ -1,0 +1,21 @@
+#maindiv {
+    display: flex;
+}
+
+/* Sivupalkit 20% ruudunleveydestä */
+.sivudiv {
+    width: 20vw;
+}
+
+/* Kartta 60% ruudunleveydestä */
+#karttadiv {
+    width: 60vw;
+}
+
+/* Testiksi, jotta hahmottaa paremmin */ 
+div {
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

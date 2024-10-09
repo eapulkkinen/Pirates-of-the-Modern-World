@@ -4,14 +4,19 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <p>
-          Testi jsx tiedostoon
-        </p>
+      <div id="maindiv">
+        <div id="vasendiv" class="sivudiv">
+          <p>Tänne maatiedot ja suodatusvalinnat?</p>
+        </div>
+        <div id="karttadiv">
+          <p>Tähän kartta</p>
+        </div>
+        <div id="oikeadiv" class="sivudiv">
+          <p>Tänne tietoa tapahtumista?</p>
+        </div>
       </div>
     </>
   )
