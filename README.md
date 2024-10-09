@@ -25,17 +25,28 @@ ja ctrl+left click saa sovelluksen auki linkkiä klikkaamalla.
 
 ## Git Ohjeet
 Aluksi
+
  git pull
 
+
 Siirry omaan branchiin
+
 git checkout [omanimi]
 
+
 Kun haluat tallentaa 
+
 git add --all
+
 git commit -m "..."
+
 git push
 
+
 Kun haluat siirtää mainiin (Muista tallentaa branchiin)
+
 git checkout main
+
 git merge -m "..." [omanimi]
+
 git push
