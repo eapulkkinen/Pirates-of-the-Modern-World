@@ -19,3 +19,8 @@ div {
     align-items: center;
     text-align: center;
 }
+
+/* Testiksi, jotta hahmottaa paremmin */ 
+#maindiv > div {
+    height: 500px;
+}
