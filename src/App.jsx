@@ -1,40 +1,51 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import L from 'leaflet'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
+import Map from './components/Map';
 
 
 function App() {
-  /** Testatu karttaa, mutta ei toimi järkevästi näillä
-  useEffect(() => {
-    const map = L.map('karttadiv').setView([20, 0], 1);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://carto.com/">CartoDB</a>',
-      maxZoom: 20,
-    }).addTo(map);
+  const [koordinaattiLista, setKoordinaatit] = useState([]);
 
-    // Cleanup function to remove the map instance on unmount
-    return () => {
-      map.remove();
-    };
+  const haeKoordinaatit = () => {
+    //Oikeasti tässä kohtaa haettaisi databasesta tmv. koordinaatit
+    
+    //Tässä kovakoodattu esimerkki listasta
+    const koordinaatit = [
+      {
+        coords: [62.2391, 25.7387],
+        place: 'Agora'
+      },  
+      {
+        coords: [60.1699, 24.9384],
+        place: 'Helsinki'
+      }
+    ];
+
+    //const koordinaatit = []; //Toimii myös tyhjällä listalla eli 
+    //"kun ei ole valittu yhtään suodattimia yms ei näytetä mtn"
+
+    setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
+  };
+
+  useEffect(() => {
+    haeKoordinaatit();
   }, []);
-  */
 
   return (
     <>
       <div id="maindiv">
-        <div id="vasendiv" class="sivudiv">
+        <div id="vasendiv" className="sivudiv">
           <p>Tänne maatiedot ja suodatusvalinnat?</p>
         </div>
         <div id="karttadiv">
+          <Map koordinaattiLista={koordinaattiLista} />
         </div>
-        <div id="oikeadiv" class="sivudiv">
+        <div id="oikeadiv" className="sivudiv">
           <p>Tänne tietoa tapahtumista?</p>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
