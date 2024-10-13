@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Map from './components/Map';
-
+import Slider from './components/Slider';
 
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);
@@ -44,6 +44,7 @@ function App() {
           <p>Tänne tietoa tapahtumista?</p>
         </div>
       </div>
+      <Slider />
     </>
   );
 }
