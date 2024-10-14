@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
+import Footer from './components/Footer';
 
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);
@@ -45,6 +46,7 @@ function App() {
         </div>
       </div>
       <Slider />
+      <Footer />
     </>
   );
 }
