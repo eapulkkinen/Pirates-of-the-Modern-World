@@ -7,7 +7,8 @@ import Search from './components/Search';
 
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);
-  const [hakusana, setHakusana] = useState('');
+  const [hakusyote, setHaku] = useState('');
+  const [maat, setMaat] = useState([]);
   const [vuosi, setVuosi] = useState('');
 
   const haeKoordinaatit = () => {
@@ -36,13 +37,28 @@ function App() {
   }, []);
 
   const handleHaku = (hakusana) => {
-    setHakusana(hakusana);
-    console.log('Hakusana: ' + hakusana);
+    setHaku(hakusana);
+
+    const maaList = hakusana.split(',').map(maa => maa.trim());
+    
+    setMaat(maatEnnenLisaysta => [...maatEnnenLisaysta, ...maaList]);
+
+    console.log('Syötetyt maat:', maaList);
+    console.log('Kaikki maat:', maat);
   }
 
   const handleSlider = (vuosi) => {
     setVuosi(vuosi);
-    console.log('Valittu vuosi: ' + vuosi)
+    console.log('Valittu vuosi:', vuosi);
+  }
+
+  const handleMaaPoisto = (poistettavaMaa) => {
+    console.log('Maat ennen poistoa:', maat);
+    setMaat(maatEnnenPoistoa => {
+      const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa);
+      console.log('Maat poiston jälkeen:', uudetMaat);
+      return uudetMaat;
+    });
   }
 
   return (
@@ -51,6 +67,22 @@ function App() {
         <div id="vasendiv" className="sivudiv">
           <Search onSearch={handleHaku} />
           <p>Tänne maatiedot ja suodatusvalinnat?</p>
+          
+          {maat.length > 0 && (
+            <ul>
+              {
+                maat.map((maa, index) => (
+                  <li key={index}>
+                    {maa}
+                    <button 
+                      onClick={() => handleMaaPoisto(maa)}
+                      style={{ marginLeft: '10px', cursor: 'pointer'}}> &#x2716;
+                    </button>
+                  </li>
+                ))
+              }
+            </ul>
+          )}
         </div>
         <div id="karttadiv">
           <Map koordinaattiLista={koordinaattiLista} />

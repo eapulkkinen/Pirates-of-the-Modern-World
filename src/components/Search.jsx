@@ -9,11 +9,17 @@ const Search = ({ onSearch }) => {
 
     const handleSearch = () => {
         onSearch(hakusana);
+        setHakusana('');
     }
 
     return (
             <div>
-                <input type="text" placeholder="Hae maata" onChange={handleChange}></input>
+                <input 
+                    type="text" 
+                    value = {hakusana}
+                    placeholder="Hae maata" 
+                    onChange={handleChange}>
+                </input>
                 <button onClick={handleSearch} type="submit">Hae</button>
             </div>
     )
