@@ -3,6 +3,7 @@ import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
 import Footer from './components/Footer';
+import Search from './components/Search';
 
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);
@@ -36,6 +37,7 @@ function App() {
     <>
       <div id="maindiv">
         <div id="vasendiv" className="sivudiv">
+          <Search />
           <p>Tänne maatiedot ja suodatusvalinnat?</p>
         </div>
         <div id="karttadiv">
