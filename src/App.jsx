@@ -7,6 +7,7 @@ import Search from './components/Search';
 
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);
+  const [hakusana, setHakusana] = useState('');
 
   const haeKoordinaatit = () => {
     //Oikeasti tässä kohtaa haettaisi databasesta tmv. koordinaatit
@@ -29,6 +30,11 @@ function App() {
     setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
   };
 
+  const handleHaku = (hakusana) => {
+    setHakusana(hakusana);
+    console.log('App.jsx handleHakun jälkeen hakusana: ' + hakusana);
+  }
+
   useEffect(() => {
     haeKoordinaatit();
   }, []);
@@ -37,7 +43,7 @@ function App() {
     <>
       <div id="maindiv">
         <div id="vasendiv" className="sivudiv">
-          <Search />
+          <Search onSearch={handleHaku} />
           <p>Tänne maatiedot ja suodatusvalinnat?</p>
         </div>
         <div id="karttadiv">
