@@ -8,6 +8,7 @@ import Search from './components/Search';
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);
   const [hakusana, setHakusana] = useState('');
+  const [vuosi, setVuosi] = useState('');
 
   const haeKoordinaatit = () => {
     //Oikeasti tässä kohtaa haettaisi databasesta tmv. koordinaatit
@@ -30,14 +31,19 @@ function App() {
     setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
   };
 
-  const handleHaku = (hakusana) => {
-    setHakusana(hakusana);
-    console.log('App.jsx handleHakun jälkeen hakusana: ' + hakusana);
-  }
-
   useEffect(() => {
     haeKoordinaatit();
   }, []);
+
+  const handleHaku = (hakusana) => {
+    setHakusana(hakusana);
+    console.log('Hakusana: ' + hakusana);
+  }
+
+  const handleSlider = (vuosi) => {
+    setVuosi(vuosi);
+    console.log('Valittu vuosi: ' + vuosi)
+  }
 
   return (
     <>
@@ -53,7 +59,7 @@ function App() {
           <p>Tänne tietoa tapahtumista?</p>
         </div>
       </div>
-      <Slider />
+      <Slider onChange={handleSlider}/>
       <Footer />
     </>
   );

@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 
-const Slider = () => {
+const Slider = ({ onChange }) => {
   
-  const [value, setValue] = useState(1993); 
+  const [vuosi, setVuosi] = useState(1993); 
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setVuosi(event.target.value);
+    onChange(event.target.value);
   };
-
+  
   return (
     <div style={{ textAlign: 'center', padding: '10px' }}> 
-      <h1>Näytettävä vuosi {value}</h1>
+      <h1>Näytettävä vuosi {vuosi}</h1>
 
       <input
         type="range"
         min="1993"
         max="2020"
         step="1"
-        value={value}
+        value={vuosi}
         onChange={handleChange}
         style={{ width: '400px' }} 
       />
