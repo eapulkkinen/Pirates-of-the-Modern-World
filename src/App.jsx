@@ -36,15 +36,22 @@ function App() {
     haeKoordinaatit();
   }, []);
 
+  useEffect(() => {
+    console.log('Kaikki maat:', maat); // Log updated countries whenever they change
+  }, [maat]);
+
   const handleHaku = (hakusana) => {
     setHaku(hakusana);
 
     const maaList = hakusana.split(',').map(maa => maa.trim());
     
-    setMaat(maatEnnenLisaysta => [...maatEnnenLisaysta, ...maaList]);
+    const uniqMaat = new Set(maat);
 
-    console.log('Syötetyt maat:', maaList);
-    console.log('Kaikki maat:', maat);
+    const newMaat = maaList.filter(maa => !uniqMaat.has(maa));
+
+    setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));
+
+    console.log('Syötetyt maat:', newMaat);
   }
 
   const handleSlider = (vuosi) => {
