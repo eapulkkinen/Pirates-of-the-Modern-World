@@ -21,6 +21,11 @@ const Slider = () => {
         onChange={handleChange}
         style={{ width: '400px' }} 
       />
+      <label>
+        <input type="checkbox" />
+        Näytä kaikki
+      </label>
+      
     </div>
   );
 }
