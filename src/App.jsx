@@ -70,6 +70,7 @@ function App() {
 
   return (
     <>
+      <div id="header">Main view</div>
       <div id="maindiv">
         <div id="vasendiv" className="sivudiv">
           <Search onSearch={handleHaku} />

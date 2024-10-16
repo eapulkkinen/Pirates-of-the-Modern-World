@@ -24,3 +24,7 @@ div {
 #maindiv > div {
     height: 500px;
 }
+
+#header {
+    width: 100vw;
+}
