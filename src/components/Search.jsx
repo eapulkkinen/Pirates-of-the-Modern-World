@@ -17,10 +17,10 @@ const Search = ({ onSearch }) => {
                 <input 
                     type="text" 
                     value = {hakusana}
-                    placeholder="Hae maata" 
+                    placeholder="Search for a country" 
                     onChange={handleChange}>
                 </input>
-                <button onClick={handleSearch} type="submit">Hae</button>
+                <button onClick={handleSearch} type="submit">Search</button>
             </div>
     )
 }

@@ -5,8 +5,8 @@ const Footer = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Sovelluksen tekijät</th>
-                            <th>Avoimen datan lähde</th>
+                            <th>Application creators</th>
+                            <th>Open data source</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -20,11 +20,11 @@ const Footer = () => {
                         </tr>
                         <tr>
                             <td>Valtteri Sivula</td>
-                            <td>Journal of Open Humanities Data, 7: 19, pp. 1–6. <a href="https://doi.org/10.5334/johd.39" target="_blank">DOI:</a></td>
+                            <td>Journal of Open Humanities Data, 7: 19, pp. 1–6. <a href="https://doi.org/10.5334/johd.39" target="_blank">DOI</a></td>
                         </tr>
                         <tr>
                             <td>Vili Sihvo</td>
-                            <td><a href="https://github.com/newzealandpaul/Maritime-Pirate-Attacks" target="_blank">Github linkki</a></td>
+                            <td><a href="https://github.com/newzealandpaul/Maritime-Pirate-Attacks" target="_blank">Github repository</a></td>
                         </tr>
                     </tbody>
                 </table>

@@ -11,7 +11,7 @@ const Slider = ({ onChange }) => {
   
   return (
     <div style={{ textAlign: 'center', padding: '10px' }}> 
-      <h1>Näytettävä vuosi {vuosi}</h1>
+      <h1> Year to be displayed: {vuosi}</h1>
 
       <input
         type="range"
@@ -24,7 +24,7 @@ const Slider = ({ onChange }) => {
       />
       <label>
         <input type="checkbox" />
-        Näytä kaikki
+        Show all
       </label>
       
     </div>

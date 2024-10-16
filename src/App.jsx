@@ -73,7 +73,6 @@ function App() {
       <div id="maindiv">
         <div id="vasendiv" className="sivudiv">
           <Search onSearch={handleHaku} />
-          <p>Tänne maatiedot ja suodatusvalinnat?</p>
           
           {maat.length > 0 && (
             <ul>
@@ -95,7 +94,7 @@ function App() {
           <Map koordinaattiLista={koordinaattiLista} />
         </div>
         <div id="oikeadiv" className="sivudiv">
-          <p>Tänne tietoa tapahtumista?</p>
+          <p>Event information</p>
         </div>
       </div>
       <Slider onChange={handleSlider}/>
