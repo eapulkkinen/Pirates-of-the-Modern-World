@@ -68,6 +68,23 @@ function App() {
     });
   }
 
+  /** 
+  const tapahtuma1 = 
+    {
+      date:"1993-01-02",
+      time:"NA",
+      longitude: 116.9667,
+      latitude: 19.7,
+      attack_type: "NA",
+      location_description:"Hong Kong - Luzon - Hainan",
+      nearest_country:"CHN",
+      eez_country:"TWN",
+      shore_distance: 357.50237257241855,
+      attack_description: "NA",
+      vessel_name: "Mv Cosmic Leader"
+    };
+*/
+
   return (
     <>
       <div id="header">Main view</div>
