@@ -10,8 +10,8 @@ const Search = ({ onSearch, suggestions }) => {
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setHakusana(suggestion);
         onSearch(suggestion);
+        setHakusana('');
       };
     
 
