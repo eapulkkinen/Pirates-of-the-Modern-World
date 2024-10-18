@@ -26,11 +26,19 @@ import pirate_attacks from './data/pirate_attacks';
 
     useEffect(() => {
       if (maat.length > 0) {
-        const tapahtumat = haeTapahtumatVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
+        const hyokkaykset = haeHyokkayksetVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
         const maakoodit = maat.map(maa => countryCodeMap[maa]);
-        const maidenTapahtumat = suodataMaidenTapahtumat(tapahtumat, maakoodit);
-        console.log(`Maiden ${maakoodit} tapahtumat vuonna ${vuosi}:`, maidenTapahtumat);
+        const maidenHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maakoodit);
+        console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, maidenHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
+
+        //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
+        const hyokkaystenKoordinaatit = maidenHyokkaykset.map(hyokkays => ({
+          longitude: hyokkays.longitude,
+          latitude: hyokkays.latitude
+        }));
+
+        setKoordinaatit(hyokkaystenKoordinaatit); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
       }
     }, [maat]); //kun maat muuttuu tehdään tämä useEffect
 
@@ -40,23 +48,23 @@ import pirate_attacks from './data/pirate_attacks';
 
       //setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
     };
-    
 
-    const haeTapahtumatVuodella = () => {
-      const tapahtumat = pirate_attacks.filter(hyokkays => {
+
+    const haeHyokkayksetVuodella = () => {
+      const hyokkaykset = pirate_attacks.filter(hyokkays => {
         const hyokkaysVuosi = hyokkays.date.split('-')[0];
         return vuosi === hyokkaysVuosi.toString();
       });
-      console.log(`Kaikki vuonna ${vuosi} tapahtuneet hyökkäykset:`, tapahtumat)
-      return tapahtumat;
+      console.log(`Kaikki vuonna ${vuosi} tapahtuneet hyökkäykset:`, hyokkaykset)
+      return hyokkaykset;
     };
 
 
-    const suodataMaidenTapahtumat = (tapahtumat, maakoodit) => {
-      const maidenTapahtumat = tapahtumat.filter(hyokkays => {
+    const suodataMaidenHyokkaykset = (hyokkaykset, maakoodit) => {
+      const maidenHyokkaykset = hyokkaykset.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country); 
       });
-      return maidenTapahtumat;
+      return maidenHyokkaykset;
     };
   
 
