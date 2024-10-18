@@ -40,7 +40,7 @@ import pirate_attacks from './data/pirate_attacks';
 
       //setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
     };
-
+    
 
     const haeTapahtumatVuodella = () => {
       const tapahtumat = pirate_attacks.filter(hyokkays => {
@@ -51,7 +51,7 @@ import pirate_attacks from './data/pirate_attacks';
       return tapahtumat;
     };
 
-    
+
     const suodataMaidenTapahtumat = (tapahtumat, maakoodit) => {
       const maidenTapahtumat = tapahtumat.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country); 
