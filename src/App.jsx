@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import './App.css';
 import Map from './components/Map';
@@ -12,30 +13,16 @@ import pirate_attacks from './data/pirate_attacks';
     const [koordinaattiLista, setKoordinaatit] = useState([]);
     const [hakusyote, setHaku] = useState('');
     const [maat, setMaat] = useState([]);
-    const [vuosi, setVuosi] = useState('');
+    const [vuosi, setVuosi] = useState(1993);
     const [suggestions, setSuggestions] = useState([]);
 
     const maaTaulukko = country_codes.map(i => i.country_name);
+    console.log(pirate_attacks)
 
     const haeKoordinaatit = () => {
       //Oikeasti tässä kohtaa haettaisi databasesta tmv. koordinaatit
-      
-      //Tässä kovakoodattu esimerkki listasta
-      const koordinaatit = [
-        {
-          coords: [62.2391, 25.7387],
-          place: 'Agora'
-        },  
-        {
-          coords: [60.1699, 24.9384],
-          place: 'Helsinki'
-        }
-      ];
   
-      //const koordinaatit = []; //Toimii myös tyhjällä listalla eli 
-      //"kun ei ole valittu yhtään suodattimia yms ei näytetä mtn"
-  
-      setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
+      //setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
     };
   
     useEffect(() => {
@@ -74,9 +61,9 @@ import pirate_attacks from './data/pirate_attacks';
     }
 
   
-    const handleSlider = (vuosi) => {
-      setVuosi(vuosi);
-      console.log('Valittu vuosi:', vuosi);
+    const handleSlider = (newVuosi) => {
+      setVuosi(newVuosi);
+      console.log('Valittu vuosi:', newVuosi);
     }
   
     const handleMaaPoisto = (poistettavaMaa) => {
@@ -87,23 +74,6 @@ import pirate_attacks from './data/pirate_attacks';
         return uudetMaat;
       });
     }
-  
-    /** 
-    const tapahtuma1 = 
-      {
-        date:"1993-01-02",
-        time:"NA",
-        longitude: 116.9667,
-        latitude: 19.7,
-        attack_type: "NA",
-        location_description:"Hong Kong - Luzon - Hainan",
-        nearest_country:"CHN",
-        eez_country:"TWN",
-        shore_distance: 357.50237257241855,
-        attack_description: "NA",
-        vessel_name: "Mv Cosmic Leader"
-      };
-  */
   
     return (
       <>
@@ -135,7 +105,7 @@ import pirate_attacks from './data/pirate_attacks';
             <p>Event information</p>
           </div>
         </div>
-        <Slider onChange={handleSlider}/>
+        <Slider onChange={handleSlider} vuosi={vuosi}/>
         <Footer />
       </>
     );

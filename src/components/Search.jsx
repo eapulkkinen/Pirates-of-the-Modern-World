@@ -28,6 +28,7 @@ const Search = ({ onSearch, suggestions }) => {
                     placeholder="Search for a country" 
                     onChange={handleChange}>
                 </input>
+                <button onClick={handleSearch} type="submit">Search</button>
                 {suggestions.length > 0 && (
                 <ul>
                 {suggestions.map((suggestion, index) => (
@@ -41,7 +42,7 @@ const Search = ({ onSearch, suggestions }) => {
                 ))}
                 </ul>
                 )}
-                <button onClick={handleSearch} type="submit">Search</button>
+                
             </div>
     )
 }

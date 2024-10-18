@@ -1,11 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 
-const Slider = ({ onChange }) => {
-  
-  const [vuosi, setVuosi] = useState(1993); 
-
+const Slider = ({ onChange, vuosi }) => {
   const handleChange = (event) => {
-    setVuosi(event.target.value);
     onChange(event.target.value);
   };
   
