@@ -67,9 +67,8 @@ function App() {
       return uudetMaat;
     });
   }
-
-  /** 
-  const tapahtuma1 = 
+ 
+  const tapahtumat = [
     {
       date:"1993-01-02",
       time:"NA",
@@ -82,8 +81,25 @@ function App() {
       shore_distance: 357.50237257241855,
       attack_description: "NA",
       vessel_name: "Mv Cosmic Leader"
-    };
-*/
+    },
+    //-75.52725175699993,10.30955638200004,"24.01.2017: 1750 LT: Posn: 10:19.3N - 075:32.1W, Mamonal Inner Anchorage, Colombia.
+    //"NA",Chemical Tanker,Anchored,imb
+    {
+      date:"2017-01-24",
+      time:"17:50",
+      longitude: -75.5336111111111,
+      latitude: 10.321666666666667,
+      attack_type: "Boarded",
+      location_description:"Mamonal Inner Anchorage",
+      nearest_country:"COL",
+      eez_country:"COL",
+      shore_distance: 1.5097984775275843,
+      attack_description: "Unnoticed, robbers boarded \
+      an anchored chemical tanker, stole the ship’s \
+      properties and escaped. The theft was discovered \
+      by the crew during routine rounds.",
+      vessel_name: "Paatti"
+    }];
 
   return (
     <>
