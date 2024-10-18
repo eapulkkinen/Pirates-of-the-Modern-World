@@ -13,10 +13,16 @@ import pirate_attacks from './data/pirate_attacks';
     const [koordinaattiLista, setKoordinaatit] = useState([]);
     const [hakusyote, setHaku] = useState('');
     const [maat, setMaat] = useState([]);
-    const [vuosi, setVuosi] = useState(1993);
+    const [vuosi, setVuosi] = useState('1993');
     const [suggestions, setSuggestions] = useState([]);
 
     const maaTaulukko = country_codes.map(i => i.country_name);
+
+    const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
+      accumulator[country_name] = country;
+      return accumulator;
+    }, {});
+
     console.log(pirate_attacks)
 
     const haeKoordinaatit = () => {
@@ -24,14 +30,22 @@ import pirate_attacks from './data/pirate_attacks';
   
       //setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
     };
+
+    const haeTapahtumatVuodella = () => {
+      const tapahtumat = pirate_attacks.filter(hyokkays => {
+        const hyokkaysVuosi = hyokkays.date.split('-')[0];
+        return vuosi === hyokkaysVuosi.toString();
+      });
+      console.log(`Vuonna ${vuosi} tapahtuneet hyökkäykset:`, tapahtumat)
+      return tapahtumat;
+    };
   
     useEffect(() => {
-      haeKoordinaatit();
-    }, []);
-  
-    useEffect(() => {
+      if (maat.length > 0) {
+        const tapahtumat = haeTapahtumatVuodella();
+      }
       console.log('Kaikki maat:', maat); // Log updated countries whenever they change
-    }, [maat]);
+    }, [maat]); //kun maat muuttuu tehdään tämä useEffect
   
     const handleHaku = (hakusana) => {
       setHaku(hakusana);
@@ -58,6 +72,8 @@ import pirate_attacks from './data/pirate_attacks';
       }
   
       console.log('Syötetyt maat:', newMaat);
+
+      const tapahtumat = haeTapahtumatVuodella();
     }
 
   
