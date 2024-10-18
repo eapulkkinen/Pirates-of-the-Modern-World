@@ -1,11 +1,19 @@
 import { useState } from 'react';
 
-const Search = ({ onSearch }) => {
+const Search = ({ onSearch, suggestions }) => {
     const [hakusana, setHakusana] = useState('');
 
     const handleChange = (e) => {
-        setHakusana(e.target.value);
+        const value = e.target.value
+        setHakusana(value);
+        onSearch(value);
     };
+
+    const handleSuggestionClick = (suggestion) => {
+        onSearch(suggestion);
+        setHakusana('');
+      };
+    
 
     const handleSearch = () => {
         onSearch(hakusana);
@@ -20,6 +28,19 @@ const Search = ({ onSearch }) => {
                     placeholder="Search for a country" 
                     onChange={handleChange}>
                 </input>
+                {suggestions.length > 0 && (
+                <ul>
+                {suggestions.map((suggestion, index) => (
+                    <li 
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    style={{ cursor: 'pointer' }}
+                    >
+                    {suggestion}
+                    </li>
+                ))}
+                </ul>
+                )}
                 <button onClick={handleSearch} type="submit">Search</button>
             </div>
     )
