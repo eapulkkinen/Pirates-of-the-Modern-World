@@ -23,30 +23,43 @@ import pirate_attacks from './data/pirate_attacks';
       return accumulator;
     }, {});
 
-    console.log(pirate_attacks)
+
+    useEffect(() => {
+      if (maat.length > 0) {
+        const tapahtumat = haeTapahtumatVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
+        const maakoodit = maat.map(maa => countryCodeMap[maa]);
+        const maidenTapahtumat = suodataMaidenTapahtumat(tapahtumat, maakoodit);
+        console.log(`Maiden ${maakoodit} tapahtumat vuonna ${vuosi}:`, maidenTapahtumat);
+        console.log('Kaikki suodatettavat maat:', maat);
+      }
+    }, [maat]); //kun maat muuttuu tehdään tämä useEffect
+
 
     const haeKoordinaatit = () => {
       //Oikeasti tässä kohtaa haettaisi databasesta tmv. koordinaatit
-  
+
       //setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
     };
+
 
     const haeTapahtumatVuodella = () => {
       const tapahtumat = pirate_attacks.filter(hyokkays => {
         const hyokkaysVuosi = hyokkays.date.split('-')[0];
         return vuosi === hyokkaysVuosi.toString();
       });
-      console.log(`Vuonna ${vuosi} tapahtuneet hyökkäykset:`, tapahtumat)
+      console.log(`Kaikki vuonna ${vuosi} tapahtuneet hyökkäykset:`, tapahtumat)
       return tapahtumat;
     };
+
+    
+    const suodataMaidenTapahtumat = (tapahtumat, maakoodit) => {
+      const maidenTapahtumat = tapahtumat.filter(hyokkays => {
+        return maakoodit.includes(hyokkays.nearest_country); 
+      });
+      return maidenTapahtumat;
+    };
   
-    useEffect(() => {
-      if (maat.length > 0) {
-        const tapahtumat = haeTapahtumatVuodella();
-      }
-      console.log('Kaikki maat:', maat); // Log updated countries whenever they change
-    }, [maat]); //kun maat muuttuu tehdään tämä useEffect
-  
+
     const handleHaku = (hakusana) => {
       setHaku(hakusana);
   
@@ -72,16 +85,15 @@ import pirate_attacks from './data/pirate_attacks';
       }
   
       console.log('Syötetyt maat:', newMaat);
-
-      const tapahtumat = haeTapahtumatVuodella();
     }
-
   
+
     const handleSlider = (newVuosi) => {
       setVuosi(newVuosi);
       console.log('Valittu vuosi:', newVuosi);
     }
   
+
     const handleMaaPoisto = (poistettavaMaa) => {
       console.log('Maat ennen poistoa:', maat);
       setMaat(maatEnnenPoistoa => {
@@ -91,6 +103,7 @@ import pirate_attacks from './data/pirate_attacks';
       });
     }
   
+
     return (
       <>
         <div id="header">Main view</div>
