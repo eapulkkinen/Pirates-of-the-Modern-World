@@ -39,8 +39,7 @@ const Search = ({ onSearch, suggestions, setSuggestions }) => {
                 {suggestions.map((suggestion, index) => (
                     <li 
                     key={index}
-                    onClick={(e) => {
-                        e.stopPropagation();
+                    onClick={() => {
                         handleSuggestionClick(suggestion);
                     }}
                     style={{ cursor: 'pointer' }}

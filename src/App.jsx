@@ -89,7 +89,7 @@ import pirate_attacks from './data/pirate_attacks';
     const handleHaku = (hakusana) => {
       setHaku(hakusana);
   
-      const maaList = hakusana.split(',').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
+      const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
       const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
 
