@@ -10,7 +10,7 @@ import pirate_attacks from './data/pirate_attacks';
 
 
   function App() {
-    const [koordinaattiLista, setKoordinaatit] = useState([]);
+    const [koordinaattiLista, setKoordinaatit] = useState([]);  // listan alkiot tyyppiä {longitude, latitude, countrycode}
     const [hakusyote, setHaku] = useState('');
     const [maat, setMaat] = useState([]);
     const [vuosi, setVuosi] = useState('1993');
@@ -35,19 +35,13 @@ import pirate_attacks from './data/pirate_attacks';
         //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
         const hyokkaystenKoordinaatit = maidenHyokkaykset.map(hyokkays => ({
           longitude: hyokkays.longitude,
-          latitude: hyokkays.latitude
+          latitude: hyokkays.latitude,
+          countrycode: hyokkays.country
         }));
 
         setKoordinaatit(hyokkaystenKoordinaatit); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
       }
-    }, [maat]); //kun maat muuttuu tehdään tämä useEffect
-
-
-    const haeKoordinaatit = () => {
-      //Oikeasti tässä kohtaa haettaisi databasesta tmv. koordinaatit
-
-      //setKoordinaatit(koordinaatit); //Map.jsx "kutsu"
-    };
+    }, [maat]); //kun maat muuttuu tehdään tämä useEffect-lohko
 
 
     const haeHyokkayksetVuodella = () => {
@@ -107,6 +101,19 @@ import pirate_attacks from './data/pirate_attacks';
       setMaat(maatEnnenPoistoa => {
         const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa);
         console.log('Maat poiston jälkeen:', uudetMaat);
+
+        // poistettujen maiden koordinaattien poisto kartalta
+        const hyokkaykset = haeHyokkayksetVuodella();
+        const maaKoodit = uudetMaat.map(maa => countryCodeMap[maa]);
+        const maidenHyokkakset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodit);
+
+        const hyokkaystenKoordinaatit = maidenHyokkakset.map(hyokkays => ({
+          longitude: hyokkays.longitude,
+          latitude: hyokkays.latitude
+        }));
+
+        setKoordinaatit(hyokkaystenKoordinaatit);
+
         return uudetMaat;
       });
     }

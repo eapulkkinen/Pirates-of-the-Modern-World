@@ -23,16 +23,18 @@ const Map = ({ koordinaattiLista }) => {
     }, []);
 
     useEffect(() => {
-        if (map && koordinaattiLista.length > 0) {
-            markers.forEach(marker => map.removeLayer(marker)); // vanhojen markerien poisto
+        if (map) {
+            markers.forEach(marker => map.removeLayer(marker));
+
             const newMarkers = koordinaattiLista.map(koordinaatit => {
                 const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]).addTo(map);
                 return marker;
-            });
+            })
 
             setMarkers(newMarkers);
         }
     }, [map, koordinaattiLista]);
+
 
     return (
         <div id="karttadiv">
