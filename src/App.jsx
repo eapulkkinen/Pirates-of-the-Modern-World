@@ -101,11 +101,22 @@ import pirate_attacks from './data/pirate_attacks';
   
       setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
 
-      if (hakusana.length > 0) {  //Käsitellään hakuehdotukset -> hakusanalla alkava maa löytyy datasta
-        const filteredSuggestions = maaTaulukko.filter(maa => 
-          maa.toLowerCase().startsWith(hakusana.trim().toLowerCase())
-        );
-        setSuggestions(filteredSuggestions);
+
+      if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
+        const viimeinenSyotettyMaa = maaList[maaList.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
+        
+        //jos syöte ei ole vain tyhjää eli esim "Suomi +     " vaan vaikka "Suomi +     Ruotsi" niin mennään if sisään
+        if (viimeinenSyotettyMaa.trim() !== '') {
+          const filteredSuggestions = maaTaulukko.filter(maa => 
+            maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
+          );
+          setSuggestions(filteredSuggestions);
+        }
+        //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
+        else {
+          setSuggestions([]);
+        }
+        // Jos haussa ei muuta kuin tyhjää
       } else {
         setSuggestions([]);
       }
