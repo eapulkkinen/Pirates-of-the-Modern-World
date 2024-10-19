@@ -2,8 +2,9 @@ import { useState } from 'react';
 
 
 // TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, suggestions }) => {
+const Search = ({ onSearch, suggestions, setSuggestions }) => {
     const [hakusana, setHakusana] = useState('');
+
 
     const handleChange = (e) => {
         const value = e.target.value
@@ -14,6 +15,7 @@ const Search = ({ onSearch, suggestions }) => {
     const handleSuggestionClick = (suggestion) => {
         onSearch(suggestion);
         setHakusana('');
+        setSuggestions([]);
       };
     
 
@@ -21,6 +23,7 @@ const Search = ({ onSearch, suggestions }) => {
         onSearch(hakusana);
         setHakusana('');
     }
+
 
     return (
             <div>
@@ -36,7 +39,10 @@ const Search = ({ onSearch, suggestions }) => {
                 {suggestions.map((suggestion, index) => (
                     <li 
                     key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleSuggestionClick(suggestion);
+                    }}
                     style={{ cursor: 'pointer' }}
                     >
                     {suggestion}
