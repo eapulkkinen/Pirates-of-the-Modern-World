@@ -41,7 +41,7 @@ import pirate_attacks from './data/pirate_attacks';
 
         setKoordinaatit(hyokkaystenKoordinaatit); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
       }
-    }, [maat]); //kun maat muuttuu tehdään tämä useEffect-lohko
+    }, [maat, vuosi]); //kun maat TAI vuosi muuttuu tehdään tämä useEffect-lohko
 
 
     const haeHyokkayksetVuodella = () => {
