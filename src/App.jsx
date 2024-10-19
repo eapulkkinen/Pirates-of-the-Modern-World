@@ -101,7 +101,7 @@ import pirate_attacks from './data/pirate_attacks';
   
       setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
 
-      if (hakusana.length > 0) {  //Käsitellään hakuehdotukset -> hakusanalla alkava maa löytyy datasta
+      if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset -> hakusanalla alkava maa löytyy datasta
         const filteredSuggestions = maaTaulukko.filter(maa => 
           maa.toLowerCase().startsWith(hakusana.trim().toLowerCase())
         );
