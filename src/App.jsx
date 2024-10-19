@@ -16,7 +16,7 @@ import pirate_attacks from './data/pirate_attacks';
     const [vuosi, setVuosi] = useState('1993');
     const [suggestions, setSuggestions] = useState([]);
 
-    const maaTaulukko = country_codes.map(i => i.country_name);
+    const maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
 
     const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
       accumulator[country_name] = country;
@@ -24,6 +24,10 @@ import pirate_attacks from './data/pirate_attacks';
     }, {});
 
 
+    /**
+     * Kartan päivitys.
+     * Tapahtuu AINA kun valitut maat tai vuosi muuttuu.
+     */
     useEffect(() => {
       if (maat.length > 0) {
         const hyokkaykset = haeHyokkayksetVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
@@ -41,9 +45,15 @@ import pirate_attacks from './data/pirate_attacks';
 
         setKoordinaatit(hyokkaystenKoordinaatit); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
       }
-    }, [maat, vuosi]); //kun maat TAI vuosi muuttuu tehdään tämä useEffect-lohko
+    }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
 
 
+    /**
+     * Hakee hyökkäysdatasta kaikki hyökkäykset,
+     * jotka on tapahtunut samana vuonna kuin käyttäjän
+     * valitsema sliderin arvo.
+     * @returns Taulukon hyökkäyksistä, jotka tapahtuneet valittuna vuonna
+     */
     const haeHyokkayksetVuodella = () => {
       const hyokkaykset = pirate_attacks.filter(hyokkays => {
         const hyokkaysVuosi = hyokkays.date.split('-')[0];
@@ -54,6 +64,14 @@ import pirate_attacks from './data/pirate_attacks';
     };
 
 
+    /**
+     * Suodattaa hyökkäykset maakoodien perusteella.
+     * Valitsee siis hyökkäykset, jotka ovat tapahtuneet
+     * valituissa maissa. Valinta tapahuu maakoodien avulla.
+     * @param {*} hyokkaykset Taulukko hyökkäyksistä
+     * @param {*} maakoodit Taulukko maakoodeista
+     * @returns Taulukon valittujen maiden hyökkäyksistä ja hyökkäysten tiedoista
+     */
     const suodataMaidenHyokkaykset = (hyokkaykset, maakoodit) => {
       const maidenHyokkaykset = hyokkaykset.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country); 
@@ -62,24 +80,30 @@ import pirate_attacks from './data/pirate_attacks';
     };
   
 
+    /**
+     * Käsittelee hakusanan ja hakupalkin logiikkaa.
+     * Kutsuu ehdotuksien luontia ja lisää datasta
+     * löytyvät haetut maat valituiksi.
+     * @param {*} hakusana Hakuun syötetty merkkijono
+     */
     const handleHaku = (hakusana) => {
       setHaku(hakusana);
   
-      const maaList = hakusana.split(',').map(maa => maa.trim());
+      const maaList = hakusana.split(',').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
-      const uniqMaat = new Set(maat);
+      const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
 
       const maaSet = new Set(maaTaulukko);
 
-      const realMaat = maaList.filter(maa => maaSet.has(maa))
+      const realMaat = maaList.filter(maa => maaSet.has(maa))   //syötetyt maat suodatetaan datasta löytyvistä maista
   
-      const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));
+      const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
   
-      setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));
+      setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
 
-      if (hakusana.length > 0) {
+      if (hakusana.length > 0) {  //Käsitellään hakuehdotukset -> hakusanalla alkava maa löytyy datasta
         const filteredSuggestions = maaTaulukko.filter(maa => 
-          maa.toLowerCase().startsWith(hakusana.toLowerCase())
+          maa.toLowerCase().startsWith(hakusana.trim().toLowerCase())
         );
         setSuggestions(filteredSuggestions);
       } else {
@@ -90,31 +114,40 @@ import pirate_attacks from './data/pirate_attacks';
     }
   
 
+    /**
+     * Sliderin arvo talteen ja asetetaan se käytettäväksi vuodeksi
+     * @param {*} newVuosi Sliderista valittava vuosi
+     */
     const handleSlider = (newVuosi) => {
       setVuosi(newVuosi);
       console.log('Valittu vuosi:', newVuosi);
     }
   
 
+    /**
+     * Maan poistaminen valituista maista
+     * @param {*} poistettavaMaa poistettava maa-objekti  
+     */
     const handleMaaPoisto = (poistettavaMaa) => {
       console.log('Maat ennen poistoa:', maat);
-      setMaat(maatEnnenPoistoa => {
-        const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa);
+      setMaat(maatEnnenPoistoa => {   //Valituiksi maiksi asetetaan alla tapahtuvan return
+        const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa); //luodaan uusi taulukko, joka ei sisällä poistettavaa maata
         console.log('Maat poiston jälkeen:', uudetMaat);
 
         // poistettujen maiden koordinaattien poisto kartalta
         const hyokkaykset = haeHyokkayksetVuodella();
-        const maaKoodit = uudetMaat.map(maa => countryCodeMap[maa]);
-        const maidenHyokkakset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodit);
+        const maaKoodi = uudetMaat.map(maa => countryCodeMap[maa]);
+        const maanHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodi);
 
-        const hyokkaystenKoordinaatit = maidenHyokkakset.map(hyokkays => ({
+        const hyokkaystenKoordinaatit = maanHyokkaykset.map(hyokkays => ({
           longitude: hyokkays.longitude,
-          latitude: hyokkays.latitude
+          latitude: hyokkays.latitude,
+          countrycode: hyokkays.nearest_country
         }));
 
-        setKoordinaatit(hyokkaystenKoordinaatit);
+        setKoordinaatit(hyokkaystenKoordinaatit); //koordinaattien päivitys kartalle (eli suomeksi tässä funktiossa koordinaattien poisto)
 
-        return uudetMaat;
+        return uudetMaat; //periaatteessa setMaat(uudetMaat)
       });
     }
   

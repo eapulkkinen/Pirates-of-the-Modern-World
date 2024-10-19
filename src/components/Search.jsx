@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+
+// TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
 const Search = ({ onSearch, suggestions }) => {
     const [hakusana, setHakusana] = useState('');
 
