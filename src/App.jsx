@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import Search from './components/Search';
 import country_codes from './data/country_codes';
 import pirate_attacks from './data/pirate_attacks';
+import country_indicators from './data/country_indicators';
+import {Chart} from 'chart.js/auto';
 
 
   function App() {
@@ -161,6 +163,32 @@ import pirate_attacks from './data/pirate_attacks';
         return uudetMaat; //periaatteessa setMaat(uudetMaat)
       });
     }
+
+    const chartRef = useRef(null); // asetetaan viite canvas elementtiin
+    useEffect(() => {
+      const ctx = chartRef.current.getContext("2d");
+      const gdp = country_indicators.map(i => i.GDP); // luodaan datasta taulukot
+      const unemployment = country_indicators.map(i => i.unemployment_rate);
+
+      // määritellään taulukon tiedot
+      const testi = new Chart (ctx, {
+        type: "line", // taulukon tyyppi "bar", "pie" jne myös mahdollisia
+        data: {
+            labels: gdp, // x-akselin data
+            datasets: [{
+                data: unemployment // y-akselin data
+            }]
+
+        }
+      });
+
+      return () => {
+        testi.destroy(); // cleanup
+      };
+
+    });
+    
+
   
 
     return (
@@ -195,6 +223,7 @@ import pirate_attacks from './data/pirate_attacks';
         </div>
         <Slider onChange={handleSlider} vuosi={vuosi}/>
         <Footer />
+        <canvas ref={chartRef} width="400" height="200"></canvas>
       </>
     );
   }
