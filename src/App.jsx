@@ -142,4 +142,3 @@ import pirate_attacks from './data/pirate_attacks';
   }
   
   export default App;
-  
