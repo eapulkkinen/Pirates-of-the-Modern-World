@@ -10,6 +10,7 @@
 /* Kartta 60% ruudunleveydestä */
 #karttadiv {
     width: 60vw;
+    z-index: 1;
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
