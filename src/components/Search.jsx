@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
-const Search = ({ onSearch, suggestions }) => {
+
+// TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
+const Search = ({ onSearch, suggestions, setSuggestions }) => {
     const [hakusana, setHakusana] = useState('');
+
 
     const handleChange = (e) => {
         const value = e.target.value
@@ -12,6 +15,7 @@ const Search = ({ onSearch, suggestions }) => {
     const handleSuggestionClick = (suggestion) => {
         onSearch(suggestion);
         setHakusana('');
+        setSuggestions([]);
       };
     
 
@@ -19,6 +23,7 @@ const Search = ({ onSearch, suggestions }) => {
         onSearch(hakusana);
         setHakusana('');
     }
+
 
     return (
             <div>
@@ -28,12 +33,15 @@ const Search = ({ onSearch, suggestions }) => {
                     placeholder="Search for a country" 
                     onChange={handleChange}>
                 </input>
+                <button onClick={handleSearch} type="submit">Search</button>
                 {suggestions.length > 0 && (
                 <ul>
                 {suggestions.map((suggestion, index) => (
                     <li 
                     key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
+                    onClick={() => {
+                        handleSuggestionClick(suggestion);
+                    }}
                     style={{ cursor: 'pointer' }}
                     >
                     {suggestion}
@@ -41,7 +49,7 @@ const Search = ({ onSearch, suggestions }) => {
                 ))}
                 </ul>
                 )}
-                <button onClick={handleSearch} type="submit">Search</button>
+                
             </div>
     )
 }
