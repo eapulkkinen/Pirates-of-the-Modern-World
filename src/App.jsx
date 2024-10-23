@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Search from './components/Search';
 import country_codes from './data/country_codes';
 import pirate_attacks from './data/pirate_attacks';
+import Modal from './components/Modal/Modal'
 
 
   function App() {
@@ -165,7 +166,9 @@ import pirate_attacks from './data/pirate_attacks';
 
     return (
       <>
-        <div id="header">Main view</div>
+        <div id="header">Main view 
+                        <Modal vuosi={vuosi}/>
+        </div>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
             <Search onSearch={handleHaku} suggestions={suggestions} setSuggestions={setSuggestions}/>
