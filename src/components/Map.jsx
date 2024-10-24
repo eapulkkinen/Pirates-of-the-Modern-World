@@ -28,6 +28,18 @@ const Map = ({ koordinaattiLista }) => {
 
             const newMarkers = koordinaattiLista.map(koordinaatit => {
                 const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]).addTo(map);
+                
+                marker.addEventListener("click", (e) => {
+                    console.log("klikattu");
+                    const infodiv = document.getElementById('oikeadiv');
+                    
+                    const p = document.createElement('p');
+
+                    p.textContent = `Koordinaatit: ${koordinaatit.latitude}, ${koordinaatit.longitude}`
+
+                    infodiv.appendChild(p);
+                });
+                
                 return marker;
             })
 
