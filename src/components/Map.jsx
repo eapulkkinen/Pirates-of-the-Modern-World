@@ -28,16 +28,30 @@ const Map = ({ koordinaattiLista }) => {
 
             const newMarkers = koordinaattiLista.map(koordinaatit => {
                 const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]).addTo(map);
-                
-                marker.addEventListener("click", (e) => {
-                    console.log("klikattu");
-                    const infodiv = document.getElementById('oikeadiv');
-                    
-                    const p = document.createElement('p');
 
-                    p.textContent = `Koordinaatit: ${koordinaatit.latitude}, ${koordinaatit.longitude}`
+                marker.addEventListener("click", (e) => { // jos markeria klikataan suoritetaan tämä
+                    const infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
+                    const date = koordinaatit.date;
+                    const time = koordinaatit.time;
+                    const coords = `${koordinaatit.latitude}, ${koordinaatit.longitude}`;
+                    const location_desc = koordinaatit.location_description;
+                    const country = koordinaatit.countryname;
+                    const eez = koordinaatit.eezcountryname;
+                    const shore_dist = koordinaatit.shore_distance.toFixed(2);
+                    const shorecoords = `${koordinaatit.shore_latitude}, ${koordinaatit.shore_longitude}`;
+                    const attack_desc = koordinaatit.attack_description;
+                    const vessel = koordinaatit.vessel_name;
+                    const vesseltype = koordinaatit.vessel_type;
+                    const vesselstatus = koordinaatit.vessel_status;
 
-                    infodiv.appendChild(p);
+                    //tässä syötetään mitä tekstiä halutaan näyttää
+                    infobox.innerHTML = `   
+                    Date: ${date}<br>
+                    Country: ${country}<br>
+                    Coordinates: ${coords}<br>
+                    Distance from shore: ${shore_dist}<br>
+                    `;
+
                 });
                 
                 return marker;

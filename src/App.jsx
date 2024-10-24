@@ -26,27 +26,35 @@ import Modal from './components/Modal/Modal'
       return accumulator;
     }, {});
 
-
     /**
      * Kartan päivitys.
      * Tapahtuu AINA kun valitut maat tai vuosi muuttuu.
      */
     useEffect(() => {
       if (maat.length > 0) {
-        const hyokkaykset = haeHyokkayksetVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
+        const syotetytHyokkaykset = haeHyokkayksetVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
         const maakoodit = maat.map(maa => countryCodeMap[maa]);
-        const maidenHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maakoodit);
+        const maidenHyokkaykset = suodataMaidenHyokkaykset(syotetytHyokkaykset, maakoodit);
         console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, maidenHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
 
         //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
-        const hyokkaystenKoordinaatit = maidenHyokkaykset.map(hyokkays => ({
-          longitude: hyokkays.longitude,
-          latitude: hyokkays.latitude,
-          countrycode: hyokkays.country
-        }));
+        const hyokkaykset = maidenHyokkaykset.map((hyokkays,index=0) => {
+          const nearestCountryCode = hyokkays.nearest_country;
+          const eezCountryCode = hyokkays.eez_country;
 
-        setKoordinaatit(hyokkaystenKoordinaatit); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+          //etsitään maan ja eez maan nimi country coden perusteella
+          const countryName = country_codes.find(maa => maa.country === nearestCountryCode).country_name;   
+          const eezCountryName = country_codes.find(maa => maa.country === eezCountryCode).country_name;
+
+          return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
+            ...hyokkays,
+            countryname: countryName,
+            eezcountryname: eezCountryName
+          };
+        });
+
+        setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
       }
     }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
 
@@ -233,6 +241,7 @@ import Modal from './components/Modal/Modal'
           </div>
           <div id="oikeadiv" className="sivudiv">
             <p>Event information</p>
+            <p id="infobox"></p>
           </div>
         </div>
         <Slider onChange={handleSlider} vuosi={vuosi}/>
