@@ -62,7 +62,8 @@ import Modal from './components/Modal/Modal'
         const hyokkaysVuosi = hyokkays.date.split('-')[0];
         return vuosi === hyokkaysVuosi.toString();
       });
-      console.log(`Kaikki vuonna ${vuosi} tapahtuneet hyökkäykset:`, hyokkaykset)
+      console.log(`Kaikki vuonna ${vuosi} tapahtuneet hyökkäykset:`, hyokkaykset);
+      
       return hyokkaykset;
     };
 
@@ -200,22 +201,32 @@ import Modal from './components/Modal/Modal'
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
             <Search onSearch={handleHaku} suggestions={suggestions} setSuggestions={setSuggestions}/>
-            
-            {maat.length > 0 && (
-              <ul>
-                {
-                  maat.map((maa, index) => (
-                    <li key={index}>
-                      {maa}
-                      <button 
-                        onClick={() => handleMaaPoisto(maa)}
-                        style={{ marginLeft: '10px', cursor: 'pointer'}}> &#x2716;
-                      </button>
-                    </li>
-                  ))
-                }
-              </ul>
-            )}
+            <div id="valitutmaat">
+              {maat.length > 0 && (
+                <ul>
+                  {
+                    maat.map((maa, index) => (
+                      <li key={index}>
+                        {maa}
+                        <button 
+                          onClick={() => handleMaaPoisto(maa)}
+                          style={{ marginLeft: '10px', cursor: 'pointer'}}> &#x2716;
+                        </button>
+                      </li>
+                    ))
+                  }
+                </ul>
+              )}
+            </div>
+            <div id="hyokkayslkm">
+              {
+                maat.length > 0 && (
+                  <p>
+                    Number of attacks with selected
+                    options : {koordinaattiLista.length}
+                  </p>
+                )}
+            </div>
           </div>
           <div id="karttadiv">
             <Map koordinaattiLista={koordinaattiLista} />
