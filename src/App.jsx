@@ -261,33 +261,6 @@ import Modal from './components/Modal/Modal'
       });
     }
 
-    const chartRef = useRef(null); // asetetaan viite canvas elementtiin
-    useEffect(() => {
-      const ctx = chartRef.current.getContext("2d");
-      const gdp = country_indicators.map(i => i.GDP); // luodaan datasta taulukot
-      const unemployment = country_indicators.map(i => i.unemployment_rate);
-
-      // määritellään taulukon tiedot
-      const testi = new Chart (ctx, {
-        type: "line", // taulukon tyyppi "bar", "pie" jne myös mahdollisia
-        data: {
-            labels: gdp, // x-akselin data
-            datasets: [{
-                data: unemployment // y-akselin data
-            }]
-
-        }
-      });
-
-      return () => {
-        testi.destroy(); // cleanup
-      };
-
-    });
-    
-
-  
-
     return (
       <>
         <Header vuosi={vuosi}/>
@@ -337,7 +310,6 @@ import Modal from './components/Modal/Modal'
         </div>
         <Slider onChange={handleSlider} vuosi={vuosi}/>
         <Footer />
-        <canvas ref={chartRef} width="400" height="200"></canvas>
       </>
     );
   }
