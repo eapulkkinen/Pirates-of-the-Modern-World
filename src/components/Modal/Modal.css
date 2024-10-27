@@ -1,8 +1,5 @@
-body.active-modal {
-    overflow-y: hidden;
-}
 
-.btn-modal {
+.modalNappi {
     padding: 10px 10px;
     display: block;
     margin: 10px auto 0;
@@ -23,7 +20,7 @@ body.active-modal {
 .overlay {
     background: rgba(49,49,49,0.8);
 }
-.modal-content {
+.modalSisalto {
     z-index: 999;
     position: absolute;
     top: 50%;
@@ -37,7 +34,7 @@ body.active-modal {
     height: 35vw;
 }
 
-.close-modal {
+.modalSulkuNappi {
     position: absolute;
     top: 10px;
     right: 10px;

@@ -48,17 +48,17 @@ const Header = () => {
             <h1>Pirate App 🏴‍☠️</h1>
             <button type='submit' onClick={toggleMain} id="mainNappi">Map view</button>
             <button type='submit' onClick={toggleGraphs} id='tokaNappi'>Additional graphs</button>
-            <button onClick={toggleHelp} className='btn-modal'>Help</button>
+            <button onClick={toggleHelp} className='modalNappi'>Help</button>
             
             {auki && (
             <div className='modal'>
-            <div className='modal-content'>
+            <div className='modalSisalto'>
                 <h1>Welcome to the Pirate App 🏴‍☠️</h1>
                 <p>The app can show you information regarding pirate attacks between the years 1993 and 2020</p>
                 <p>Choose a country you want info on by searching for it, or just choose "Show every country" to see all countries</p>
                 <p>Choose the year with the slider below the map, or just choose "Show all" to see all years</p>
                 <button
-                className='close-modal'
+                className='modalSulkuNappi'
                 onClick={toggleHelp}
                 >CLOSE</button>
             </div>
