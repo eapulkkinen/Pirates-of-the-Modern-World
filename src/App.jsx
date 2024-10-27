@@ -147,13 +147,13 @@ import Modal from './components/Modal/Modal'
      * @param {*} maakoodit Taulukko maakoodeista
      * @returns Taulukon valittujen maiden hyökkäyksistä ja hyökkäysten tiedoista
      *
+    */
     const suodataMaidenHyokkaykset = (hyokkaykset, maakoodit) => {
       const maidenHyokkaykset = hyokkaykset.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country); 
       });
       return maidenHyokkaykset;
     };
-    */
 
 
     /**
