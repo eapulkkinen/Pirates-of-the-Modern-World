@@ -8,6 +8,7 @@ const Map = ({ koordinaattiLista }) => {
     const [map, setMap] = useState(null);
     const [markerClusterGroup, setMarkerClusterGroup] = useState(null);
     const [markers, setMarkers] = useState([]);
+    const [selectedMarker, setSelectedMarker] = useState(null);
 
     useEffect(() => {     
         //setView [] sisään koordinaatit kartan keskityspisteeksi ja luku sen jälkeen on zoomin määrä
@@ -37,7 +38,7 @@ const Map = ({ koordinaattiLista }) => {
         if (map && markerClusterGroup) {
             markerClusterGroup.clearLayers();
 
-            console.log("Koordinaattilista App.jsx:", koordinaattiLista);
+            console.log("Koordinaattilista Map.jsx:", koordinaattiLista);
 
             //karttapisteiden päivitys
             if (koordinaattiLista.length === 0) {   //jos suodatuksilla löytyy 0 maata
@@ -45,6 +46,19 @@ const Map = ({ koordinaattiLista }) => {
                 setMarkers([]);
                 return;
             }
+
+            if (selectedMarker && !koordinaattiLista.some(
+                koord => 
+                    koord.latitude === selectedMarker.latitude &&
+                    koord.longitude === selectedMarker.longitude &&
+                    koord.date === selectedMarker.date &&
+                    koord.time === selectedMarker.time
+                    )
+                ) {
+                    document.getElementById('infobox').innerHTML = "";
+                    setSelectedMarker(null)
+                }
+
             //katsotaan mitkä markerit löytyy kartalta ja mitkä eivät kuulu
             //suodatettujen maiden hyökkäysten dataan
             const poistettavatMarkerit = markers.filter(marker => {
@@ -104,6 +118,8 @@ const Map = ({ koordinaattiLista }) => {
                     Distance from shore: ${shore_dist}<br>
                     `;
                 });
+
+                setSelectedMarker(marker);
                 
                 return marker;
             });
