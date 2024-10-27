@@ -31,7 +31,7 @@ const Search = ({ onSearch, suggestions, setSuggestions }) => {
         setShowAll(isChecked);
 
         if (isChecked) {
-            onSearch("all");
+            onSearch("all countries selected");
             setSuggestions([]);
         }
         

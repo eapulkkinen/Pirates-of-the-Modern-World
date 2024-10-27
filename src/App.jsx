@@ -148,7 +148,11 @@ import Modal from './components/Modal/Modal'
       setHaku(hakusana);
 
       console.log("Haettavat maat:", hakusana)
-  
+
+      if (hakusana === "all countries selected") {
+        setMaat(maaTaulukko);
+      }
+      else {
       const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
       const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
@@ -182,6 +186,7 @@ import Modal from './components/Modal/Modal'
       }
   
       console.log('Syötetyt maat:', newMaat);
+    }
     }
   
 
