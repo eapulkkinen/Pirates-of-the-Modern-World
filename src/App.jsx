@@ -35,8 +35,6 @@ import Modal from './components/Modal/Modal'
       if (maat.length > 0) {
         const maakoodit = maat.map(maa => countryCodeMap[maa]);
         const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
-        //const maidenHyokkaykset = suodataMaidenHyokkaykset(syotetynVuodenHyokkaykset, maakoodit);
-        //const syotetynVuodenHyokkaykset = haeHyokkayksetVuodella(maidenHyokkaykset);   //kaikki hyökkäykset jotka vastaa valittua vuotta
         const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
         console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
