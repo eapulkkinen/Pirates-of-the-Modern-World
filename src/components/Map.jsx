@@ -43,7 +43,9 @@ const Map = ({ koordinaattiLista }) => {
             //karttapisteiden päivitys
             if (koordinaattiLista.length === 0) {   //jos suodatuksilla löytyy 0 maata
                 markerClusterGroup.clearLayers();
+                document.getElementById('infobox').innerHTML = "";
                 setMarkers([]);
+                setSelectedMarker(null);
                 return;
             }
 
