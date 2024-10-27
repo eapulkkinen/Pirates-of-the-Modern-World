@@ -118,14 +118,14 @@ import Modal from './components/Modal/Modal'
 
     
     /**
-     * Palauttaa hyökkäykset, jotka on tapahtunut tiettynä vuonna.
+     * Palauttaa hyökkäykset, jotka on tapahtunut valittuna vuonna/vuosina.
      * @param {*} loydetytHyokkaykset 
      * @returns Taulukon hyökkäyksistä jotka on tapahtunut valittuna vuonna
      */
     const suodataHyokkayksetVuodella = (loydetytHyokkaykset) => {
       const valittuVuosi = vuosi;
 
-      if (valittuVuosi !== "all") {
+      if (valittuVuosi !== "all") { //jos syötetty yksittäinen vuosi
         const suodatetutHyokkaykset = loydetytHyokkaykset.filter(hyokkays => {
           const hyokkaysVuosi = hyokkays.date.split('-')[0];
           return vuosi === hyokkaysVuosi.toString(); 
