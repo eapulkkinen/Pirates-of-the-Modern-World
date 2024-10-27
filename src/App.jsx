@@ -149,10 +149,6 @@ import Modal from './components/Modal/Modal'
 
       console.log("Haettavat maat:", hakusana)
 
-      if (hakusana === "all countries selected") {
-        setMaat(maaTaulukko);
-      }
-      else {
       const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
       const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
@@ -187,6 +183,14 @@ import Modal from './components/Modal/Modal'
   
       console.log('Syötetyt maat:', newMaat);
     }
+
+    const handleToggleAllCountries = (isChecked) => {
+      if (isChecked) {
+        setMaat(maaTaulukko)
+      }
+      else {
+        setMaat([])
+      }
     }
   
 
@@ -261,7 +265,12 @@ import Modal from './components/Modal/Modal'
         </div>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
-            <Search onSearch={handleHaku} suggestions={suggestions} setSuggestions={setSuggestions}/>
+            <Search
+              onSearch={handleHaku} 
+              suggestions={suggestions} 
+              setSuggestions={setSuggestions} 
+              onToggleAllCountries={handleToggleAllCountries}
+            />
             <div id="valitutmaat">
               {maat.length > 0 && (
                 <ul>

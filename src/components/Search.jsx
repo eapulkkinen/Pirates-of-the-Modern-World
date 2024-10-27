@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 
 // TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, suggestions, setSuggestions }) => {
+const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries }) => {
     const [hakusana, setHakusana] = useState('');
     const [showAll, setShowAll] = useState(false);
 
@@ -29,9 +29,9 @@ const Search = ({ onSearch, suggestions, setSuggestions }) => {
     const handleCheckboxChange = (e) => {
         const isChecked = e.target.checked;
         setShowAll(isChecked);
+        onToggleAllCountries(isChecked);
 
         if (isChecked) {
-            onSearch("all countries selected");
             setSuggestions([]);
         }
         
