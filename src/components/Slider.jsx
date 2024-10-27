@@ -3,10 +3,28 @@ import React, { useState } from 'react';
 
 
 const Slider = ({ onChange, vuosi }) => {
-  const handleChange = (event) => {
-    onChange(event.target.value);
+  const [showAll, setShowAll] = useState(false);
+  const [previousSliderValue, setPreviousSliderValue] = useState(vuosi);
+
+  const handleSliderChange = (e) => {
+    if (!showAll) {
+      onChange(showAll ? "all" : e.target.value);
+      setPreviousSliderValue(e.target.value);
+    }
   };
-  
+
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setShowAll(e.target.checked);
+
+    if (isChecked) {
+      setPreviousSliderValue(vuosi);
+      onChange("all");
+    }
+    else {
+      onChange(previousSliderValue);
+    }
+  }
 
   return (
     <div style={{ textAlign: 'center', padding: '10px' }}> 
@@ -17,12 +35,18 @@ const Slider = ({ onChange, vuosi }) => {
         min="1993"
         max="2020"
         step="1"
-        value={vuosi}
-        onChange={handleChange}
+        value={showAll ? "1993" : vuosi}
+        onChange={handleSliderChange}
         style={{ width: '400px' }} 
+        disabled={showAll}
       />
       <label>
-        <input type="checkbox" />
+        <input 
+          type="checkbox" 
+          id="kaikkivuodetcb"
+          onChange={handleCheckboxChange}
+          checked={showAll}
+        />
         Show all
       </label>
       
