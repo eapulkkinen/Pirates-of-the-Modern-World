@@ -244,7 +244,13 @@ import Modal from './components/Modal/Modal'
         console.log('Maat poiston jälkeen:', uudetMaat);
 
         // poistettujen maiden koordinaattien poisto kartalta
-        const hyokkaykset = haeHyokkayksetVuodella();
+        let hyokkaykset;
+        if (vuosi === "all") {
+          hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
+        }
+        else {
+          hyokkaykset = haeHyokkayksetVuodella(vuosi);
+        }
         const maaKoodi = uudetMaat.map(maa => countryCodeMap[maa]);
         const maanHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodi);
 
