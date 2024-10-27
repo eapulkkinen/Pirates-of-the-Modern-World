@@ -146,6 +146,8 @@ import Modal from './components/Modal/Modal'
      */
     const handleHaku = (hakusana) => {
       setHaku(hakusana);
+
+      console.log("Haettavat maat:", hakusana)
   
       const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
@@ -250,7 +252,7 @@ import Modal from './components/Modal/Modal'
     return (
       <>
         <div id="header">Main view 
-                        <Modal vuosi={vuosi}/>
+          <Modal vuosi={vuosi}/>
         </div>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
