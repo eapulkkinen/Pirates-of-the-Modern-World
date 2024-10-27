@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import L from 'leaflet';    //Leafletin perusominaisuudet
 import 'leaflet/dist/leaflet.css'; //Leaflet CSS
+import 'leaflet.markercluster'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
 const Map = ({ koordinaattiLista }) => {
     const [map, setMap] = useState(null);
+    const [markerClusterGroup, setMarkerClusterGroup] = useState(null);
     const [markers, setMarkers] = useState([]);
 
     useEffect(() => {     
@@ -17,18 +20,30 @@ const Map = ({ koordinaattiLista }) => {
 
         setMap(initMap);
 
+        const clusterGroup = L.markerClusterGroup({
+            maxClusterRadius: 80
+        });
+        setMarkerClusterGroup(clusterGroup);
+        initMap.addLayer(clusterGroup);
+
         return () => {
             initMap.remove();
         };
     }, []);
 
     useEffect(() => {
-        if (map) {
+        if (map && markerClusterGroup) {
+            markerClusterGroup.clearLayers();
+
             console.log("Koordinaattilista ", koordinaattiLista);
-            if (!koordinaattiLista.length > 0) {
-                markers.forEach(marker => map.removeLayer(marker));
+            if (!koordinaattiLista.length === 0) {
+                markerClusterGroup.clearLayers();
+                setMarkers([]);
+                return;
+                //markers.forEach(marker => map.removeLayer(marker));
             }
             else {
+                console.log(markers[0]);
                 const poistettavatMarkerit = markers.filter(marker => {
                     return !koordinaattiLista.some(koordinaatti => 
                         marker.getLatLng().lat === koordinaatti.latitude &&
@@ -86,7 +101,8 @@ const Map = ({ koordinaattiLista }) => {
                 return marker;
             });
             
-            console.log(newCoords);
+            markerClusterGroup.addLayers(newMarkers);
+            console.log("Uusien karttapisteiden koordinaatit: ", newCoords);
             setMarkers(newMarkers);
         }
 

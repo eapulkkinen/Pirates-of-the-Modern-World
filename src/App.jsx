@@ -217,9 +217,9 @@ import Modal from './components/Modal/Modal'
         setMaat(maaTaulukko)
       }
       else {
+        console.log("Ei chekattu, poistetaan:", maat)
         setMaat([]);
-        //kartalle piirretään tyhjäkoordinaatti lista eli ei mitään
-        setKoordinaatit([]); 
+        setKoordinaatit([]);
       }
     }
   
@@ -240,6 +240,8 @@ import Modal from './components/Modal/Modal'
      */
     const handleMaaPoisto = (poistettavaMaa) => {
       console.log('Maat ennen poistoa:', maat);
+      console.log('Poistettava maa', poistettavaMaa)
+      
       setMaat(maatEnnenPoistoa => {   //Valituiksi maiksi asetetaan alla tapahtuvan return
         const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa); //luodaan uusi taulukko, joka ei sisällä poistettavaa maata
         console.log('Maat poiston jälkeen:', uudetMaat);
@@ -248,9 +250,11 @@ import Modal from './components/Modal/Modal'
         let hyokkaykset;
         if (vuosi === "all") {
           hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
+          console.log('Vuosi : all')
         }
         else {
-          hyokkaykset = haeHyokkayksetVuodella(vuosi);
+          const maanHyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
+          hyokkaykset = suodataHyokkayksetVuodella(maanHyokkaykset);
         }
         const maaKoodi = uudetMaat.map(maa => countryCodeMap[maa]);
         const maanHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodi);
