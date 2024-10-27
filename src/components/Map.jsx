@@ -21,7 +21,7 @@ const Map = ({ koordinaattiLista }) => {
         setMap(initMap);
 
         const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: 80
+            maxClusterRadius: 60
         });
         setMarkerClusterGroup(clusterGroup);
         initMap.addLayer(clusterGroup);
