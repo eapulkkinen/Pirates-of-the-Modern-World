@@ -36,13 +36,13 @@ const Map = ({ koordinaattiLista }) => {
             markerClusterGroup.clearLayers();
 
             console.log("Koordinaattilista ", koordinaattiLista);
-            if (!koordinaattiLista.length === 0) {
+            if (koordinaattiLista.length === 0) {
                 markerClusterGroup.clearLayers();
                 setMarkers([]);
                 return;
                 //markers.forEach(marker => map.removeLayer(marker));
             }
-            else {
+            //else {
                 console.log(markers[0]);
                 const poistettavatMarkerit = markers.filter(marker => {
                     return !koordinaattiLista.some(koordinaatti => 
@@ -53,10 +53,10 @@ const Map = ({ koordinaattiLista }) => {
                     );
                 });
         
-                poistettavatMarkerit.forEach(marker => map.removeLayer(marker));
+            poistettavatMarkerit.forEach(marker => markerClusterGroup.removeLayer(marker));
                 console.log("Poistettavat ", poistettavatMarkerit);
-                setMarkers(prevMarkers => prevMarkers.filter(marker => poistettavatMarkerit.includes(marker)));
-            };
+            setMarkers(prevMarkers => prevMarkers.filter(marker => poistettavatMarkerit.includes(marker)));
+            //};
              
             const newCoords = koordinaattiLista.filter(koordinaatti =>
                 !markers.some(marker =>
@@ -68,7 +68,7 @@ const Map = ({ koordinaattiLista }) => {
             );
 
             const newMarkers = newCoords.map(koordinaatit => {
-                const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]).addTo(map);
+                const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]);
                 marker.date = koordinaatit.date;
                 marker.time = koordinaatit.time;
 
@@ -103,7 +103,7 @@ const Map = ({ koordinaattiLista }) => {
             
             markerClusterGroup.addLayers(newMarkers);
             console.log("Uusien karttapisteiden koordinaatit: ", newCoords);
-            setMarkers(newMarkers);
+            setMarkers(prevMarkers => [...prevMarkers, ...newMarkers]);
         }
 
         /** 
