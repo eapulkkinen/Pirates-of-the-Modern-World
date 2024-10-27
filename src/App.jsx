@@ -32,20 +32,22 @@ import Modal from './components/Modal/Modal'
      */
     useEffect(() => {
       if (maat.length > 0) {
-        const syotetytHyokkaykset = haeHyokkayksetVuodella();   //kaikki hyökkäykset jotka vastaa valittua vuotta
         const maakoodit = maat.map(maa => countryCodeMap[maa]);
-        const maidenHyokkaykset = suodataMaidenHyokkaykset(syotetytHyokkaykset, maakoodit);
-        console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, maidenHyokkaykset);
+        const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
+        //const maidenHyokkaykset = suodataMaidenHyokkaykset(syotetynVuodenHyokkaykset, maakoodit);
+        //const syotetynVuodenHyokkaykset = haeHyokkayksetVuodella(maidenHyokkaykset);   //kaikki hyökkäykset jotka vastaa valittua vuotta
+        //console.log(syotetytHyokkaykset);
+        const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
+        console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
 
         //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
-        const hyokkaykset = maidenHyokkaykset.map((hyokkays,index=0) => {
+        const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
           const nearestCountryCode = hyokkays.nearest_country;
           const eezCountryCode = hyokkays.eez_country;
 
-          //etsitään maan ja eez maan nimi country coden perusteella
-          const countryName = country_codes.find(maa => maa.country === nearestCountryCode).country_name;   
-          const eezCountryName = country_codes.find(maa => maa.country === eezCountryCode).country_name;
+          const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
+          const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
 
           return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
             ...hyokkays,
@@ -57,6 +59,18 @@ import Modal from './components/Modal/Modal'
         setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
       }
     }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
+
+
+    const palautaMaakoodiaVastaavaMaa = (countrycode) => {
+      if (countrycode !== "NA") {
+        const potentialCountryName = country_codes.find(maa => maa.country === countrycode);   
+        const countryName = potentialCountryName ? potentialCountryName.country_name : 'Unknown';
+        return countryName;
+      }
+      else {
+        return countrycode;
+      }
+    };
 
 
     /**
@@ -76,6 +90,37 @@ import Modal from './components/Modal/Modal'
     };
 
 
+    const haeMaidenHyokkaykset = (maakoodit) => {
+      const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
+        return maakoodit.includes(hyokkays.nearest_country);
+      });
+      return maidenHyokkaykset;
+    };
+
+    
+    /**
+     * 
+     * @param {*} loydetytHyokkaykset 
+     * @returns 
+     */
+    const suodataHyokkayksetVuodella = (loydetytHyokkaykset) => {
+      const valittuVuosi = vuosi;
+
+      if (valittuVuosi !== "all") {
+        const suodatetutHyokkaykset = loydetytHyokkaykset.filter(hyokkays => {
+          const hyokkaysVuosi = hyokkays.date.split('-')[0];
+          return vuosi === hyokkaysVuosi.toString(); 
+        })
+        console.log(`Kaikki vuonna ${vuosi} tapahtuneet hyökkäykset:`, suodatetutHyokkaykset);
+        
+        return suodatetutHyokkaykset;
+      }
+      else {
+        return loydetytHyokkaykset;
+      }
+    }
+
+
     /**
      * Suodattaa hyökkäykset maakoodien perusteella.
      * Valitsee siis hyökkäykset, jotka ovat tapahtuneet
@@ -83,14 +128,15 @@ import Modal from './components/Modal/Modal'
      * @param {*} hyokkaykset Taulukko hyökkäyksistä
      * @param {*} maakoodit Taulukko maakoodeista
      * @returns Taulukon valittujen maiden hyökkäyksistä ja hyökkäysten tiedoista
-     */
+     *
     const suodataMaidenHyokkaykset = (hyokkaykset, maakoodit) => {
       const maidenHyokkaykset = hyokkaykset.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country); 
       });
       return maidenHyokkaykset;
     };
-  
+    */
+
 
     /**
      * Käsittelee hakusanan ja hakupalkin logiikkaa.

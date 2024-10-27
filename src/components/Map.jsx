@@ -48,6 +48,7 @@ const Map = ({ koordinaattiLista }) => {
                     infobox.innerHTML = `   
                     Date: ${date}<br>
                     Country: ${country}<br>
+                    EEZ Country: ${eez}
                     Coordinates: ${coords}<br>
                     Distance from shore: ${shore_dist}<br>
                     `;
