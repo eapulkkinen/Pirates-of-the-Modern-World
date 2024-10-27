@@ -61,12 +61,24 @@ import Modal from './components/Modal/Modal'
     }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
 
 
+    /**
+     * Hakee countrycodea vastaavan maan nimen
+     * @param {string} countrycode maatunniste esim "FIN" 
+     * @returns maatunnistetta vastaavan maan nimen "FIN" ==> "Finland"
+     */
     const palautaMaakoodiaVastaavaMaa = (countrycode) => {
       if (countrycode !== "NA") {
         const potentialCountryName = country_codes.find(maa => maa.country === countrycode);   
+        //find palauttaa undefined => 'unknown' tai löydetyn maan 'Finland'
         const countryName = potentialCountryName ? potentialCountryName.country_name : 'Unknown';
         return countryName;
       }
+
+      /**
+       * Jos countrycode on NA, niin se palautetaan. Tämä siksi, että
+       * infoboxissa varmaan helppo suodattaa kaikki NA-arvoiset pois
+       * tai valita niille jokin muu menettely. 
+       */
       else {
         return countrycode;
       }
@@ -90,6 +102,12 @@ import Modal from './components/Modal/Modal'
     };
 
 
+    /**
+     * Hakee maakoodien mukaan kaikki hyökkäykset joissa nearest_country
+     * vastaa maakoodia.
+     * @param {*} maakoodit taulukko maakoodeista ["FIN","SWE",...]
+     * @returns Taulukon hyökkäyksistä, jotka vastaa maakoodeja
+     */
     const haeMaidenHyokkaykset = (maakoodit) => {
       const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country);
@@ -99,9 +117,9 @@ import Modal from './components/Modal/Modal'
 
     
     /**
-     * 
+     * Palauttaa hyökkäykset, jotka on tapahtunut tiettynä vuonna.
      * @param {*} loydetytHyokkaykset 
-     * @returns 
+     * @returns Taulukon hyökkäyksistä jotka on tapahtunut valittuna vuonna
      */
     const suodataHyokkayksetVuodella = (loydetytHyokkaykset) => {
       const valittuVuosi = vuosi;
@@ -184,13 +202,23 @@ import Modal from './components/Modal/Modal'
       console.log('Syötetyt maat:', newMaat);
     }
 
+
+    /**
+     * Kaikkien maiden checkboxin toiminta maiden taulukointiin
+     * ja näyttöön tapahtuu täällä. 
+     * Jos checkbox = checked, niin kaikki maat asetetaan valituiksi.
+     * Jos sen tila muuttuu checked => unchecked kaikki maat poistetaan
+     * valituista 
+     * @param {*} isChecked tieto onko checkboxin tilasta
+     */
     const handleToggleAllCountries = (isChecked) => {
       if (isChecked) {
         setMaat(maaTaulukko)
       }
       else {
         setMaat([]);
-        setKoordinaatit([]);
+        //kartalle piirretään tyhjäkoordinaatti lista eli ei mitään
+        setKoordinaatit([]); 
       }
     }
   

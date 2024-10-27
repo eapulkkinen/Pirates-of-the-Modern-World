@@ -3,9 +3,14 @@ import { useState } from 'react';
 
 // TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
 const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries }) => {
-    const [hakusana, setHakusana] = useState('');
-    const [showAll, setShowAll] = useState(false);
+    const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
+    const [showAll, setShowAll] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
+    /**
+     * Hakupalkin muutos otetaan talteen valueen ja
+     * se asetetaan hakusanaksi. 
+     * @param {*} e tapahtuma 
+     */
     const handleChange = (e) => {
         const value = e.target.value
         setHakusana(value);
@@ -13,29 +18,40 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries })
     };
 
 
+    /**
+     * Hakuehdotuksen valinnan käsittely
+     * @param {*} suggestion klikattu hakuehdotus 
+     */
     const handleSuggestionClick = (suggestion) => {
         onSearch(suggestion);
-        setHakusana('');
-        setSuggestions([]);
+        setHakusana('');    //hakusana kenttä tyhjennetään
+        setSuggestions([]); //ehdotukset pois
     };
     
 
+    /**
+     * Haun käsittely, kun painetaan Search.
+     */
     const handleSearch = () => {
         onSearch(hakusana);
         setHakusana('');
     };
 
 
+    /**
+     * Checkboxin käsittely
+     * @param {*} e checkbox tilanvaihdos-tapahtuma 
+     */
     const handleCheckboxChange = (e) => {
         const isChecked = e.target.checked;
         setShowAll(isChecked);
-        onToggleAllCountries(isChecked);
+        onToggleAllCountries(isChecked);    //Pääohjelmaan tieto tilasta
 
+        //Jos checkbox chekattu
         if (isChecked) {
-            setSuggestions([]);
-        }
-        
-    }
+            setSuggestions([]); 
+        }  
+    };
 
 
     return (

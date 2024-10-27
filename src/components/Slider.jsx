@@ -6,7 +6,12 @@ const Slider = ({ onChange, vuosi }) => {
   const [showAll, setShowAll] = useState(false);
   const [previousSliderValue, setPreviousSliderValue] = useState(vuosi);
 
+  /**
+   * Sliderin muutoksen käsittely
+   * @param {*} e tapahtuma 
+   */
   const handleSliderChange = (e) => {
+    //Tarkistetaan onko kaikki vuodet valittuna
     if (!showAll) {
       onChange(showAll ? "all" : e.target.value);
       setPreviousSliderValue(e.target.value);
