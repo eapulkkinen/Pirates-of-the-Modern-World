@@ -49,6 +49,8 @@ const Map = ({ koordinaattiLista }) => {
                 return;
             }
 
+            //tarkastetaan löytyykö klikattu marker vielä suodatusvalinnoista.
+            //jos ei, infobox tyhjennetään
             if (selectedMarker && !koordinaattiLista.some(
                 koord => 
                     koord.latitude === selectedMarker.latitude &&

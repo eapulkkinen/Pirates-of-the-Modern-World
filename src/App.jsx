@@ -37,7 +37,6 @@ import Modal from './components/Modal/Modal'
         const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
         //const maidenHyokkaykset = suodataMaidenHyokkaykset(syotetynVuodenHyokkaykset, maakoodit);
         //const syotetynVuodenHyokkaykset = haeHyokkayksetVuodella(maidenHyokkaykset);   //kaikki hyökkäykset jotka vastaa valittua vuotta
-        //console.log(syotetytHyokkaykset);
         const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
         console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
