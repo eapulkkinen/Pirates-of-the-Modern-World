@@ -6,21 +6,23 @@ const Modal = (props) => {
     const [auki, setAuki] = useState(false);
 
     const toggleAuki = () => {
-        setAuki(!auki);
+        setAuki(!auki);             // vaihtaa auki arvoa true/false
     }
 
     return (
         <>
         <button 
         onClick={toggleAuki}
-        className='btn-modal'>More info</button>
+        className='modalNappi'>Click for more info on chosen country</button>
 
-        {auki && (
+        
+        {auki && (                      // jos auki = true, niin näytetään modal komponentti
             <div className='modal'>
             <div 
             onClick={toggleAuki}
-            className='overlay'></div>
-            <div className='modal-content'>
+            className='overlay'></div>  
+
+            <div className='modalSisalto'>
                 <h2>Vuosi on {props.vuosi}</h2>
                 <p>
                     Tähän jotain kuvaajia
@@ -28,7 +30,7 @@ const Modal = (props) => {
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptatibus animi officia tempore quaerat deleniti quo aspernatur nihil, incidunt nostrum culpa magni quasi similique, officiis, aliquam illo? Modi, ut quas.
                 </p>
                 <button
-                className='close-modal'
+                className='modalSulkuNappi'
                 onClick={toggleAuki}
                 >CLOSE</button>
             </div>

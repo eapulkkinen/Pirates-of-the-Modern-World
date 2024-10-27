@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
+import Header from './components/Header';
 import Footer from './components/Footer';
 import Search from './components/Search';
 import country_codes from './data/country_codes';
@@ -244,7 +245,13 @@ import Modal from './components/Modal/Modal'
         console.log('Maat poiston jälkeen:', uudetMaat);
 
         // poistettujen maiden koordinaattien poisto kartalta
-        const hyokkaykset = haeHyokkayksetVuodella();
+        let hyokkaykset;
+        if (vuosi === "all") {
+          hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
+        }
+        else {
+          hyokkaykset = haeHyokkayksetVuodella(vuosi);
+        }
         const maaKoodi = uudetMaat.map(maa => countryCodeMap[maa]);
         const maanHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodi);
 
@@ -262,38 +269,10 @@ import Modal from './components/Modal/Modal'
       });
     }
 
-    const chartRef = useRef(null); // asetetaan viite canvas elementtiin
-    useEffect(() => {
-      const ctx = chartRef.current.getContext("2d");
-      const gdp = country_indicators.map(i => i.GDP); // luodaan datasta taulukot
-      const unemployment = country_indicators.map(i => i.unemployment_rate);
-
-      // määritellään taulukon tiedot
-      const testi = new Chart (ctx, {
-        type: "line", // taulukon tyyppi "bar", "pie" jne myös mahdollisia
-        data: {
-            labels: gdp, // x-akselin data
-            datasets: [{
-                data: unemployment // y-akselin data
-            }]
-
-        }
-      });
-
-      return () => {
-        testi.destroy(); // cleanup
-      };
-
-    });
-    
-
-  
-
     return (
       <>
-        <div id="header">Main view 
-          <Modal vuosi={vuosi}/>
-        </div>
+        <Header vuosi={vuosi}/>
+        <Modal vuosi={vuosi}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
             <Search
@@ -339,7 +318,6 @@ import Modal from './components/Modal/Modal'
         </div>
         <Slider onChange={handleSlider} vuosi={vuosi}/>
         <Footer />
-        <canvas ref={chartRef} width="400" height="200"></canvas>
       </>
     );
   }
