@@ -189,7 +189,8 @@ import Modal from './components/Modal/Modal'
         setMaat(maaTaulukko)
       }
       else {
-        setMaat([])
+        setMaat([]);
+        setKoordinaatit([]);
       }
     }
   
