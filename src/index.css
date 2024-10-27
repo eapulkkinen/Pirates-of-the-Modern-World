@@ -29,3 +29,23 @@ div {
 #header {
     width: 100vw;
 }
+
+/*Jos maita on valittu monta tulee scroll bar*/
+.valitutMaat {
+    overflow: scroll;
+    height: 55vh;
+    width: 20vw;
+    
+}
+
+.hyokkayslkm {
+    height: 6vh;
+    width: 20vw;
+}
+
+/*Jos ehdotuksia on liikaa tulee scroll bar*/
+.searchDiv {
+    overflow: scroll;
+    width: 20vw;
+    height: 7vh;
+}

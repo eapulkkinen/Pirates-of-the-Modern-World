@@ -8,8 +8,6 @@ import Footer from './components/Footer';
 import Search from './components/Search';
 import country_codes from './data/country_codes';
 import pirate_attacks from './data/pirate_attacks';
-import country_indicators from './data/country_indicators';
-import {Chart} from 'chart.js/auto';
 import Modal from './components/Modal/Modal'
 
 
@@ -164,9 +162,22 @@ import Modal from './components/Modal/Modal'
      * @param {*} hakusana Hakuun syötetty merkkijono
      */
     const handleHaku = (hakusana) => {
+      const hakuDiv = document.getElementById("searchdiv"); // haun ja valittujen maiden div joilla säädentään ulkonäköä
+      const valitutMaatDiv = document.getElementById("valitutmaat");
+
       setHaku(hakusana);
 
       console.log("Haettavat maat:", hakusana)
+
+      // Jos haku on käynnissä muutetaan laatiokoiden kokoa
+      // TODO korjaa että toimii myös kun ehdotusta klikataan
+      if (hakusana.length != 0) {
+        hakuDiv.style.height = "31vh";
+        valitutMaatDiv.style.height = "31vh";
+      } else {
+        hakuDiv.style.height = "7vh";
+        valitutMaatDiv.style.height = "55vh";
+      }
 
       const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
@@ -200,6 +211,7 @@ import Modal from './components/Modal/Modal'
         setSuggestions([]);
       }
   
+      
       console.log('Syötetyt maat:', newMaat);
     }
 
@@ -279,13 +291,15 @@ import Modal from './components/Modal/Modal'
         <Modal vuosi={vuosi}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
+            <div id="searchdiv" className='searchDiv'>
             <Search
               onSearch={handleHaku} 
               suggestions={suggestions} 
               setSuggestions={setSuggestions} 
               onToggleAllCountries={handleToggleAllCountries}
             />
-            <div id="valitutmaat">
+            </div>
+            <div id="valitutmaat" className="valitutMaat">
               {maat.length > 0 && (
                 <ul>
                   {
@@ -302,7 +316,7 @@ import Modal from './components/Modal/Modal'
                 </ul>
               )}
             </div>
-            <div id="hyokkayslkm">
+            <div id="hyokkayslkm" className='hyokkayslkm'>
               {
                 maat.length > 0 && (
                   <p>
