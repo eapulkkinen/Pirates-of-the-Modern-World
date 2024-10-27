@@ -13,7 +13,7 @@ const Modal = (props) => {
         <>
         <button 
         onClick={toggleAuki}
-        className='btn-modal'>More info</button>
+        className='btn-modal'>Click for more info on chosen country</button>
 
         {auki && (
             <div className='modal'>

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
+import Header from './components/Header';
 import Footer from './components/Footer';
 import Search from './components/Search';
 import country_codes from './data/country_codes';
@@ -289,9 +290,8 @@ import Modal from './components/Modal/Modal'
 
     return (
       <>
-        <div id="header">Main view 
-          <Modal vuosi={vuosi}/>
-        </div>
+        <Header vuosi={vuosi}/>
+        <Modal vuosi={vuosi}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
             <Search
