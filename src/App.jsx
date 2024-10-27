@@ -251,6 +251,8 @@ import Modal from './components/Modal/Modal'
         const hyokkaystenKoordinaatit = maanHyokkaykset.map(hyokkays => ({
           longitude: hyokkays.longitude,
           latitude: hyokkays.latitude,
+          time: hyokkays.time,
+          date: hyokkays.date,
           countrycode: hyokkays.nearest_country
         }));
 
