@@ -17,7 +17,7 @@ const Header = () => {
      * @returns true jos ollaan mainissa, false jos ei olla
      */
     const onkoMain = () => {
-        if ( window.location.href.split("/")[3] == "index.html") { return true; }
+        if ( window.location.href.split("/")[3] == "index.html" || window.location.href.split("/")[3] == "") { return true; }
         return false;
     }
 
