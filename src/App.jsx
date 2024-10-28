@@ -169,8 +169,8 @@ import Modal from './components/Modal/Modal'
       // Jos haku on käynnissä muutetaan laatiokoiden kokoa
       // TODO korjaa että toimii myös kun ehdotusta klikataan
       if (hakusana.length != 0) {
-        hakuDiv.style.height = "31vh";
-        valitutMaatDiv.style.height = "31vh";
+        hakuDiv.style.height = "41vh";
+        valitutMaatDiv.style.height = "21vh";
       } else {
         hakuDiv.style.height = "7vh";
         valitutMaatDiv.style.height = "55vh";
