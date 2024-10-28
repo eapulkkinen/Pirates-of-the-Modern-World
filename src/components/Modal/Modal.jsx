@@ -1,5 +1,7 @@
 import {useState} from 'react';
 import './Modal.css';
+import '../Country_Chart';
+import Country_Chart from '../Country_Chart';
 
 const Modal = (props) => {
 
@@ -24,11 +26,9 @@ const Modal = (props) => {
 
             <div className='modalSisalto'>
                 <h2>Vuosi on {props.vuosi}</h2>
-                <p>
-                    Tähän jotain kuvaajia
-                    <br></br>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit voluptatibus animi officia tempore quaerat deleniti quo aspernatur nihil, incidunt nostrum culpa magni quasi similique, officiis, aliquam illo? Modi, ut quas.
-                </p>
+                <>
+                <Country_Chart />
+                </>
                 <button
                 className='modalSulkuNappi'
                 onClick={toggleAuki}
