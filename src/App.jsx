@@ -283,7 +283,7 @@ import Modal from './components/Modal/Modal'
     return (
       <>
         <Header vuosi={vuosi}/>
-        <Modal vuosi={vuosi}/>
+        <Modal maat={maat}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
             <div id="searchdiv" className='searchDiv'>

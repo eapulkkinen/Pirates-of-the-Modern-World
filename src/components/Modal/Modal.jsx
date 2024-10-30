@@ -1,4 +1,6 @@
 import {useState} from 'react';
+import country_codes from '../../data/country_codes';
+import country_indicators from '../../data/country_indicators';
 import './Modal.css';
 import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
@@ -25,7 +27,7 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
-                <h2>Vuosi on {props.vuosi}</h2>
+                <p>maat: {props.maat} </p>
                 <>
                 <Country_Chart />
                 </>
