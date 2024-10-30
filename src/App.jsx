@@ -19,7 +19,7 @@ import Modal from './components/Modal/Modal'
     const [suggestions, setSuggestions] = useState([]);
 
     const maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
-
+    var valitsemattomatMaat = maaTaulukko;
     const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
       accumulator[country_name] = country;
       return accumulator;
@@ -36,7 +36,6 @@ import Modal from './components/Modal/Modal'
         const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
         console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
-
         //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
         const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
           const nearestCountryCode = hyokkays.nearest_country;
@@ -169,8 +168,8 @@ import Modal from './components/Modal/Modal'
       // Jos haku on käynnissä muutetaan laatiokoiden kokoa
       // TODO korjaa että toimii myös kun ehdotusta klikataan
       if (hakusana.length != 0) {
-        hakuDiv.style.height = "31vh";
-        valitutMaatDiv.style.height = "31vh";
+        hakuDiv.style.height = "41vh";
+        valitutMaatDiv.style.height = "21vh";
       } else {
         hakuDiv.style.height = "7vh";
         valitutMaatDiv.style.height = "55vh";
@@ -194,7 +193,8 @@ import Modal from './components/Modal/Modal'
         
         //jos syöte ei ole vain tyhjää eli esim "Suomi +     " vaan vaikka "Suomi +     Ruotsi" niin mennään if sisään
         if (viimeinenSyotettyMaa.trim() !== '') {
-          const filteredSuggestions = maaTaulukko.filter(maa => 
+            if (maat.length > 0) valitsemattomatMaat = valitsemattomatMaat.filter(maa => !maat.includes(maa)); //kun maita on valittu, valitut poistetaan ehdotuksista
+          const filteredSuggestions = valitsemattomatMaat.filter(maa => 
             maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
           );
           setSuggestions(filteredSuggestions);
@@ -207,8 +207,6 @@ import Modal from './components/Modal/Modal'
       } else {
         setSuggestions([]);
       }
-  
-      
       console.log('Syötetyt maat:', newMaat);
     }
 
