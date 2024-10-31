@@ -45,7 +45,7 @@ const Header = () => {
 
     return (
         <div>
-            <h1>Pirate App 🏴‍☠️</h1>
+            <h1>Pirates of the Modern World 🏴‍☠️</h1>
             <button type='submit' onClick={toggleMain} id="mainNappi">Map view</button>
             <button type='submit' onClick={toggleGraphs} id='tokaNappi'>Additional graphs</button>
             <button onClick={toggleHelp} className='modalNappi'>Help</button>
