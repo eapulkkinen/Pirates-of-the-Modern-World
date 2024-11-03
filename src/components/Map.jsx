@@ -36,10 +36,9 @@ const Map = ({ koordinaattiLista }) => {
 
     useEffect(() => {
         if (map && markerClusterGroup) {
-           console.log("Koordinaattilista Map.jsx:", koordinaattiLista);
-
-            //karttapisteiden päivitys
-            if (koordinaattiLista.length === 0) {   //jos suodatuksilla löytyy 0 maata
+            //Jos suodatuksilla ei löydy yhtään hyökkäystä, poistetaan karttapisteet varmuuden vuoksi
+            //ja markers, valittumarker sekä infobox tyhjennetään.
+            if (koordinaattiLista.length === 0) {  
                 markerClusterGroup.clearLayers();
                 document.getElementById('infobox').innerHTML = "";
                 setMarkers([]);
@@ -47,8 +46,9 @@ const Map = ({ koordinaattiLista }) => {
                 return;
             }
 
-            //tarkastetaan löytyykö klikattu marker vielä suodatusvalinnoista.
-            //jos ei, infobox tyhjennetään
+            //Tarkastetaan löytyykö klikattu marker vielä suodatusvalinnoilla
+            //löydetyistä hyökkäyksistä, jos ei, infobox tyhjennetään ja
+            //valittu marker nulliksi.
             if (selectedMarker !== null  && !koordinaattiLista.some(
                 koord => 
                     koord.latitude === selectedMarker.latitude &&
@@ -57,11 +57,26 @@ const Map = ({ koordinaattiLista }) => {
                     koord.time === selectedMarker.time
                     )
                 ) {
-                    console.log("map 54 rivi if")
                     document.getElementById('infobox').innerHTML = "";
                     setSelectedMarker(null)
-                }
+            }
 
+            
+            //Etsitään markersien poistettavia hyökkäyksiä, joita ei nykyisessä
+            //koordinaattilistassa (edellisillä suodatuksilla löydetyt hyökkäykset).
+            const poistettavatMarkerit = markers.filter(marker => {
+                return !koordinaattiLista.some(koords => 
+                    marker.getLatLng().lat === koords.latitude &&
+                    marker.getLatLng().lng === koords.longitude &&
+                    marker.date === koords.date &&
+                    marker.time === koords.time
+                );
+            });
+
+            //poistettavat markerit pois kartalta
+            poistettavatMarkerit.forEach(marker => markerClusterGroup.removeLayer(marker));
+
+            //Koordinaattilistasta löytyvät markerit talteen
             const validMarkers = markers.filter(marker => {
                 return koordinaattiLista.some(koords => 
                     marker.getLatLng().lat === koords.latitude &&
@@ -71,16 +86,7 @@ const Map = ({ koordinaattiLista }) => {
                 );
             });
 
-            console.log("valid markers", validMarkers)
-            console.log(markers)
-
-            markers.forEach(marker => {
-                if (!validMarkers.includes(marker)) {
-                    markerClusterGroup.removeLayer(marker);
-                }
-            })
-            
-            //luodaan suodatusten mukaiset koordinaatit ja niiden tiedot taulukoksi
+            //luodaan uusien suodatusten mukaiset koordinaatit ja niiden tiedot taulukoksi
             const newCoords = koordinaattiLista.filter(koordinaatti =>
                 !markers.some(marker =>
                     marker.getLatLng().lat === koordinaatti.latitude &&
@@ -90,9 +96,7 @@ const Map = ({ koordinaattiLista }) => {
                 )
             );
 
-            console.log("new coords eli jotka ei mapissa", newCoords)
-
-            //luodaan koordinaateista markerit ja laitetaan ne taulukkoon
+            //luodaan uusista koordinaateista markerit ja laitetaan ne taulukkoon
             const newMarkers = newCoords.map(koordinaatit => {
                 const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]);
                 marker.date = koordinaatit.date;
@@ -124,20 +128,15 @@ const Map = ({ koordinaattiLista }) => {
 
                     setSelectedMarker(marker);
                 });
-                
+
+                markerClusterGroup.addLayers(marker)
                 return marker;
             });
-
-            if (newMarkers.length > 0) {
-                markerClusterGroup.addLayers(newMarkers)
-            }
             
-            console.log("Uusien karttapisteiden koordinaatit: ", newCoords)
-            
+            //Vanhojen validien ja uusien karttapisteiden "merge" palautettavaksi taulukoksi
             const allMarkers = [...validMarkers, ...newMarkers];
 
             setMarkers(allMarkers);
-            console.log("setMarkers:", [[...validMarkers, ...newMarkers]])
         }
     }, [map, koordinaattiLista]);
 
