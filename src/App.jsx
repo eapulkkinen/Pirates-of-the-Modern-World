@@ -283,7 +283,6 @@ import Modal from './components/Modal/Modal'
     return (
       <>
         <Header vuosi={vuosi}/>
-        <Modal vuosi={vuosi}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
             <div id="searchdiv" className='searchDiv'>
@@ -325,6 +324,7 @@ import Modal from './components/Modal/Modal'
             <Map koordinaattiLista={koordinaattiLista} />
           </div>
           <div id="oikeadiv" className="sivudiv">
+            <Modal vuosi={vuosi}/>
             <p>Event information</p>
             <p id="infobox"></p>
           </div>

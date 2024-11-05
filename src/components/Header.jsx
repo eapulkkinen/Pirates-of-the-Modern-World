@@ -57,6 +57,8 @@ const Header = () => {
                 <p>The app can show you information regarding pirate attacks between the years 1993 and 2020</p>
                 <p>Choose a country you want info on by searching for it, or just choose "Show every country" to see all countries</p>
                 <p>Choose the year with the slider below the map, or just choose "Show all" to see all years</p>
+                <p>Click "More information on chosen countries" to see a graph of chosen countries's attacks</p>
+                <p>Click a marker on the map for more information on the attack</p>
                 <button
                 className='modalSulkuNappi'
                 onClick={toggleHelp}

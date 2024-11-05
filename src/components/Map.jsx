@@ -103,29 +103,54 @@ const Map = ({ koordinaattiLista }) => {
                 marker.time = koordinaatit.time;
 
                 marker.addEventListener("click", (e) => { // jos markeria klikataan suoritetaan tämä
-                    const infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
+                    let infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
+                   
+                    // Muutetaan päiväys pv.kk.vuosi muotoon
                     const date = koordinaatit.date;
-                    const time = koordinaatit.time;
-                    const coords = `${koordinaatit.latitude}, ${koordinaatit.longitude}`;
-                    const location_desc = koordinaatit.location_description;
-                    const country = koordinaatit.countryname;
-                    const eez = koordinaatit.eezcountryname;
-                    const shore_dist = koordinaatit.shore_distance.toFixed(2);
-                    const shorecoords = `${koordinaatit.shore_latitude}, ${koordinaatit.shore_longitude}`;
-                    const attack_desc = koordinaatit.attack_description;
-                    const vessel = koordinaatit.vessel_name;
-                    const vesseltype = koordinaatit.vessel_type;
-                    const vesselstatus = koordinaatit.vessel_status;
+                    const pvm = date.split('-');
+                    let dateFixed = pvm[2] + "." + pvm[1] + "." + pvm[0];
 
-                    //tässä syötetään mitä tekstiä halutaan näyttää
-                    infobox.innerHTML = `   
-                    Date: ${date}<br>
-                    Country: ${country}<br>
-                    EEZ Country: ${eez}
-                    Coordinates: ${coords}<br>
-                    Distance from shore: ${shore_dist}<br>
-                    `;
+                    // Luodaan olio jolla on tapahtuman tiedot
+                    let tiedot = {
+                        date: dateFixed,
+                        time: koordinaatit.time,
+                        coordinates: `${koordinaatit.latitude}, ${koordinaatit.longitude}`,
+                        location_description: koordinaatit.location_description,
+                        nearest_country: koordinaatit.countryname,
+                        EEZ_country: koordinaatit.eezcountryname,
+                        distance_from_shore: koordinaatit.shore_distance.toFixed(2) + " kilometers",
+                        //shore_coordinates = `${koordinaatit.shore_latitude}, ${koordinaatit.shore_longitude}`; // Ei tarpeellinen
+                        attack_type: koordinaatit.attack_type,
+                        description_of_attack: koordinaatit.attack_description,
+                        vessel_name: koordinaatit.vessel_name,
+                        vessel_type: koordinaatit.vessel_type,
+                        vessel_status: koordinaatit.vessel_status
+                    };
 
+                    // Tyhjennetään infobox jos siinä on tietoa
+                    if (infobox.innerHTML.length > 0) { infobox.innerHTML = ``;}
+
+                    // Käydään tiedot olion jokainen ominaisuus läpi
+                    // Jos ominaisuudessa on tietoa, lisätään se infobox elementtiin
+                    let keys = Object.keys(tiedot);
+                    for (let i = 0; i < keys.length; i++) {
+                        if (tiedot[keys[i]] != "NA") { // Käsitellään ominaisuus vain jos se ei ole "NA"
+                            // Luodaan titteli joka näytetään infoboksissa
+                            let titles = keys[i].split('_');
+                            let title = "";
+                            for (let j in titles) {
+                                if (j == 0) {
+                                    // Muutetaan tittelin ensimmäinen kirjain isoksi
+                                    title = titles[j].charAt(0).toUpperCase() + titles[j].slice(1);
+                                } else {
+                                    title += " " + titles[j];
+                                }
+                            }
+                            // Lisätään ominaisuus infobox elementtiin 
+                            infobox.innerHTML += `${title}: ${tiedot[keys[i]]}<br>`
+                        }                        
+                    }
+        
                     setSelectedMarker(marker);
                 });
 
