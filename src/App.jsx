@@ -31,8 +31,11 @@ import Modal from './components/Modal/Modal'
      */
     useEffect(() => {
       if (maat.length > 0) {
+        console.log("Kaikkien hyökkäysten määrä datassa: ", pirate_attacks.length)
         const maakoodit = maat.map(maa => countryCodeMap[maa]);
         const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
+        const eiMaidenHyokkaykset = negHaeMaidenHyokkaykset(maakoodit); //poista
+        console.log("ei maiden hyökkäykset", eiMaidenHyokkaykset); //poista
         const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
         console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
         console.log('Kaikki suodatettavat maat:', maat);
@@ -105,10 +108,20 @@ import Modal from './components/Modal/Modal'
      */
     const haeMaidenHyokkaykset = (maakoodit) => {
       const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
-        return maakoodit.includes(hyokkays.nearest_country);
+        return maakoodit.includes(hyokkays.nearest_country) || maakoodit.includes(hyokkays.eez_country);
       });
       return maidenHyokkaykset;
     };
+
+
+    //poista tästä
+    const negHaeMaidenHyokkaykset = (maakoodit) => {
+      const eiMaidenHyokkaykset = pirate_attacks.filter(hyokkays => {
+        return !maakoodit.includes(hyokkays.nearest_country) && !maakoodit.includes(hyokkays.eez_country);
+      })
+      return eiMaidenHyokkaykset;
+    }
+    //tähän
 
     
     /**

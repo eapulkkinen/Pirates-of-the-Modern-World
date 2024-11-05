@@ -165,6 +165,11 @@
     "country_name": "Canada"
   },
   {
+    "country": "CCK",
+    "region": "Austalia and Oceania",
+    "country_name": "Cocos (Keeling) Islands"
+  },
+  {
     "country": "CHE",
     "region": "Europe & Central Asia",
     "country_name": "Switzerland"
@@ -448,6 +453,11 @@
     "country": "IND",
     "region": "South Asia",
     "country_name": "India"
+  },
+  {
+    "country": "INT",
+    "region": "Global",
+    "country_name": "International waters"
   },
   {
     "country": "IRL",
@@ -993,6 +1003,11 @@
     "country": "TUV",
     "region": "East Asia & Pacific",
     "country_name": "Tuvalu"
+  },
+  {
+    "country": "TWN",
+    "region": "East Asia",
+    "country_name": "Taiwan"
   },
   {
     "country": "TZA",
