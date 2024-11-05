@@ -167,14 +167,18 @@ import Modal from './components/Modal/Modal'
 
       // Jos haku on käynnissä muutetaan laatiokoiden kokoa
       // TODO korjaa että toimii myös kun ehdotusta klikataan
-      if (hakusana.length != 0) {
-        hakuDiv.style.height = "41vh";
-        valitutMaatDiv.style.height = "21vh";
-      } else {
-        hakuDiv.style.height = "7vh";
-        valitutMaatDiv.style.height = "55vh";
+      // TODO Säädä numerot paremmiksi
+      const asetaHakuKoko = (taulukko) => {
+        if (taulukko.length == 0) {
+          hakuDiv.style.height = "8.8%";
+          valitutMaatDiv.style.height = "80%";
+        } else {
+          let x = 8.8 + taulukko.length * 5;
+          if (x > 58.8) { x = 58.8; }
+          hakuDiv.style.height =  x + "%";
+          valitutMaatDiv.style.height = 88.8 - x + "%";
+        }
       }
-
       const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
       const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
@@ -198,14 +202,17 @@ import Modal from './components/Modal/Modal'
             maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
           );
           setSuggestions(filteredSuggestions);
+          asetaHakuKoko(filteredSuggestions);
         }
         //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
         else {
           setSuggestions([]);
+          asetaHakuKoko([]);
         }
         // Jos haussa ei muuta kuin tyhjää
       } else {
         setSuggestions([]);
+        asetaHakuKoko([]);
       }
       console.log('Syötetyt maat:', newMaat);
     }
@@ -283,10 +290,9 @@ import Modal from './components/Modal/Modal'
     return (
       <>
         <Header vuosi={vuosi}/>
-        <Modal maat={maat}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
-            <div id="searchdiv" className='searchDiv'>
+            <div id="searchdiv" className='searchdiv'>
             <Search
               onSearch={handleHaku} 
               suggestions={suggestions} 
@@ -325,8 +331,11 @@ import Modal from './components/Modal/Modal'
             <Map koordinaattiLista={koordinaattiLista} />
           </div>
           <div id="oikeadiv" className="sivudiv">
-            <p>Event information</p>
-            <p id="infobox"></p>
+            <div className="oikeadiv">
+              <Modal vuosi={vuosi}/>
+              <p>Event information</p>
+              <p id="infobox"></p>
+            </div>
           </div>
         </div>
         <Slider onChange={handleSlider} vuosi={vuosi}/>
