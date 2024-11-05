@@ -105,7 +105,7 @@ import Modal from './components/Modal/Modal'
      */
     const haeMaidenHyokkaykset = (maakoodit) => {
       const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
-        return maakoodit.includes(hyokkays.nearest_country);
+        return maakoodit.includes(hyokkays.nearest_country) || maakoodit.includes(hyokkays.eez_country);
       });
       return maidenHyokkaykset;
     };
