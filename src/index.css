@@ -33,19 +33,24 @@ div {
 /*Jos maita on valittu monta tulee scroll bar*/
 .valitutMaat {
     overflow: scroll;
-    height: 55vh;
-    width: 20vw;
+    height: 80%;
+    width: 100%;
     
 }
 
 .hyokkayslkm {
-    height: 6vh;
-    width: 20vw;
+    height: 10.4%;
+    width: 100%;
 }
 
 /*Jos ehdotuksia on liikaa tulee scroll bar*/
-.searchDiv {
+.searchdiv {
     overflow: scroll;
-    width: 20vw;
-    height: 7vh;
+    width: 100%;
+    height: 8.8%;
+}
+
+.oikeadiv {
+    overflow: scroll;
+    height: 100%;
 }
