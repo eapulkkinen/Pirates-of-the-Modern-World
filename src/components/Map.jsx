@@ -104,7 +104,8 @@ const Map = ({ koordinaattiLista }) => {
 
                 marker.addEventListener("click", (e) => { // jos markeria klikataan suoritetaan tämä
                     let infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
-                   
+                    let googleLinkki = 'https://google.com/maps/place/' + koordinaatit.latitude + ',' + koordinaatit.longitude; //Muodostetaan linkki google mapsiin samoilla koordinaateilla
+                    marker.bindPopup('<b>View on Google Maps</b><br><a href="' + googleLinkki + '" target="_blank">Click here</a>'); //Klikkaamalla markeria saadaan popup, jossa aiemmin mainittu linkki
                     // Muutetaan päiväys pv.kk.vuosi muotoon
                     const date = koordinaatit.date;
                     const pvm = date.split('-');
