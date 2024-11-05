@@ -2,26 +2,37 @@ import { useEffect, useState, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
 import pirate_attacks from '../data/pirate_attacks';
 import country_indicators from '../data/country_indicators';
+import country_codes from '../data/country_codes';
 
 
 
-const Country_Chart = () => {
+
+
+const Country_Chart = (props) => {
 
 
     const chartRef = useRef(null); // asetetaan viite canvas elementtiin
     useEffect(() => {
       const ctx = chartRef.current.getContext("2d");
-      const gdp = country_indicators.map(i => i.GDP); // luodaan datasta taulukot
-      const unemployment = country_indicators.map(i => i.unemployment_rate);
+      const vuosi = props.indikaattorit.map(i => i.year); // luodaan datasta taulukot
+      const unemployment = props.indikaattorit.map(i => i.unemployment_rate);
+      const attacks = props.indikaattorit.map(i => i.attacks);
 
       // määritellään taulukon tiedot
       const testi = new Chart (ctx, {
-        type: "line", // taulukon tyyppi "bar", "pie" jne myös mahdollisia
+        type: "bar", // taulukon tyyppi "bar", "pie" jne myös mahdollisia
         data: {
-            labels: gdp, // x-akselin data
-            datasets: [{
-                data: unemployment // y-akselin data
-            }]
+            labels: vuosi, // x-akselin data
+            datasets: [ // y-akselin data
+              {
+                label: 'Attacks',
+                data: attacks 
+              },
+              {
+                label: 'Unemployment rate',
+                data: unemployment
+              }
+          ]
 
         }
       });

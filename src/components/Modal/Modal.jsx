@@ -13,6 +13,30 @@ const Modal = (props) => {
         setAuki(!auki);             // vaihtaa auki arvoa true/false
     }
 
+    /**
+    * Hakee maan nimeä vastaavan maakoodin
+    * @param {string}  nimi maan nimi
+    * @returns maan nimeä vastaavan maatunnisteen "Finland" ==> "FIN"
+    */
+    const palautaNimeaVastaavaKoodi = (nimi) => {
+          const potentialCountryCode = country_codes.find(koodi => koodi.country_name === nimi);   
+          //find palauttaa undefined => 'unknown' tai löydetyn koodin 'FIN'
+          const countryCode = potentialCountryCode ? potentialCountryCode.country : 'Unknown';
+          return countryCode;
+        
+        };
+
+    const haeMaanIndikaattorit = (maakoodi) => {
+        const maanIndikaattorit = country_indicators.filter(indikaattori => {
+            return maakoodi.includes(indikaattori.country);
+        })
+        return maanIndikaattorit;
+    }
+
+    const testiData = haeMaanIndikaattorit('SOM');
+
+    
+
     return (
         <>
         <button 
@@ -27,9 +51,9 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
-                <p>maat: {props.maat} </p>
+                <p> {palautaNimeaVastaavaKoodi('Somalia')} </p>
                 <>
-                <Country_Chart />
+                <Country_Chart indikaattorit={testiData}/>
                 </>
                 <button
                 className='modalSulkuNappi'
