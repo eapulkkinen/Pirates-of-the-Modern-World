@@ -29,6 +29,7 @@ import Modal from './components/Modal/Modal'
      * Kartan päivitys.
      * Tapahtuu AINA kun valitut maat tai vuosi muuttuu.
      */
+    // Tämä tapahtuu jostain syystä joka input
     useEffect(() => {
       if (maat.length > 0) {
         const maakoodit = maat.map(maa => countryCodeMap[maa]);
@@ -173,6 +174,7 @@ import Modal from './components/Modal/Modal'
   
       const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
   
+      // Tämä vissiin aiheuttaa lagia
       setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
 
 
