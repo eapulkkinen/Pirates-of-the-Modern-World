@@ -46,7 +46,7 @@ const Country_Chart = (props) => {
     return (
     <>
         
-        <canvas ref={chartRef} width="170" height="90"></canvas>
+        <canvas ref={chartRef} width="170" height="50"></canvas>
         
     </>
     );

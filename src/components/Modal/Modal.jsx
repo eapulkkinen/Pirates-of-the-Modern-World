@@ -4,6 +4,7 @@ import country_indicators from '../../data/country_indicators';
 import './Modal.css';
 import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
+import Dropdown from '../Dropdown';
 
 const Modal = (props) => {
 
@@ -34,6 +35,7 @@ const Modal = (props) => {
     }
 
     const testiData = haeMaanIndikaattorit('SOM');
+    console.log(props.maat);
 
     
 
@@ -51,6 +53,7 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
+                <Dropdown content={props.maat}/>
                 <p> {palautaNimeaVastaavaKoodi('Somalia')} </p>
                 <>
                 <Country_Chart indikaattorit={testiData}/>
