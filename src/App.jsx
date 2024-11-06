@@ -158,27 +158,11 @@ import Modal from './components/Modal/Modal'
      * @param {*} hakusana Hakuun syötetty merkkijono
      */
     const handleHaku = (hakusana) => {
-      const hakuDiv = document.getElementById("searchdiv"); // haun ja valittujen maiden div joilla säädentään ulkonäköä
-      const valitutMaatDiv = document.getElementById("valitutmaat");
 
       setHaku(hakusana);
 
       console.log("Haettavat maat:", hakusana)
 
-      // Jos haku on käynnissä muutetaan laatiokoiden kokoa
-      // TODO korjaa että toimii myös kun ehdotusta klikataan
-      // TODO Säädä numerot paremmiksi
-      const asetaHakuKoko = (taulukko) => {
-        if (taulukko.length == 0) {
-          hakuDiv.style.height = "8.8%";
-          valitutMaatDiv.style.height = "80%";
-        } else {
-          let x = 8.8 + taulukko.length * 5;
-          if (x > 58.8) { x = 58.8; }
-          hakuDiv.style.height =  x + "%";
-          valitutMaatDiv.style.height = 88.8 - x + "%";
-        }
-      }
       const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
       
       const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
@@ -202,19 +186,40 @@ import Modal from './components/Modal/Modal'
             maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
           );
           setSuggestions(filteredSuggestions);
-          asetaHakuKoko(filteredSuggestions);
+          asetaHakuKoko(filteredSuggestions); //asetetaan hakuboxin koko hakuehdotuksien määrän mukaan
         }
         //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
         else {
           setSuggestions([]);
-          asetaHakuKoko([]);
+          asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
         }
         // Jos haussa ei muuta kuin tyhjää
       } else {
         setSuggestions([]);
-        asetaHakuKoko([]);
+        asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
       }
       console.log('Syötetyt maat:', newMaat);
+    }
+
+    /**
+     * Säätää hakudiv laatikon koon ehdotusten mukaan
+     * Jos ehdotuksia ei ole palataan perustilaan
+     * @param {array} taulukko Ehdotukset 
+     */
+    const asetaHakuKoko = (taulukko) => {
+      const hakuDiv = document.getElementById("searchdiv"); // haun ja valittujen maiden div joilla säädetään ulkonäköä
+      const valitutMaatDiv = document.getElementById("valitutmaat");
+  
+      console.log(taulukko);
+      if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
+        hakuDiv.style.height = "8.8%";
+        valitutMaatDiv.style.height = "80%";
+      } else {
+        let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
+        if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
+        hakuDiv.style.height =  x + "%";
+        valitutMaatDiv.style.height = 88.8 - x + "%"; // Valitut maat pienemmäksi
+      }
     }
 
 
@@ -298,6 +303,7 @@ import Modal from './components/Modal/Modal'
               suggestions={suggestions} 
               setSuggestions={setSuggestions} 
               onToggleAllCountries={handleToggleAllCountries}
+              asetaHakuKoko={asetaHakuKoko}
             />
             </div>
             <div id="valitutmaat" className="valitutMaat">

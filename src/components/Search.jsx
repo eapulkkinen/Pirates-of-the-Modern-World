@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
 
+
 // TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries }) => {
+const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, asetaHakuKoko }) => {
     const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
     const [showAll, setShowAll] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
@@ -26,6 +27,7 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries })
         onSearch(suggestion);
         setHakusana('');    //hakusana kenttä tyhjennetään
         setSuggestions([]); //ehdotukset pois
+        asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
     };
     
 
@@ -50,6 +52,7 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries })
         //Jos checkbox chekattu
         if (isChecked) {
             setSuggestions([]); 
+            asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
         }  
     };
 
