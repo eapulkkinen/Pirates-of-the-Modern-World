@@ -122,10 +122,10 @@ const Map = ({ koordinaattiLista }) => {
                         distance_from_shore: koordinaatit.shore_distance.toFixed(2) + " kilometers",
                         //shore_coordinates = `${koordinaatit.shore_latitude}, ${koordinaatit.shore_longitude}`; // Ei tarpeellinen
                         attack_type: koordinaatit.attack_type,
-                        description_of_attack: koordinaatit.attack_description,
                         vessel_name: koordinaatit.vessel_name,
                         vessel_type: koordinaatit.vessel_type,
-                        vessel_status: koordinaatit.vessel_status
+                        vessel_status: koordinaatit.vessel_status,
+                        description_of_attack: koordinaatit.attack_description
                     };
 
                     // Tyhjennetään infobox jos siinä on tietoa
