@@ -32,7 +32,7 @@ div {
 
 /*Jos maita on valittu monta tulee scroll bar*/
 .valitutMaat {
-    overflow: scroll;
+    overflow-y: scroll;
     height: 80%;
     width: 100%;
     
@@ -45,12 +45,12 @@ div {
 
 /*Jos ehdotuksia on liikaa tulee scroll bar*/
 .searchdiv {
-    overflow: scroll;
+    overflow-y: scroll;
     width: 100%;
     height: 8.8%;
 }
 
 .oikeadiv {
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100%;
 }
