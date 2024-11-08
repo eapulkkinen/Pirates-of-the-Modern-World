@@ -4,11 +4,13 @@ body {
 
 #maindiv {
     display: flex;
+    margin-top: 0;
 }
 
 /* Sivupalkit 20% ruudunleveydestä */
 .sivudiv {
     width: 20vw;
+    margin-top: 1%;
 }
 
 /* Kartta 60% ruudunleveydestä */
@@ -32,6 +34,7 @@ div {
 #header {
     width: 100%;
     padding-bottom: 1%;
+    margin-bottom: 0;
     position: sticky;
     top: 0;
     z-index: 2;
@@ -108,4 +111,8 @@ div {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+
+#sliderheader {
+    margin: 0;
 }
