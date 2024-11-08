@@ -34,7 +34,6 @@ const Slider = ({ onChange, vuosi }) => {
   return (
     <div style={{ textAlign: 'center', padding: '10px' }}> 
       <h1 id="sliderheader"> Year to be displayed: {vuosi}</h1>
-
       <input
         type="range"
         min="1993"

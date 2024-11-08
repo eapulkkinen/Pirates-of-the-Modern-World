@@ -58,8 +58,8 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
 
 
     return (
-            <div>
-                <div>
+            <div id="searchdiv">
+                <div id="searchinputjabutton">
                     <input 
                         type="text" 
                         value = {hakusana}
