@@ -147,10 +147,14 @@ const Map = ({ koordinaattiLista }) => {
                                     title += " " + titles[j];
                                 }
                             }
+
                             // Lisätään ominaisuus infobox elementtiin 
                             infobox.innerHTML += `${title}: ${tiedot[keys[i]]}<br>`
                         }                        
                     }
+                    //tooltipillä saisi ehkä eez vinkin näkyviin,
+                    //mutta vaatii hieman koodin refaktorointia,
+                    //että sen saa suoraan eez kohdalle
         
                     setSelectedMarker(marker);
                 });
