@@ -1,3 +1,7 @@
+body {
+    margin-top: 0;
+}
+
 #maindiv {
     display: flex;
 }
@@ -10,12 +14,10 @@
 /* Kartta 60% ruudunleveydestä */
 #karttadiv {
     width: 60vw;
-    z-index: 1;
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
 div {
-    border: 1px solid black;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -24,10 +26,19 @@ div {
 /* Testiksi, jotta hahmottaa paremmin */ 
 #maindiv > div {
     height: 500px;
+    z-index: 1;
 }
 
 #header {
     width: 100vw;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: whitesmoke;
+}
+
+#headertitle {
+    margin-top: 0;
 }
 
 /*Jos maita on valittu monta tulee scroll bar*/
@@ -35,7 +46,6 @@ div {
     overflow-y: auto;
     height: 80%;
     width: 100%;
-    
 }
 
 .hyokkayslkm {

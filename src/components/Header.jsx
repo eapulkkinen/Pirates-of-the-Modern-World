@@ -44,8 +44,8 @@ const Header = () => {
     
 
     return (
-        <div>
-            <h1>Pirates of the Modern World 🏴‍☠️</h1>
+        <div id="header">
+            <h1 id="headertitle"> Pirates of the Modern World 🏴‍☠️</h1>
             <button type='submit' onClick={toggleMain} id="mainNappi">Map view</button>
             <button type='submit' onClick={toggleGraphs} id='tokaNappi'>Additional graphs</button>
             <button onClick={toggleHelp} className='modalNappi'>Help</button>
