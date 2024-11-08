@@ -35,10 +35,16 @@ div {
     top: 0;
     z-index: 2;
     background-color: whitesmoke;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 #headertitle {
     margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
 }
 
 /*Jos maita on valittu monta tulee scroll bar*/
@@ -63,4 +69,34 @@ div {
 .oikeadiv {
     overflow-y: auto;
     height: 100%;
+}
+
+.inactivenappi {
+    background: none;
+    border: none;
+    color: black;
+    text-decoration: underline;
+    cursor: default;
+}
+
+#oikeaylanapit {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    max-width: 100%;
+}
+
+#oikeaylanapit > button {
+    max-width: min-content;
+}
+
+#navnapit {
+    display: flex;
+}
+
+#titlejanav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
