@@ -17,6 +17,7 @@ import Modal from './components/Modal/Modal'
     const [maat, setMaat] = useState([]);
     const [vuosi, setVuosi] = useState('1993');
     const [suggestions, setSuggestions] = useState([]);
+    const [paivita, setPaivita] = useState(true); // boolean jolla estetään päivittyminen kesken haun
 
     const maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
     var valitsemattomatMaat = maaTaulukko;
@@ -29,30 +30,33 @@ import Modal from './components/Modal/Modal'
      * Kartan päivitys.
      * Tapahtuu AINA kun valitut maat tai vuosi muuttuu.
      */
-    // Tämä tapahtuu jostain syystä joka input
     useEffect(() => {
-      if (maat.length > 0) {
-        const maakoodit = maat.map(maa => countryCodeMap[maa]);
-        const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
-        const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
-        console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
-        console.log('Kaikki suodatettavat maat:', maat);
-        //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
-        const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
-          const nearestCountryCode = hyokkays.nearest_country;
-          const eezCountryCode = hyokkays.eez_country;
+      if (paivita) { // Ei suoriteta jos paivita = false
+        if (maat.length > 0) {
+          const maakoodit = maat.map(maa => countryCodeMap[maa]);
+          const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
+          const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
+          console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
+          console.log('Kaikki suodatettavat maat:', maat);
+          //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
+          const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
+            const nearestCountryCode = hyokkays.nearest_country;
+            const eezCountryCode = hyokkays.eez_country;
 
-          const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
-          const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
+            const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
+            const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
 
-          return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
-            ...hyokkays,
-            countryname: countryName,
-            eezcountryname: eezCountryName
-          };
-        });
+            return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
+              ...hyokkays,
+              countryname: countryName,
+              eezcountryname: eezCountryName
+            };
+          });
 
-        setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+          setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+        }
+      } else {
+        setPaivita(true); // Asetetaan paivita takaisin true
       }
     }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
 
@@ -174,9 +178,11 @@ import Modal from './components/Modal/Modal'
   
       const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
   
-      // Tämä vissiin aiheuttaa lagia
+      // Asetetaan paivita = false jotta kartta ei päivity
+      // jokaisella hakuinputilla joka aiheuttaisi lagia isoissa määrissä markereita
+      setPaivita(false); 
       setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
-
+      
 
       if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
         const viimeinenSyotettyMaa = maaList[maaList.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
