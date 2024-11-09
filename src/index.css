@@ -208,3 +208,8 @@ div {
     padding-right: 2px;
     z-index: 998;
 }
+
+.infoboxp {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
