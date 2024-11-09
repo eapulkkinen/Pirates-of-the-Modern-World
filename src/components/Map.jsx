@@ -160,7 +160,6 @@ const Map = ({ koordinaattiLista }) => {
                             let p = document.createElement("p");
                             p.classList.add("infoboxp");
 
-                            console.log(keys[i])
                             if (keys[i] === "EEZ_country") {
                                 p.innerHTML = `
                                 <span style="font-weight:bold">${title}</span>
