@@ -19,7 +19,8 @@ import Modal from './components/Modal/Modal'
     const [suggestions, setSuggestions] = useState([]);
     const [paivita, setPaivita] = useState(true); // boolean jolla estetään päivittyminen kesken haun
 
-    const maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+    var maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+    maaTaulukko = maaTaulukko.sort();
     var valitsemattomatMaat = maaTaulukko;
     const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
       accumulator[country_name] = country;
@@ -178,9 +179,9 @@ import Modal from './components/Modal/Modal'
   
       const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
   
-      // Asetetaan paivita = false jotta kartta ei päivity
-      // jokaisella hakuinputilla joka aiheuttaisi lagia isoissa määrissä markereita
-      setPaivita(false); 
+      // Jos input on vain haku ja ei lisää uutta maata, asetetaa paivita = false
+      // Tämä estää turhan päivittämisen ja vähentää lagia kun markkereita on paljon
+      if (newMaat.length == 0) { setPaivita(false); } 
       setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
       
 
@@ -221,7 +222,7 @@ import Modal from './components/Modal/Modal'
       console.log(taulukko);
       if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
         hakuDiv.style.height = "8.8%";
-        valitutMaatDiv.style.height = "80%";
+        valitutMaatDiv.style.height = "78%";
       } else {
         let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
         if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
