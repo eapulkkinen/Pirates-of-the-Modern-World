@@ -157,9 +157,34 @@ const Map = ({ koordinaattiLista }) => {
                                 }
                             }
 
+                            let p = document.createElement("p");
+
+                            console.log(keys[i])
+                            if (keys[i] === "EEZ_country") {
+                                p.innerHTML = `
+                                <span style="font-weight:bold">${title}</span>
+                                <div class="tooltip-container">
+                                    <div class="question-mark">?</div>
+                                    <div class="tooltip">
+                                    <span class="tooltip-text">
+                                    Exclusive Economic Zone (EEZ) is an area
+                                    of the sea in which a sovereign state has
+                                    exclusive rights regarding the exploration
+                                    and use of marine resources.
+                                    </span>
+                                    </div>
+                                </div>
+                                </span>
+                                <span> :</span>
+                                <span> ${tiedot[keys[i]]}</span>`;
+                            }
+                            else {
+                                p.innerHTML += `<span style="font-weight:bold">${title}:</span> ${tiedot[keys[i]]}<br>`
+                            }
+
                             // Lisätään ominaisuus infobox elementtiin
                             // Ominaisuuden otsikko asetetaan boldatuksi
-                            infobox.innerHTML += `<span style="font-weight:bold">${title}:</span> ${tiedot[keys[i]]}<br>`
+                            infobox.appendChild(p);
                         }                        
                     }
                     //tooltipillä saisi ehkä eez vinkin näkyviin,

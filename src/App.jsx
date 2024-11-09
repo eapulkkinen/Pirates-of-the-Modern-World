@@ -350,7 +350,7 @@ import Modal from './components/Modal/Modal'
             <div className="oikeadiv">
               <Modal vuosi={vuosi}/>
               <p id="eventinformation">Event information</p>
-              <p id="infobox"></p>
+              <div id="infobox"></div>
             </div>
           </div>
         </div>

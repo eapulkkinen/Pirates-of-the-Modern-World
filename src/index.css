@@ -16,6 +16,7 @@ body {
 /* Kartta 60% ruudunleveydestä */
 #karttadiv {
     width: 60vw;
+    z-index: 1;
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
@@ -67,6 +68,8 @@ div {
 .oikeadiv {
     overflow-y: auto;
     height: 100%;
+    position: relative;
+    align-items: center;
 }
 
 #eventinformation {
@@ -155,4 +158,52 @@ div {
 
 #searchinputjabutton button {
     width: max-content;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    z-index: 3;
+    width: auto;
+    justify-content: center;
+}
+
+.tooltip {
+    position: absolute;
+    visibility: hidden;
+    background-color: lightgray;
+    color: black;
+    text-align: center;
+    padding: 8px;
+    border-radius: 2px;
+    border: 1px solid #d3d3d3;
+    z-index: 4;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 10px;
+    height: auto;
+    min-width: 12vh;
+    width: 20vh;
+    left: -200%; 
+    transform: translateX(-50%);
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.question-mark {
+    cursor: pointer;
+    background-color: lightgray;
+    border-radius: 25%;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black; 
+    padding-left: 2px;
+    padding-right: 2px;
 }
