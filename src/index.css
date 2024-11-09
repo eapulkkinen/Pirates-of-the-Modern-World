@@ -69,6 +69,16 @@ div {
     height: 100%;
 }
 
+#eventinformation {
+    font-weight: bold;
+    font-size: larger;
+}
+
+#infobox {
+    text-align: left;
+    padding-left: 10px;
+}
+
 #vasendiv {
     overflow-x: hidden;
 }
