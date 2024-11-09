@@ -34,11 +34,12 @@ import Modal from './components/Modal/Modal'
     useEffect(() => {
       if (paivita) { // Ei suoriteta jos paivita = false
         if (maat.length > 0) {
-          const maakoodit = maat.map(maa => countryCodeMap[maa]);
+          const maatSorted = maat.sort();
+          const maakoodit = maatSorted.map(maa => countryCodeMap[maa]);
           const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
           const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
           console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
-          console.log('Kaikki suodatettavat maat:', maat);
+          console.log('Kaikki suodatettavat maat:', maatSorted);
           //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
           const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
             const nearestCountryCode = hyokkays.nearest_country;
