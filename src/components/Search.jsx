@@ -58,8 +58,8 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
 
 
     return (
-            <div>
-                <div>
+            <div id="searchdiv">
+                <div id="searchinputjabutton">
                     <input 
                         type="text" 
                         value = {hakusana}
@@ -67,21 +67,6 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                         onChange={handleChange}>
                     </input>
                     <button onClick={handleSearch} type="submit">Search</button>
-                    {suggestions.length > 0 && (
-                    <ul>
-                    {suggestions.map((suggestion, index) => (
-                        <li 
-                        key={index}
-                        onClick={() => {
-                            handleSuggestionClick(suggestion);
-                        }}
-                        style={{ cursor: 'pointer' }}
-                        >
-                        {suggestion}
-                        </li>
-                    ))}
-                    </ul>
-                    )}
                 </div>
                 <label>
                     <input                  
@@ -91,6 +76,21 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                     />
                     Show every country
               </label>
+              {suggestions.length > 0 && (
+                <ul>
+                {suggestions.map((suggestion, index) => (
+                    <li 
+                    key={index}
+                    onClick={() => {
+                        handleSuggestionClick(suggestion);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    >
+                    {suggestion}
+                    </li>
+                ))}
+                </ul>
+                )}
                 
             </div>
             

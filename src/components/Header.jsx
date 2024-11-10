@@ -41,15 +41,40 @@ const Header = () => {
             console.log("Ollaan jo tokalla sivulla");
         }
     }
+
+
+    const toggleAbout = () => {
+        console.log("about klikattu")
+    }
     
 
     return (
-        <div>
-            <h1>Pirates of the Modern World 🏴‍☠️</h1>
-            <button type='submit' onClick={toggleMain} id="mainNappi">Map view</button>
-            <button type='submit' onClick={toggleGraphs} id='tokaNappi'>Additional graphs</button>
-            <button onClick={toggleHelp} className='modalNappi'>Help</button>
-            
+        <div id="header">
+            <div id="titlejanav">
+                <h1 id="headertitle"> Pirates of the Modern World 🏴‍☠️</h1>
+                <div id='navnapit'>
+                    <button type='submit'
+                        onClick={toggleMain}
+                        id="mainNappi"
+                        className={onkoMain() ? 'inactivenappi' : ''}
+                    >
+                    Map view
+                    </button>
+                    <button 
+                        type='submit'
+                        onClick={toggleGraphs}
+                        id='tokaNappi'
+                        className={!onkoMain() ? 'inactivenappi' : ''}
+                    >
+                    Additional graphs
+                    </button>
+                </div>
+            </div>
+            <div id="oikeaylanapit">
+                <button onClick={toggleHelp} id='helpnappi' className='modalNappi'>Help</button>
+                <button onClick={toggleAbout} id='aboutnappi' className='modalNappi'>About</button>
+            </div>
+
             {auki && (
             <div className='modal'>
             <div className='modalSisalto'>

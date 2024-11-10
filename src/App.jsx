@@ -17,8 +17,10 @@ import Modal from './components/Modal/Modal'
     const [maat, setMaat] = useState([]);
     const [vuosi, setVuosi] = useState('1993');
     const [suggestions, setSuggestions] = useState([]);
+    const [paivita, setPaivita] = useState(true); // boolean jolla estetään päivittyminen kesken haun
 
-    const maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+    var maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+    maaTaulukko = maaTaulukko.sort();
     var valitsemattomatMaat = maaTaulukko;
     const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
       accumulator[country_name] = country;
@@ -29,30 +31,34 @@ import Modal from './components/Modal/Modal'
      * Kartan päivitys.
      * Tapahtuu AINA kun valitut maat tai vuosi muuttuu.
      */
-    // Tämä tapahtuu jostain syystä joka input
     useEffect(() => {
-      if (maat.length > 0) {
-        const maakoodit = maat.map(maa => countryCodeMap[maa]);
-        const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
-        const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
-        console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
-        console.log('Kaikki suodatettavat maat:', maat);
-        //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
-        const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
-          const nearestCountryCode = hyokkays.nearest_country;
-          const eezCountryCode = hyokkays.eez_country;
+      if (paivita) { // Ei suoriteta jos paivita = false
+        if (maat.length > 0) {
+          const maatSorted = maat.sort();
+          const maakoodit = maatSorted.map(maa => countryCodeMap[maa]);
+          const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
+          const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
+          console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
+          console.log('Kaikki suodatettavat maat:', maatSorted);
+          //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
+          const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
+            const nearestCountryCode = hyokkays.nearest_country;
+            const eezCountryCode = hyokkays.eez_country;
 
-          const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
-          const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
+            const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
+            const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
 
-          return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
-            ...hyokkays,
-            countryname: countryName,
-            eezcountryname: eezCountryName
-          };
-        });
+            return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
+              ...hyokkays,
+              countryname: countryName,
+              eezcountryname: eezCountryName
+            };
+          });
 
-        setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+          setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+        }
+      } else {
+        setPaivita(true); // Asetetaan paivita takaisin true
       }
     }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
 
@@ -174,9 +180,11 @@ import Modal from './components/Modal/Modal'
   
       const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
   
-      // Tämä vissiin aiheuttaa lagia
+      // Jos input on vain haku ja ei lisää uutta maata, asetetaa paivita = false
+      // Tämä estää turhan päivittämisen ja vähentää lagia kun markkereita on paljon
+      if (newMaat.length == 0) { setPaivita(false); } 
       setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
-
+      
 
       if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
         const viimeinenSyotettyMaa = maaList[maaList.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
@@ -215,7 +223,7 @@ import Modal from './components/Modal/Modal'
       console.log(taulukko);
       if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
         hakuDiv.style.height = "8.8%";
-        valitutMaatDiv.style.height = "80%";
+        valitutMaatDiv.style.height = "78%";
       } else {
         let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
         if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
@@ -341,8 +349,8 @@ import Modal from './components/Modal/Modal'
           <div id="oikeadiv" className="sivudiv">
             <div className="oikeadiv">
               <Modal maat={maat}/>
-              <p>Event information</p>
-              <p id="infobox"></p>
+              <p id="eventinformation">Event information</p>
+              <div id="infobox"></div>
             </div>
           </div>
         </div>

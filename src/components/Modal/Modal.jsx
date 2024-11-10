@@ -43,7 +43,7 @@ const Modal = (props) => {
         <>
         <button 
         onClick={toggleAuki}
-        className='modalNappi'>Click for more info on chosen country</button>
+        className='modalNappi'>Click for more info on chosen countries</button>
 
         
         {auki && (                      // jos auki = true, niin näytetään modal komponentti

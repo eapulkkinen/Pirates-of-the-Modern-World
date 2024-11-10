@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import L, { marker } from 'leaflet';    //Leafletin perusominaisuudet
+import * as geolib from 'geolib';
 import 'leaflet/dist/leaflet.css'; //Leaflet CSS
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
@@ -106,26 +107,34 @@ const Map = ({ koordinaattiLista }) => {
                     let infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
                     let googleLinkki = 'https://google.com/maps/place/' + koordinaatit.latitude + ',' + koordinaatit.longitude; //Muodostetaan linkki google mapsiin samoilla koordinaateilla
                     marker.bindPopup('<b>View on Google Maps</b><br><a href="' + googleLinkki + '" target="_blank">Click here</a>'); //Klikkaamalla markeria saadaan popup, jossa aiemmin mainittu linkki
+                    
                     // Muutetaan päiväys pv.kk.vuosi muotoon
                     const date = koordinaatit.date;
                     const pvm = date.split('-');
                     let dateFixed = pvm[2] + "." + pvm[1] + "." + pvm[0];
 
+                    // Muutetaan koordinaatit XX° XX′ XX″ muotoon 
+                    const latFixed = geolib.decimalToSexagesimal(koordinaatit.latitude);
+                    const lonFixed = geolib.decimalToSexagesimal(koordinaatit.longitude);
+
+                    // Leikataan hyökkäyksen kuvauksesta alkuosa, koska se tieto tulee ilmi muista kohdista
+                    const att_desc = koordinaatit.attack_description.split('\n');
+
                     // Luodaan olio jolla on tapahtuman tiedot
                     let tiedot = {
                         date: dateFixed,
                         time: koordinaatit.time,
-                        coordinates: `${koordinaatit.latitude}, ${koordinaatit.longitude}`,
+                        coordinates: `${latFixed}, ${lonFixed}`,
                         location_description: koordinaatit.location_description,
                         nearest_country: koordinaatit.countryname,
                         EEZ_country: koordinaatit.eezcountryname,
                         distance_from_shore: koordinaatit.shore_distance.toFixed(2) + " kilometers",
                         //shore_coordinates = `${koordinaatit.shore_latitude}, ${koordinaatit.shore_longitude}`; // Ei tarpeellinen
                         attack_type: koordinaatit.attack_type,
-                        description_of_attack: koordinaatit.attack_description,
                         vessel_name: koordinaatit.vessel_name,
                         vessel_type: koordinaatit.vessel_type,
-                        vessel_status: koordinaatit.vessel_status
+                        vessel_status: koordinaatit.vessel_status,
+                        description_of_attack: att_desc[att_desc.length-1]
                     };
 
                     // Tyhjennetään infobox jos siinä on tietoa
@@ -136,21 +145,51 @@ const Map = ({ koordinaattiLista }) => {
                     let keys = Object.keys(tiedot);
                     for (let i = 0; i < keys.length; i++) {
                         if (tiedot[keys[i]] != "NA") { // Käsitellään ominaisuus vain jos se ei ole "NA"
-                            // Luodaan titteli joka näytetään infoboksissa
+                            // Luodaan otsikko joka näytetään infoboksissa
                             let titles = keys[i].split('_');
                             let title = "";
                             for (let j in titles) {
                                 if (j == 0) {
-                                    // Muutetaan tittelin ensimmäinen kirjain isoksi
+                                    // Muutetaan otsikon ensimmäinen kirjain isoksi
                                     title = titles[j].charAt(0).toUpperCase() + titles[j].slice(1);
                                 } else {
                                     title += " " + titles[j];
                                 }
                             }
-                            // Lisätään ominaisuus infobox elementtiin 
-                            infobox.innerHTML += `${title}: ${tiedot[keys[i]]}<br>`
+
+                            let p = document.createElement("p");
+                            p.classList.add("infoboxp");
+
+                            if (keys[i] === "EEZ_country") {
+                                p.innerHTML = `
+                                <span style="font-weight:bold">${title}</span>
+                                <div class="tooltip-container">
+                                    <div class="question-mark">?</div>
+                                    <div class="tooltip">
+                                    <span class="tooltip-text">
+                                    Exclusive Economic Zone (EEZ) is an area
+                                    of the sea in which a sovereign state has
+                                    exclusive rights regarding the exploration
+                                    and use of marine resources.
+                                    </span>
+                                    </div>
+                                </div>
+                                </span>
+                                <span> :</span>
+                                <span> ${tiedot[keys[i]]}</span>`;
+                            }
+                            else {
+                                p.innerHTML += `<span style="font-weight:bold">${title}:</span> ${tiedot[keys[i]]}<br>`
+                            }
+
+                            // Lisätään ominaisuus infobox elementtiin
+                            // Ominaisuuden otsikko asetetaan boldatuksi
+                            infobox.appendChild(p);
                         }                        
                     }
+                    //tooltipillä saisi ehkä eez vinkin näkyviin,
+                    //mutta vaatii hieman koodin refaktorointia,
+                    //että sen saa suoraan eez kohdalle
         
                     setSelectedMarker(marker);
                 });

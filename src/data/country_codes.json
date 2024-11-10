@@ -165,11 +165,6 @@
     "country_name": "Canada"
   },
   {
-    "country": "CCK",
-    "region": "Austalia and Oceania",
-    "country_name": "Cocos (Keeling) Islands"
-  },
-  {
     "country": "CHE",
     "region": "Europe & Central Asia",
     "country_name": "Switzerland"
@@ -414,11 +409,6 @@
     "region": "Latin America & Caribbean",
     "country_name": "Guyana"
   },
-  {
-    "country": "GUF",
-    "region": "South America",
-    "country_name": "French Guyana"
-  },  
   {
     "country": "HKG",
     "region": "East Asia & Pacific",

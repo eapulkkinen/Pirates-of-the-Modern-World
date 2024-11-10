@@ -1,21 +1,26 @@
+body {
+    margin-top: 0;
+}
+
 #maindiv {
     display: flex;
+    margin-top: 0;
 }
 
 /* Sivupalkit 20% ruudunleveydestä */
 .sivudiv {
     width: 20vw;
+    margin-top: 1%;
 }
 
 /* Kartta 60% ruudunleveydestä */
 #karttadiv {
     width: 60vw;
-    z-index: 1;
+    z-index: 0;
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
 div {
-    border: 1px solid black;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -24,33 +29,187 @@ div {
 /* Testiksi, jotta hahmottaa paremmin */ 
 #maindiv > div {
     height: 500px;
+    z-index: 1;
 }
 
 #header {
-    width: 100vw;
+    width: 100%;
+    padding-bottom: 1%;
+    margin-bottom: 0;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: whitesmoke;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#headertitle {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
 }
 
 /*Jos maita on valittu monta tulee scroll bar*/
 .valitutMaat {
     overflow-y: auto;
-    height: 80%;
+    height: 78%;
     width: 100%;
-    
 }
 
 .hyokkayslkm {
-    height: 10.4%;
+    height: 5%;
     width: 100%;
-}
-
-/*Jos ehdotuksia on liikaa tulee scroll bar*/
-.searchdiv {
-    overflow-y: auto;
-    width: 100%;
-    height: 8.8%;
 }
 
 .oikeadiv {
     overflow-y: auto;
     height: 100%;
+    position: relative;
+    align-items: center;
+}
+
+#eventinformation {
+    font-weight: bold;
+    font-size: larger;
+}
+
+#infobox {
+    text-align: left;
+    padding-left: 10px;
+}
+
+#vasendiv {
+    overflow-x: hidden;
+}
+
+.inactivenappi {
+    background: none;
+    border: none;
+    color: black;
+    text-decoration: underline;
+    cursor: default;
+}
+
+#oikeaylanapit {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    float: right;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: 1%;
+}
+
+#oikeaylanapit > button {
+    max-width: min-content;
+}
+
+#navnapit {
+    display: flex;
+    justify-content: center;
+}
+
+#titlejanav {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#sliderheader {
+    margin: 0;
+}
+
+#footerdiv {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+/*Jos ehdotuksia on liikaa tulee scroll bar*/
+#searchdiv {
+    height: auto;
+    min-height: 70px;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#searchdiv * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#searchinputjabutton {
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#searchinputjabutton button {
+    width: max-content;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    z-index: 9999;
+    width: auto;
+    justify-content: center;
+}
+
+.tooltip {
+    position: absolute;
+    visibility: hidden;
+    background-color: lightgray;
+    color: black;
+    text-align: center;
+    padding: 8px;
+    border-radius: 2px;
+    border: 1px solid #d3d3d3;
+    z-index: 10000;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 10px;
+    height: auto;
+    min-width: 12vh;
+    width: 20vh;
+    left: -200%; 
+    transform: translateX(-50%);
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.question-mark {
+    cursor: pointer;
+    background-color: lightgray;
+    border-radius: 25%;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black; 
+    padding-left: 2px;
+    padding-right: 2px;
+    z-index: 998;
+}
+
+.infoboxp {
+    margin-top: 0;
+    margin-bottom: 4px;
 }
