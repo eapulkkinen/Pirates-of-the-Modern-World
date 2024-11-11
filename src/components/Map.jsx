@@ -10,13 +10,13 @@ import punainen from '../assets/ValittuMerkki.png';
 var sininenMerkki = L.icon({ //valitsemattoman markerin ikoni
     iconUrl: sininen,
     iconSize: [38, 70],
-    iconAnchor: [22, 94]
+    iconAnchor: [20, 60]
 });
 
 var punainenMerkki = L.icon({ //valitun markerin ikoni
     iconUrl: punainen,
     iconSize: [38,70],
-    iconAnchor: [22, 94]
+    iconAnchor: [20, 60]
 });
 
 var aiemminValittu = null; //Aiemmin valitun markerin alustus
