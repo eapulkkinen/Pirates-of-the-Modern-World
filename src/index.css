@@ -213,3 +213,8 @@ div {
     margin-top: 0;
     margin-bottom: 4px;
 }
+
+.tokaSivuChart {
+    width: 100vw;
+    height: 100vh;
+}
