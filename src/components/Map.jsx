@@ -14,7 +14,7 @@ const Map = ({ koordinaattiLista }) => {
     useEffect(() => {     
         //setView [] sisään koordinaatit kartan keskityspisteeksi ja luku sen jälkeen on zoomin määrä
         const initMap = L.map('karttadiv', {
-            worldCopyJump: true,   //ei piirretä uusia pisteitä siirryttäessä toiseen karttaan
+            worldCopyJump: false,   //ei piirretä uusia pisteitä siirryttäessä toiseen karttaan
             maxBounds: [
                 [-120, -210], // Eteläisimmät ja läntisimmät koordinaatit
                 [120, 210]    // Pohjoisimmat ja itäisimmät koordinaatit
