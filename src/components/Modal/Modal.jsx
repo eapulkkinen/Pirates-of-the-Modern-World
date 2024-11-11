@@ -14,6 +14,11 @@ const Modal = (props) => {
         setAuki(!auki);             // vaihtaa auki arvoa true/false
     }
 
+    //country_codes tiedostosta filtteröity taulukko valituista maista
+    const valitutMaat = country_codes.filter(maa => {
+        return props.maat.includes(maa.country_name);
+    })
+
     /**
     * Hakee maan nimeä vastaavan maakoodin
     * @param {string}  nimi maan nimi
@@ -35,7 +40,7 @@ const Modal = (props) => {
     }
 
     const testiData = haeMaanIndikaattorit('SOM');
-    console.log(props.maat);
+    
 
     
 
@@ -53,7 +58,7 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
-                <Dropdown content={props.maat}/>
+                
                 <p> {palautaNimeaVastaavaKoodi('Somalia')} </p>
                 <>
                 <Country_Chart indikaattorit={testiData}/>
