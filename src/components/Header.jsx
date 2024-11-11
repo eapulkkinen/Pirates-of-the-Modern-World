@@ -1,14 +1,19 @@
 import {useState} from 'react';
 import './Modal/Modal.css';
 
-// TODO lisää tapa jolla näkyy headerissä mikä sivu on valittu
-
 const Header = () => {
 
-    const [auki, setAuki] = useState(false);
+    const [aukiHelp, setAukiHelp] = useState(false);
+    const [aukiAbout, setAukiAbout] = useState(false);
 
+    // Asettaa Help ikkunan näkyväksi / pois näkyvistä
     const toggleHelp = () => {
-        setAuki(!auki);
+        setAukiHelp(!aukiHelp);
+    }
+
+    // Asettaa About ikkunan näkyväksi / pois näkyvistä
+    const toggleAbout = () => {
+        setAukiAbout(!aukiAbout);
     }
 
     /**
@@ -41,11 +46,6 @@ const Header = () => {
             console.log("Ollaan jo tokalla sivulla");
         }
     }
-
-
-    const toggleAbout = () => {
-        console.log("about klikattu")
-    }
     
 
     return (
@@ -75,10 +75,10 @@ const Header = () => {
                 <button onClick={toggleAbout} id='aboutnappi' className='modalNappi'>About</button>
             </div>
 
-            {auki && (
+            {aukiHelp && (
             <div className='modal'>
             <div className='modalSisalto'>
-                <h1>Welcome to the Pirate App 🏴‍☠️</h1>
+                <h1>Welcome to the Pirates of the Modern World App 🏴‍☠️</h1>
                 <p>The app can show you information regarding pirate attacks between the years 1993 and 2020</p>
                 <p>Choose a country you want info on by searching for it, or just choose "Show every country" to see all countries</p>
                 <p>Choose the year with the slider below the map, or just choose "Show all" to see all years</p>
@@ -87,6 +87,18 @@ const Header = () => {
                 <button
                 className='modalSulkuNappi'
                 onClick={toggleHelp}
+                >CLOSE</button>
+            </div>
+            </div>
+            )}
+            {aukiAbout && (
+            <div className='modal'>
+            <div className='modalSisalto'>
+                <h1>About</h1>
+                <p>Lorem ipsum jne jne</p>
+                <button
+                className='modalSulkuNappi'
+                onClick={toggleAbout}
                 >CLOSE</button>
             </div>
             </div>
