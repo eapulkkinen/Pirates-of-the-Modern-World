@@ -1,9 +1,25 @@
 import { useEffect, useState } from 'react';
-import L, { marker } from 'leaflet';    //Leafletin perusominaisuudet
+import L, { icon, marker } from 'leaflet';    //Leafletin perusominaisuudet
 import * as geolib from 'geolib';
 import 'leaflet/dist/leaflet.css'; //Leaflet CSS
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import sininen from '../assets/Merkki.png';
+import punainen from '../assets/ValittuMerkki.png';
+
+var sininenMerkki = L.icon({ //valitsemattoman markerin ikoni
+    iconUrl: sininen,
+    iconSize: [38, 70],
+    iconAnchor: [20, 60]
+});
+
+var punainenMerkki = L.icon({ //valitun markerin ikoni
+    iconUrl: punainen,
+    iconSize: [38,70],
+    iconAnchor: [20, 60]
+});
+
+var aiemminValittu = null; //Aiemmin valitun markerin alustus
 
 const Map = ({ koordinaattiLista }) => {
     const [map, setMap] = useState(null);
@@ -13,11 +29,18 @@ const Map = ({ koordinaattiLista }) => {
 
     useEffect(() => {     
         //setView [] sisään koordinaatit kartan keskityspisteeksi ja luku sen jälkeen on zoomin määrä
-        const initMap = L.map('karttadiv').setView([20, 0], 2);
+        const initMap = L.map('karttadiv', {
+            worldCopyJump: false,   //ei piirretä uusia pisteitä siirryttäessä toiseen karttaan
+            maxBounds: [
+                [-120, -210], // Eteläisimmät ja läntisimmät koordinaatit
+                [120, 210]    // Pohjoisimmat ja itäisimmät koordinaatit
+            ]
+        }).setView([20, 0], 2);
 
         // tileLayerin parametreja muuttamalla saa vaihdettua kartan tyyppiä
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://carto.com/">CartoDB</a>',
+            minZoom: 1
         }).addTo(initMap);
 
         setMap(initMap);
@@ -99,7 +122,7 @@ const Map = ({ koordinaattiLista }) => {
 
             //luodaan uusista koordinaateista markerit ja laitetaan ne taulukkoon
             const newMarkers = newCoords.map(koordinaatit => {
-                const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]);
+                var marker = L.marker([koordinaatit.latitude, koordinaatit.longitude], {icon: sininenMerkki});
                 marker.date = koordinaatit.date;
                 marker.time = koordinaatit.time;
 
@@ -107,7 +130,9 @@ const Map = ({ koordinaattiLista }) => {
                     let infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
                     let googleLinkki = 'https://google.com/maps/place/' + koordinaatit.latitude + ',' + koordinaatit.longitude; //Muodostetaan linkki google mapsiin samoilla koordinaateilla
                     marker.bindPopup('<b>View on Google Maps</b><br><a href="' + googleLinkki + '" target="_blank">Click here</a>'); //Klikkaamalla markeria saadaan popup, jossa aiemmin mainittu linkki
-                    
+                    if (marker.options.icon === sininenMerkki) marker.setIcon(punainenMerkki); //Vaihtaa valitsemattoman markerin väriä
+                    if (aiemminValittu != null && aiemminValittu != marker) aiemminValittu.setIcon(sininenMerkki); //Vaihtaa aiemmin valitun markerin värin takaisin alkuperäiseen
+                    aiemminValittu = marker; //Piirtämisen jälkeen sijoitetaan valittu marker aiemminValituksi seuraavaa klikkausta varten
                     // Muutetaan päiväys pv.kk.vuosi muotoon
                     const date = koordinaatit.date;
                     const pvm = date.split('-');

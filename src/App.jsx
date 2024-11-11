@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import Search from './components/Search';
 import country_codes from './data/country_codes';
 import pirate_attacks from './data/pirate_attacks';
+import country_indicators from './data/country_indicators';
 import Modal from './components/Modal/Modal'
 
 
@@ -85,6 +86,14 @@ import Modal from './components/Modal/Modal'
         return countrycode;
       }
     };
+
+
+
+    const palautaMaataVastaavaMaakoodi = (maanNimi) => {
+      const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
+      const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
+      return countryName;
+    }
 
 
     /**
@@ -302,6 +311,29 @@ import Modal from './components/Modal/Modal'
       });
     }
 
+
+    function getAttackCount(country) {
+      const countryCode = palautaMaataVastaavaMaakoodi(country);
+      let count = 0;
+      if (vuosi === "all") {
+        //jokaisen vuoden hyökkäykset summataan ja palautetaan
+        const maaTiedot = country_indicators.filter(maadata['country'] === countryCode);
+        maaTiedot.forEach(maadata => {
+          count += maadata.attacks;
+        });
+      }
+      else {
+        let maadata = country_indicators.find(maandata => 
+          maandata.country === countryCode &&
+          maandata.year.toString() === vuosi
+        );
+        count = maadata ? maadata.attacks : 0;
+      }
+
+      return count;
+    }
+
+
     return (
       <>
         <Header vuosi={vuosi}/>
@@ -322,7 +354,7 @@ import Modal from './components/Modal/Modal'
                   {
                     maat.map((maa, index) => (
                       <li key={index}>
-                        {maa}
+                        {maa} {getAttackCount(maa)}
                         <button 
                           onClick={() => handleMaaPoisto(maa)}
                           style={{ marginLeft: '10px', cursor: 'pointer'}}> &#x2716;
