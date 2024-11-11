@@ -13,7 +13,13 @@ const Map = ({ koordinaattiLista }) => {
 
     useEffect(() => {     
         //setView [] sisään koordinaatit kartan keskityspisteeksi ja luku sen jälkeen on zoomin määrä
-        const initMap = L.map('karttadiv').setView([20, 0], 2);
+        const initMap = L.map('karttadiv', {
+            worldCopyJump: true,   //ei piirretä uusia pisteitä siirryttäessä toiseen karttaan
+            maxBounds: [
+                [-120, -210], // Eteläisimmät ja läntisimmät koordinaatit
+                [120, 210]    // Pohjoisimmat ja itäisimmät koordinaatit
+            ]
+        }).setView([20, 0], 2);
 
         // tileLayerin parametreja muuttamalla saa vaihdettua kartan tyyppiä
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
