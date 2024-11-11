@@ -1,9 +1,25 @@
 import { useEffect, useState } from 'react';
-import L, { marker } from 'leaflet';    //Leafletin perusominaisuudet
+import L, { icon, marker } from 'leaflet';    //Leafletin perusominaisuudet
 import * as geolib from 'geolib';
 import 'leaflet/dist/leaflet.css'; //Leaflet CSS
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import sininen from '../assets/Merkki.png';
+import punainen from '../assets/ValittuMerkki.png';
+
+var sininenMerkki = L.icon({ //valitsemattoman markerin ikoni
+    iconUrl: sininen,
+    iconSize: [38, 70],
+    iconAnchor: [22, 94]
+});
+
+var punainenMerkki = L.icon({ //valitun markerin ikoni
+    iconUrl: punainen,
+    iconSize: [38,70],
+    iconAnchor: [22, 94]
+});
+
+var aiemminValittu = null; //Aiemmin valitun markerin alustus
 
 const Map = ({ koordinaattiLista }) => {
     const [map, setMap] = useState(null);
@@ -106,7 +122,7 @@ const Map = ({ koordinaattiLista }) => {
 
             //luodaan uusista koordinaateista markerit ja laitetaan ne taulukkoon
             const newMarkers = newCoords.map(koordinaatit => {
-                const marker = L.marker([koordinaatit.latitude, koordinaatit.longitude]);
+                var marker = L.marker([koordinaatit.latitude, koordinaatit.longitude], {icon: sininenMerkki});
                 marker.date = koordinaatit.date;
                 marker.time = koordinaatit.time;
 
@@ -114,7 +130,9 @@ const Map = ({ koordinaattiLista }) => {
                     let infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
                     let googleLinkki = 'https://google.com/maps/place/' + koordinaatit.latitude + ',' + koordinaatit.longitude; //Muodostetaan linkki google mapsiin samoilla koordinaateilla
                     marker.bindPopup('<b>View on Google Maps</b><br><a href="' + googleLinkki + '" target="_blank">Click here</a>'); //Klikkaamalla markeria saadaan popup, jossa aiemmin mainittu linkki
-                    
+                    if (marker.options.icon === sininenMerkki) marker.setIcon(punainenMerkki); //Vaihtaa valitsemattoman markerin väriä
+                    if (aiemminValittu != null && aiemminValittu != marker) aiemminValittu.setIcon(sininenMerkki); //Vaihtaa aiemmin valitun markerin värin takaisin alkuperäiseen
+                    aiemminValittu = marker; //Piirtämisen jälkeen sijoitetaan valittu marker aiemminValituksi seuraavaa klikkausta varten
                     // Muutetaan päiväys pv.kk.vuosi muotoon
                     const date = koordinaatit.date;
                     const pvm = date.split('-');
