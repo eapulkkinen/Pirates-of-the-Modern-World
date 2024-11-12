@@ -4,15 +4,19 @@ import country_indicators from '../../data/country_indicators';
 import './Modal.css';
 import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
-import Dropdown from '../Dropdown';
 
+/**
+ * tekee dropdown valikon ja muuttaa modalin tilaa parametrina tuodulla funktiolla
+ * @param {function} param0 modalin tilaa vaihtava funktio
+ * @returns dropdown valikon
+ */
 const IndicatorDropdown = ({onIndicatorChange}) =>  {
 
     return (
-        <label>
-            Pick a country Indicator: 
+
             <select onChange={e => onIndicatorChange(e.target.value)}>
-                <option value={"corruption_index"}>Corruption Index</option>
+                <option value="">Select an indicator</option>
+                <option value="corruption_index">Corruption Index</option>
                 <option value="homicide_rate">Homicide Rate</option>
                 <option value="GDP">GDP</option>
                 <option value="total_fisheries_per_ton">Fisheries Production Per Ton</option>
@@ -22,15 +26,20 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
                 <option value="totalgr">Total Government Revenue</option>
                 <option value="industryofgdp">INdustry of GDP</option>
             </select>
-        </label>
+
     );
 }
 
 const Modal = (props) => {
 
-
-    const [valittuIndikaattori, setValittuIndikaattori] = useState("corruption_index");
+    const [valittuIndikaattori, setValittuIndikaattori] = useState("");
+    const [valittuMaa, setValittuMaa] = useState("");
     const [auki, setAuki] = useState(false);
+
+    const handleCountryChange = (e) => {
+
+        setValittuMaa(e.target.value);
+    }
 
     const handleIndicatorChange = (selectedIndicator) => {
         setValittuIndikaattori(selectedIndicator);
@@ -58,6 +67,11 @@ const Modal = (props) => {
         
         };
 
+    /**
+     * Hakee maakoodia vastaavan maan indikaattorit country_indikators tiedostosta
+     * @param {string} maakoodi valitun maan maakoodi
+     * @returns halutun maan indikaattorit
+     */
     const haeMaanIndikaattorit = (maakoodi) => {
         const maanIndikaattorit = country_indicators.filter(indikaattori => {
             return maakoodi.includes(indikaattori.country);
@@ -65,10 +79,6 @@ const Modal = (props) => {
         return maanIndikaattorit;
     }
 
-    const testiData = haeMaanIndikaattorit('SOM');
-    
-
-    
 
     return (
         <>
@@ -84,10 +94,18 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
+                <select onChange={handleCountryChange}>
+                    <option value="">Select a country</option>
+                    {props.maat.map((option, index) => (
+                        <option key={index} value={option}>
+                         {option}
+                        </option>
+                    ))}
+                </select>
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
-                <p> {palautaNimeaVastaavaKoodi('Somalia')} </p>
+                <p> {valittuMaa} </p>
                 <>
-                <Country_Chart indikaattorit={testiData} valittuIndikaattori={valittuIndikaattori}/>
+                <Country_Chart indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
                 </>
                 <button
                 className='modalSulkuNappi'
