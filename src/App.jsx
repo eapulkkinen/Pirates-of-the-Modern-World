@@ -6,6 +6,7 @@ import Slider from './components/Slider';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Search from './components/Search';
+import SelectedCountries from './components/SelectedCountries';
 import country_codes from './data/country_codes';
 import pirate_attacks from './data/pirate_attacks';
 import country_indicators from './data/country_indicators';
@@ -312,12 +313,13 @@ import Modal from './components/Modal/Modal'
     }
 
 
-    function getAttackCount(country) {
+    const getAttackCount = (country) => {
       const countryCode = palautaMaataVastaavaMaakoodi(country);
       let count = 0;
       if (vuosi === "all") {
         //jokaisen vuoden hyökkäykset summataan ja palautetaan
-        const maaTiedot = country_indicators.filter(maadata['country'] === countryCode);
+        const maaTiedot = country_indicators.filter(maadata =>
+          maadata['country'] === countryCode);
         maaTiedot.forEach(maadata => {
           count += maadata.attacks;
         });
@@ -332,7 +334,6 @@ import Modal from './components/Modal/Modal'
 
       return count;
     }
-
 
     return (
       <>
@@ -350,19 +351,11 @@ import Modal from './components/Modal/Modal'
             </div>
             <div id="valitutmaat" className="valitutMaat">
               {maat.length > 0 && (
-                <ul>
-                  {
-                    maat.map((maa, index) => (
-                      <li key={index}>
-                        {maa} {getAttackCount(maa)}
-                        <button 
-                          onClick={() => handleMaaPoisto(maa)}
-                          style={{ marginLeft: '10px', cursor: 'pointer'}}> &#x2716;
-                        </button>
-                      </li>
-                    ))
-                  }
-                </ul>
+                <SelectedCountries
+                  maat={maat}
+                  getAttackCount={getAttackCount}
+                  handleMaaPoisto={handleMaaPoisto}
+                />
               )}
             </div>
             <div id="hyokkayslkm" className='hyokkayslkm'>
