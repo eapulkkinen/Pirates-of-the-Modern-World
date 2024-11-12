@@ -15,7 +15,7 @@ const Country_Chart = (props) => {
     useEffect(() => {
       const ctx = chartRef.current.getContext("2d");
       const vuosi = props.indikaattorit.map(i => i.year); // luodaan datasta taulukot
-      const unemployment = props.indikaattorit.map(i => i.unemployment_rate);
+      const indicator = props.indikaattorit.map(i => i.unemployment_rate);
       const attacks = props.indikaattorit.map(i => i.attacks);
 
       // määritellään taulukon tiedot
@@ -30,7 +30,7 @@ const Country_Chart = (props) => {
               },
               {
                 label: 'Unemployment rate',
-                data: unemployment
+                data: indicator
               }
           ]
 

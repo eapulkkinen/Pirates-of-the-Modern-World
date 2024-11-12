@@ -6,9 +6,35 @@ import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
 import Dropdown from '../Dropdown';
 
+const IndicatorDropdown = ({onIndicatorChange}) =>  {
+
+    return (
+        <label>
+            Pick a country Indicator: 
+            <select onChange={e => onIndicatorChange(e.target.value)}>
+                <option value={"corruption_index"}>Corruption Index</option>
+                <option value="homicide_rate">Homicide Rate</option>
+                <option value="GDP">GDP</option>
+                <option value="total_fisheries_per_ton">Fisheries Production Per Ton</option>
+                <option value="total_military">Total Military</option>
+                <option value="population">Population</option>
+                <option value="unemployment_rate">Unemployment Rate</option>
+                <option value="totalgr">Total Government Revenue</option>
+                <option value="industryofgdp">INdustry of GDP</option>
+            </select>
+        </label>
+    );
+}
+
 const Modal = (props) => {
 
+
+    const [valittuIndikaattori, setValittuIndikaattori] = useState("corruption_index");
     const [auki, setAuki] = useState(false);
+
+    const handleIndicatorChange = (selectedIndicator) => {
+        setValittuIndikaattori(selectedIndicator);
+    }
 
     const toggleAuki = () => {
         setAuki(!auki);             // vaihtaa auki arvoa true/false
@@ -58,10 +84,10 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
-                
+                <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
                 <p> {palautaNimeaVastaavaKoodi('Somalia')} </p>
                 <>
-                <Country_Chart indikaattorit={testiData}/>
+                <Country_Chart indikaattorit={testiData} valittuIndikaattori={valittuIndikaattori}/>
                 </>
                 <button
                 className='modalSulkuNappi'
