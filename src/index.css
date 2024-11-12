@@ -62,8 +62,15 @@ div {
     width: 100%;
 }
 
+
 #valituttaulukko {
-    width: 20px;
+    width: 100%;
+}
+
+#valituttaulukko > th, td {
+    text-align: left;
+    word-wrap: break-word;
+    width: auto;
 }
 
 .hyokkayslkm {
@@ -164,15 +171,16 @@ div {
     white-space: nowrap;
     flex-direction: row;
     flex-wrap: nowrap;
+    gap: 2px;
 }
 
 #searchinputjabutton input {
-    width: 65%; /* Input field takes up most of the width */
+    width: 75%;
     box-sizing: border-box;
 }
 
 #searchinputjabutton button {
-    width: auto; /* Button takes the remaining space */
+    width: auto;
     box-sizing: border-box;
 }
 
