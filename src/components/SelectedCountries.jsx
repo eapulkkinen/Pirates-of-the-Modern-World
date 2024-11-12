@@ -1,17 +1,47 @@
 import React, { useState } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
-    
+    const [sortOrder, setSortOrder] = useState("alphabetical");
+
+    const handleSort = () => {
+        if (sortOrder === "alphabetical") {
+            setSortOrder("descending");
+        }
+        else if (sortOrder === "descending") {
+            setSortOrder("ascending");
+        }
+        else {
+            setSortOrder("alphabetical")
+        }
+    };
+
+    const sortedMaat = () => {
+        if (sortOrder === "alphabetical") {
+            return maat;
+        } 
+        else {
+            return [...maat].sort((a, b) => {
+                if (sortOrder === "descending") {
+                    return getAttackCount(b) - getAttackCount(a);
+                } 
+                else if (sortOrder === "ascending") {
+                    return getAttackCount(a) - getAttackCount(b);
+                }
+                return [];
+            });
+        }
+    };
+
     return (
-        <table>
+        <table id="valituttaulukko">
         <thead>
             <tr>
                 <th>Country</th>
-                <th>Number of attacks</th>
+                <th onClick={handleSort} style={{ cursor: 'pointer' }}>Number of attacks</th>
             </tr>
         </thead>
         <tbody>
-            {maat.map((maa, index) => (
+            {sortedMaat().map((maa, index) => (
             <tr key={index}>
                 <td>{maa}</td>
                 <td>{getAttackCount(maa)}</td>
