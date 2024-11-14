@@ -30,6 +30,13 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
     );
 }
 
+/**
+ * The base idea for this component was learned from this video:
+ * https://www.youtube.com/watch?v=9DwGahSqcEc At 0:24 in the video the author states: "You can find the 
+ * source code in the description (of the video) and reuse it as you want." Video seen on 14.11.2025.
+ * @param {*} props maat = taulukko valituista maista
+ * @returns Modaali ikkunan
+ */
 const Modal = (props) => {
 
     const [valittuIndikaattori, setValittuIndikaattori] = useState("");
@@ -46,7 +53,11 @@ const Modal = (props) => {
     }
 
     const toggleAuki = () => {
-        setAuki(!auki);             // vaihtaa auki arvoa true/false
+        if (props.maat.length > 0){   // jos väh. 1 valittu maa, vaihtaa auki arvoa true/false
+            setAuki(!auki);  
+        } else {
+            alert("Please select a coutry");
+        }
     }
 
     //country_codes tiedostosta filtteröity taulukko valituista maista

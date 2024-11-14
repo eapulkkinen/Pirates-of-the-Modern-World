@@ -17,12 +17,12 @@ const Country_Chart = (props) => {
       let indikaattoriTaulukko 
 
       switch (props.valittuIndikaattori) {
-        case "corruption_index":
+        case "corruption_index": 
           const corruption = props.indikaattorit.map(i => i.corruption_index);
           indikaattoriTaulukko = corruption;
           break;
-        case "homiside_rate":
-          const homicide = props.indikaattorit.map(i => i.homiside_rate);
+        case "homicide_rate":
+          const homicide = props.indikaattorit.map(i => i.homicide_rate);
           indikaattoriTaulukko = homicide;
           break;
         case "GDP":
