@@ -41,7 +41,6 @@ div {
     position: sticky;
     top: 0;
     z-index: 2;
-    background-color: whitesmoke;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -238,9 +237,22 @@ div {
     margin-bottom: 4px;
 }
 
+/* Tokan sivun css */
+#tokaSivuDiv {
+    background-color: #99b3cc;
+}
+
+#tokaSivuDiv button {
+    background-color: #eae8d1;
+}
+
+.tokaSivuHF {
+    background-color: #7ca377;
+}
+
 .tokaSivuChart {
-    width: 49vw;
-    height: auto;
+    width: 48vw;
+    height: 100%;
     display: inline-block;
 }
 

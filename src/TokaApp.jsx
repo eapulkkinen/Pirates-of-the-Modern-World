@@ -81,7 +81,7 @@ function App() {
     hyokkaykset = yhdistetty[1];
 
     // Lisätään loput maat taulukkoon
-    maaTaulukko.push("Other countries combined");
+    maaTaulukko.push("Other countries");
     hyokkaykset.push(loput);
     
     // määritellään taulukon tiedot
@@ -107,7 +107,10 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right'
+            position: 'right',
+            labels: {
+              color: "#000000"
+            }
           }
         }
       }
@@ -186,7 +189,7 @@ function App() {
           datalabels: {
             color: "#ffffff",
             backgroundColor: "#000000",
-            anchor: 'end',
+            anchor: 'center',
             display: 'auto',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
@@ -194,7 +197,10 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left'
+            position: 'left',
+            labels: {
+              color: "#000000"
+            }
           }
         }
       }
@@ -273,7 +279,7 @@ function App() {
           datalabels: {
             color: "#ffffff",
             backgroundColor: "#000000",
-            anchor: 'end',
+            anchor: 'center',
             display: 'auto',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
@@ -281,7 +287,10 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right'
+            position: 'right',
+            labels: {
+              color: "#000000"
+            }
           }
         }
       }
@@ -358,17 +367,21 @@ function App() {
         options: {   
           plugins: {
             datalabels: {
-              color: "#ffffff",
-              backgroundColor: "#000000",
-              anchor: 'end',
+              color: "#000000",
+              backgroundColor: "#ffffff",
+              anchor: 'center',
               display: 'auto',
+              clip: 'true',
               formatter: function(value) {
                 return Math.round((value / yht) * 1000) / 10 + '%';
               }
             },
             legend: {
               display: true,
-              position: 'left'
+              position: 'left',
+              labels: {
+                color: "#000000"
+              }
             }
           }
         }
@@ -380,26 +393,32 @@ function App() {
 
   return (
   <>
-      <Header />
-      <h1>Interesting data</h1>
-      <div className='tokaSivuChart'>
-        <p>10 countries have had over 150 pirate attacks between 1993-2020</p>
-        <canvas ref={attackPieChartRef} id="attackPie"></canvas>
+      <div id="tokaSivuDiv">
+        <div className="tokaSivuHF">
+          <Header />
+        </div>
+        <h1>Interesting data</h1>
+        <div className='tokaSivuChart'>
+          <p>10 countries have had over 150 pirate attacks between 1993-2020</p>
+          <canvas ref={attackPieChartRef} id="attackPie"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <p>Most common attack types*</p>
+          <canvas ref={atkTypeChartRef} id="atkTypePie"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <p>Most common vessel types*</p>
+          <canvas ref={vesselTypeChartRef} id="vesselTypePie"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <p>Most common vessel status*</p>
+          <canvas ref={vesselStatusChartRef} id="vesselStatusPie"></canvas>
+        </div>
+        <p>*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
+        <div className="tokaSivuHF">
+          <Footer />
+        </div>
       </div>
-      <div className='tokaSivuChart'>
-        <p>Most common attack types*</p>
-        <canvas ref={atkTypeChartRef} id="atkTypePie"></canvas>
-      </div>
-      <div className='tokaSivuChart'>
-        <p>Most common vessel types*</p>
-        <canvas ref={vesselTypeChartRef} id="vesselTypePie"></canvas>
-      </div>
-      <div className='tokaSivuChart'>
-        <p>Most common vessel status*</p>
-        <canvas ref={vesselStatusChartRef} id="vesselStatusPie"></canvas>
-      </div>
-      <p>*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
-      <Footer />
   </>
   );
 }
