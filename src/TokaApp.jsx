@@ -8,14 +8,33 @@ import pirate_attacks from './data/pirate_attacks';
 import country_indicators from './data/country_indicators';
 import country_codes from './data/country_codes';
 
-/**
- * Mahdollisia muita kaavioita
- * Most common attack types
- * Most common vessel types
- * Most common vessel status
- */
-
 function App() {
+
+  /**
+   * Funktio jolla saadaan lajiteltua kaksi taulukko ns. linkitettynä
+   * @param {*} t1 Ensimmäinen taulukko eli labelit
+   * @param {*} t2 Toinen taulukko eli numerot
+   * @returns t1 ja t2 lajiteltuina
+   */
+  function tuplaSort(t1, t2) {
+    // Luodaan yhdistetty taulukko jotta saadaan taulukot linkitettyä
+    let yhdistetty = [];
+    for (let i = 0; i < t1.length; i++) { 
+      let obj = {
+        eka: t1[i],
+        toka: t2[i]
+      };
+      yhdistetty.push(obj);
+    }
+    yhdistetty = yhdistetty.sort((a, b) => b.toka - a.toka); // Lajitellaan isoimmasta pienimpään
+    for (let i = 0; i < t1.length; i++) { // Asetetaan "uudet sijainnit" taulukkoihin
+      t1[i] = yhdistetty[i].eka;
+      t2[i] = yhdistetty[i].toka;
+    }
+    console.log(t1);
+    return [t1, t2]; // Palautetaan lajitellut taulukot
+  }
+
   // Luodaan muutama taulukko väreistä joita käytetään sivun piirakkakaavioissa
   // Värivalinnat perustuu https://www.simplifiedsciencepublishing.com/resources/best-color-palettes-for-scientific-figures-and-data-visualizations
   const varitGrayscale = ["#0d0d0d", "#262626", "#595959", "#7f7f7f", "#a1a1a1", "#bababa", "#d4d4d4", "#ededed"];
@@ -56,20 +75,12 @@ function App() {
       hyokkaykset.push(laskuri); // Lisätään hyökkäykset taulukkoon jos niitä on yli 100
     }
     
-    // Luodaan yhdistetty taulukko jotta saadaan maat ja niiden hyökkäykset linkitettyä
-    let yhdistetty = [];
-    for (let i = 0; i < maaTaulukko.length; i++) { 
-      let obj = {
-        maa: maaTaulukko[i],
-        hyokkaykset: hyokkaykset[i]
-      };
-      yhdistetty.push(obj);
-    }
-    yhdistetty = yhdistetty.sort((a, b) => b.hyokkaykset - a.hyokkaykset); // Lajitellaan hyökkäykset isoimmasta pienimpään
-    for (let i = 0; i < maaTaulukko.length; i++) { // Asetetaan "uudet sijainnit" taulukkoihin
-      maaTaulukko[i] = yhdistetty[i].maa;
-      hyokkaykset[i] = yhdistetty[i].hyokkaykset;
-    }
+    // Lajitellaan maat hyökkäysten mukaan
+    let yhdistetty = tuplaSort(maaTaulukko, hyokkaykset); 
+    maaTaulukko = yhdistetty[0];
+    hyokkaykset = yhdistetty[1];
+
+    // Lisätään loput maat taulukkoon
     maaTaulukko.push("Other countries combined");
     hyokkaykset.push(loput);
     
@@ -138,13 +149,35 @@ function App() {
       }
     }
 
+    // Käydään läpi kaikki tavat ja poistetaan ne joissa on alle 100 tapausta
+    // Lisätään nämä tapaukset loppuun "Other types" alkioon
+    let loput = 0;
+    for (let i = 0; i < tavat.length;) {
+      if (hyokkaykset[i] <= 100) {
+        loput += hyokkaykset[i];
+        tavat.splice(i, 1);
+        hyokkaykset.splice(i, 1);
+        continue;
+      }
+      i++; // Siirrytään seuraavaan jos mitään ei poistettu
+    }
+
+    // Lajitellaan tavat hyökkäysten mukaan
+    let yhdistetty = tuplaSort(tavat, hyokkaykset); 
+    tavat = yhdistetty[0];
+    hyokkaykset = yhdistetty[1];
+
+    // Lisätään loput tavat taulukkoon
+    tavat.push("Other types");
+    hyokkaykset.push(loput);
+
     const chartti = new Chart (ctx, {
       type: "pie",
       data: {
           labels: tavat, // Tavat
           datasets: [{
               data: hyokkaykset, // Määrä
-              backgroundColor: varitMuted,
+              backgroundColor: varitBright,
               borderColor: rajaVari
           }]
       },
@@ -171,6 +204,180 @@ function App() {
     };
   });
 
+  // Luodaan piiraskaavio kaikista laivatyypeistä
+  const  vesselTypeChartRef = useRef(null); // asetetaan viite canvas elementtiin
+  useEffect(() => {
+    const ctx = vesselTypeChartRef.current.getContext("2d");
+
+    // Käydään läpi kaikki hyökkäykset
+    // Aina kun tulee uusi laivatyyppi, lisätään se tyypit taulukkoon
+    // Jos tapa on jo olemassa, lisätään siihen +1
+    let tyypit = [];
+    let hyokkaykset = [];
+    let yht = 0;
+
+    for (let hyokkays of pirate_attacks) {
+      if (hyokkays.vessel_type == "NA") { continue; } // Jätetään tapaukset joissa dataa ei ole huomioimatta
+      yht += 1; // Hyökkäys lasketaan yhteismäärään
+      if (tyypit.length == 0) {
+        tyypit.push(hyokkays.vessel_type); // Lisätään ensimmäinen ei tyhjä tyyppi taulukkoon
+        hyokkaykset.push(1); // Lisätään ensimmäinen luku hyökkäyksiin
+        continue;
+      }
+      for (let i = 0; i < tyypit.length; i++) { // Käydään läpi listatut tyypit
+        if (tyypit[i] == hyokkays.vessel_type) { // Jos tapa on jo listattu, nostetaan sen hyökkäysten määrää
+          hyokkaykset[i] += 1;
+          break;
+        }
+        if (i == tyypit.length-1) { // Jos käydään läpi kaikki tyypit ja mikään ei ole sama eli tyyppi on uusi, lisätään taulukkoon uusi tyyppi
+          tyypit.push(hyokkays.vessel_type);
+          hyokkaykset.push(1);
+        }
+      }
+    }
+
+    // Käydään läpi kaikki tyypit ja poistetaan ne joissa on <= 30 tapausta
+    // Lisätään nämä tapaukset loppuun "Other types" alkioon
+    let loput = 0;
+    for (let i = 0; i < tyypit.length;) {
+      if (hyokkaykset[i] <= 30) {
+        loput += hyokkaykset[i];
+        tyypit.splice(i, 1);
+        hyokkaykset.splice(i, 1);
+        continue;
+      }
+      i++; // Siirrytään seuraavaan jos mitään ei poistettu
+    }
+
+    // Lajitellaan tyypit hyökkäysten mukaan
+    let yhdistetty = tuplaSort(tyypit, hyokkaykset); 
+    tyypit = yhdistetty[0];
+    hyokkaykset = yhdistetty[1];
+
+    // Lisätään loput tyypit taulukkoon
+    tyypit.push("Other types");
+    hyokkaykset.push(loput);
+
+    const chartti = new Chart (ctx, {
+      type: "pie",
+      data: {
+          labels: tyypit, // Tavat
+          datasets: [{
+              data: hyokkaykset, // Määrä
+              backgroundColor: varitAlternating,
+              borderColor: rajaVari
+          }]
+      },
+      options: {   
+        plugins: {
+          datalabels: {
+            color: "#ffffff",
+            backgroundColor: "#000000",
+            anchor: 'end',
+            display: 'auto',
+            formatter: function(value) {
+              return Math.round((value / yht) * 1000) / 10 + '%';
+            }
+          },
+          legend: {
+            display: true,
+            position: 'right'
+          }
+        }
+      }
+    });
+    return () => {
+      chartti.destroy(); // cleanup
+    };
+  });
+
+    // Luodaan piiraskaavio kaikista laivojen statuksista
+    const  vesselStatusChartRef = useRef(null); // asetetaan viite canvas elementtiin
+    useEffect(() => {
+      const ctx = vesselStatusChartRef.current.getContext("2d");
+  
+      // Käydään läpi kaikki hyökkäykset
+      // Aina kun tulee uusi laivan status, lisätään se status taulukkoon
+      // Jos status on jo olemassa, lisätään siihen +1
+      let status = [];
+      let hyokkaykset = [];
+      let yht = 0;
+  
+      for (let hyokkays of pirate_attacks) {
+        if (hyokkays.vessel_status == "NA") { continue; } // Jätetään tapaukset joissa dataa ei ole huomioimatta
+        yht += 1; // Hyökkäys lasketaan yhteismäärään
+        if (status.length == 0) {
+          status.push(hyokkays.vessel_status); // Lisätään ensimmäinen ei tyhjä status taulukkoon
+          hyokkaykset.push(1); // Lisätään ensimmäinen luku hyökkäyksiin
+          continue;
+        }
+        for (let i = 0; i < status.length; i++) { // Käydään läpi listatut statukset
+          if (status[i] == hyokkays.vessel_status) { // Jos status on jo listattu, nostetaan sen hyökkäysten määrää
+            hyokkaykset[i] += 1;
+            break;
+          }
+          if (i == status.length-1) { // Jos käydään läpi kaikki statukset ja mikään ei ole sama eli status on uusi, lisätään taulukkoon uusi status
+            status.push(hyokkays.vessel_status);
+            hyokkaykset.push(1);
+          }
+        }
+      }
+  
+      // Käydään läpi kaikki statukset ja poistetaan ne joissa on <= 100 tapausta
+      // Lisätään nämä tapaukset loppuun "Other types" alkioon
+      let loput = 0;
+      for (let i = 0; i < status.length;) {
+        if (hyokkaykset[i] <= 100) {
+          loput += hyokkaykset[i];
+          status.splice(i, 1);
+          hyokkaykset.splice(i, 1);
+          continue;
+        }
+        i++; // Siirrytään seuraavaan jos mitään ei poistettu
+      }
+
+      // Lajitellaanstatukset hyökkäysten mukaan
+      let yhdistetty = tuplaSort(status, hyokkaykset); 
+      status = yhdistetty[0];
+      hyokkaykset = yhdistetty[1];
+
+      // Lisätään loput tyypit taulukkoon
+      status.push("Other types");
+      hyokkaykset.push(loput);
+  
+      const chartti = new Chart (ctx, {
+        type: "pie",
+        data: {
+            labels: status, // Tavat
+            datasets: [{
+                data: hyokkaykset, // Määrä
+                backgroundColor: varitGrayscale,
+                borderColor: rajaVari
+            }]
+        },
+        options: {   
+          plugins: {
+            datalabels: {
+              color: "#ffffff",
+              backgroundColor: "#000000",
+              anchor: 'end',
+              display: 'auto',
+              formatter: function(value) {
+                return Math.round((value / yht) * 1000) / 10 + '%';
+              }
+            },
+            legend: {
+              display: true,
+              position: 'left'
+            }
+          }
+        }
+      });
+      return () => {
+        chartti.destroy(); // cleanup
+      };
+    });
+
   return (
   <>
       <Header />
@@ -185,9 +392,11 @@ function App() {
       </div>
       <div className='tokaSivuChart'>
         <p>Most common vessel types*</p>
+        <canvas ref={vesselTypeChartRef} id="vesselTypePie"></canvas>
       </div>
       <div className='tokaSivuChart'>
         <p>Most common vessel status*</p>
+        <canvas ref={vesselStatusChartRef} id="vesselStatusPie"></canvas>
       </div>
       <p>*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
       <Footer />
