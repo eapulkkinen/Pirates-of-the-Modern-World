@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import country_codes from '../../data/country_codes';
 import country_indicators from '../../data/country_indicators';
 import './Modal.css';
@@ -42,9 +42,18 @@ const Modal = (props) => {
     const [valittuIndikaattori, setValittuIndikaattori] = useState("");
     const [valittuMaa, setValittuMaa] = useState("");
     const [auki, setAuki] = useState(false);
+    const [valittuMaaElem, setValittuMaaElem] = useState(null);
+
+    useEffect(() => {
+        if (props.maat.length === 1) {
+            setValittuMaa(props.maat[0]);
+        }
+        else {
+            setValittuMaa("");
+        }
+    }, [props.maat]);
 
     const handleCountryChange = (e) => {
-
         setValittuMaa(e.target.value);
     }
 
@@ -54,7 +63,7 @@ const Modal = (props) => {
 
     const toggleAuki = () => {
         if (props.maat.length > 0){   // jos väh. 1 valittu maa, vaihtaa auki arvoa true/false
-            setAuki(!auki);  
+            setAuki(!auki);
         } else {
             alert("Please select a coutry");
         }
@@ -105,8 +114,8 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
-                <select onChange={handleCountryChange}>
-                    <option value="">Select a country</option>
+                <select onChange={handleCountryChange} value={valittuMaa} >
+                    <option id="valittuoption" value="">Select a country</option>
                     {props.maat.map((option, index) => (
                         <option key={index} value={option}>
                          {option}
