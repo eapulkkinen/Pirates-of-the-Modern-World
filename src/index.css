@@ -5,6 +5,7 @@ body {
 #maindiv {
     display: flex;
     margin-top: 0;
+    z-index: 0;
 }
 
 /* Sivupalkit 20% ruudunleveydestä */
@@ -31,7 +32,6 @@ div {
 /* Testiksi, jotta hahmottaa paremmin */ 
 #maindiv > div {
     height: 500px;
-    z-index: 1; /* TOOLTIP ONGELMA? */
 }
 
 #header {
@@ -40,7 +40,7 @@ div {
     margin-bottom: 0;
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 1;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -186,7 +186,7 @@ div {
 .tooltip-container {
     position: relative;
     display: inline-block;
-    z-index: 9999;
+    z-index: 998;
     width: auto;
     justify-content: center;
 }
