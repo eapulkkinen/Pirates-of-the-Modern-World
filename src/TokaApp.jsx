@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import './index.css';
@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import pirate_attacks from './data/pirate_attacks';
 import country_indicators from './data/country_indicators';
 import country_codes from './data/country_codes';
+
+// TODO ehkä tee jotenkin funktio joka tekee chartin
 
 function App() {
 
@@ -31,7 +33,6 @@ function App() {
       t1[i] = yhdistetty[i].eka;
       t2[i] = yhdistetty[i].toka;
     }
-    console.log(t1);
     return [t1, t2]; // Palautetaan lajitellut taulukot
   }
 
@@ -60,7 +61,7 @@ function App() {
     var maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
     for (let maa of country_codes.map(i => i.country)) { // Käydään läpi jokainen maa
       let laskuri = 0;
-      for (let indicator of country_indicators) { // TODO optimointi
+      for (let indicator of country_indicators) {
         if (indicator.country == maa) { // Lisätään laskuriin maan hyökkäykset jokaiselta vuodelta
           laskuri += indicator.attacks;
         }
@@ -101,6 +102,7 @@ function App() {
             color: "#ffffff",
             backgroundColor: "#000000",
             anchor: 'end',
+            clip: 'true',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
             }
@@ -191,6 +193,7 @@ function App() {
             backgroundColor: "#000000",
             anchor: 'center',
             display: 'auto',
+            clip: 'true',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
             }
@@ -281,6 +284,7 @@ function App() {
             backgroundColor: "#000000",
             anchor: 'center',
             display: 'auto',
+            clip: 'true',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
             }
@@ -300,96 +304,190 @@ function App() {
     };
   });
 
-    // Luodaan piiraskaavio kaikista laivojen statuksista
-    const  vesselStatusChartRef = useRef(null); // asetetaan viite canvas elementtiin
-    useEffect(() => {
-      const ctx = vesselStatusChartRef.current.getContext("2d");
-  
-      // Käydään läpi kaikki hyökkäykset
-      // Aina kun tulee uusi laivan status, lisätään se status taulukkoon
-      // Jos status on jo olemassa, lisätään siihen +1
-      let status = [];
-      let hyokkaykset = [];
-      let yht = 0;
-  
-      for (let hyokkays of pirate_attacks) {
-        if (hyokkays.vessel_status == "NA") { continue; } // Jätetään tapaukset joissa dataa ei ole huomioimatta
-        yht += 1; // Hyökkäys lasketaan yhteismäärään
-        if (status.length == 0) {
-          status.push(hyokkays.vessel_status); // Lisätään ensimmäinen ei tyhjä status taulukkoon
-          hyokkaykset.push(1); // Lisätään ensimmäinen luku hyökkäyksiin
-          continue;
+  // Luodaan piiraskaavio kaikista laivojen statuksista
+  const  vesselStatusChartRef = useRef(null); // asetetaan viite canvas elementtiin
+  useEffect(() => {
+    const ctx = vesselStatusChartRef.current.getContext("2d");
+
+    // Käydään läpi kaikki hyökkäykset
+    // Aina kun tulee uusi laivan status, lisätään se status taulukkoon
+    // Jos status on jo olemassa, lisätään siihen +1
+    let status = [];
+    let hyokkaykset = [];
+    let yht = 0;
+
+    for (let hyokkays of pirate_attacks) {
+      if (hyokkays.vessel_status == "NA") { continue; } // Jätetään tapaukset joissa dataa ei ole huomioimatta
+      yht += 1; // Hyökkäys lasketaan yhteismäärään
+      if (status.length == 0) {
+        status.push(hyokkays.vessel_status); // Lisätään ensimmäinen ei tyhjä status taulukkoon
+        hyokkaykset.push(1); // Lisätään ensimmäinen luku hyökkäyksiin
+        continue;
+      }
+      for (let i = 0; i < status.length; i++) { // Käydään läpi listatut statukset
+        if (status[i] == hyokkays.vessel_status) { // Jos status on jo listattu, nostetaan sen hyökkäysten määrää
+          hyokkaykset[i] += 1;
+          break;
         }
-        for (let i = 0; i < status.length; i++) { // Käydään läpi listatut statukset
-          if (status[i] == hyokkays.vessel_status) { // Jos status on jo listattu, nostetaan sen hyökkäysten määrää
-            hyokkaykset[i] += 1;
-            break;
-          }
-          if (i == status.length-1) { // Jos käydään läpi kaikki statukset ja mikään ei ole sama eli status on uusi, lisätään taulukkoon uusi status
-            status.push(hyokkays.vessel_status);
-            hyokkaykset.push(1);
-          }
+        if (i == status.length-1) { // Jos käydään läpi kaikki statukset ja mikään ei ole sama eli status on uusi, lisätään taulukkoon uusi status
+          status.push(hyokkays.vessel_status);
+          hyokkaykset.push(1);
         }
       }
-  
-      // Käydään läpi kaikki statukset ja poistetaan ne joissa on <= 100 tapausta
-      // Lisätään nämä tapaukset loppuun "Other types" alkioon
-      let loput = 0;
-      for (let i = 0; i < status.length;) {
-        if (hyokkaykset[i] <= 100) {
-          loput += hyokkaykset[i];
-          status.splice(i, 1);
-          hyokkaykset.splice(i, 1);
-          continue;
-        }
-        i++; // Siirrytään seuraavaan jos mitään ei poistettu
+    }
+
+    // Käydään läpi kaikki statukset ja poistetaan ne joissa on <= 100 tapausta
+    // Lisätään nämä tapaukset loppuun "Other types" alkioon
+    let loput = 0;
+    for (let i = 0; i < status.length;) {
+      if (hyokkaykset[i] <= 100) {
+        loput += hyokkaykset[i];
+        status.splice(i, 1);
+        hyokkaykset.splice(i, 1);
+        continue;
       }
+      i++; // Siirrytään seuraavaan jos mitään ei poistettu
+    }
 
-      // Lajitellaanstatukset hyökkäysten mukaan
-      let yhdistetty = tuplaSort(status, hyokkaykset); 
-      status = yhdistetty[0];
-      hyokkaykset = yhdistetty[1];
+    // Lajitellaanstatukset hyökkäysten mukaan
+    let yhdistetty = tuplaSort(status, hyokkaykset); 
+    status = yhdistetty[0];
+    hyokkaykset = yhdistetty[1];
 
-      // Lisätään loput tyypit taulukkoon
-      status.push("Other types");
-      hyokkaykset.push(loput);
-  
-      const chartti = new Chart (ctx, {
-        type: "pie",
-        data: {
-            labels: status, // Tavat
-            datasets: [{
-                data: hyokkaykset, // Määrä
-                backgroundColor: varitGrayscale,
-                borderColor: rajaVari
-            }]
-        },
-        options: {   
-          plugins: {
-            datalabels: {
-              color: "#000000",
-              backgroundColor: "#ffffff",
-              anchor: 'center',
-              display: 'auto',
-              clip: 'true',
-              formatter: function(value) {
-                return Math.round((value / yht) * 1000) / 10 + '%';
-              }
-            },
-            legend: {
-              display: true,
-              position: 'left',
-              labels: {
-                color: "#000000"
-              }
+    // Lisätään loput tyypit taulukkoon
+    status.push("Other types");
+    hyokkaykset.push(loput);
+
+    const chartti = new Chart (ctx, {
+      type: "pie",
+      data: {
+          labels: status, // Tavat
+          datasets: [{
+              data: hyokkaykset, // Määrä
+              backgroundColor: varitGrayscale,
+              borderColor: rajaVari
+          }]
+      },
+      options: {   
+        plugins: {
+          datalabels: {
+            color: "#000000",
+            backgroundColor: "#ffffff",
+            anchor: 'center',
+            display: 'auto',
+            clip: 'true',
+            formatter: function(value) {
+              return Math.round((value / yht) * 1000) / 10 + '%';
+            }
+          },
+          legend: {
+            display: true,
+            position: 'left',
+            labels: {
+              color: "#000000"
             }
           }
         }
-      });
-      return () => {
-        chartti.destroy(); // cleanup
-      };
+      }
     });
+    return () => {
+      chartti.destroy(); // cleanup
+    };
+  });
+
+  // Luodaan piirakkakaavio hyökkäyksistä per maanosa
+  const geographicChartRef = useRef(null);
+  useEffect(() => {
+    const ctx = geographicChartRef.current.getContext("2d");
+
+    let regions = [];
+    let hyokkaykset = [];
+    let yht = 0;
+    
+    for (let hyokkays of pirate_attacks) { 
+      let maa = hyokkays.nearest_country;
+      if (maa == "NA") { continue; } // Kaikilla hyökkäksillä pitäisi olla maa mutta tämä on varmuuden vuoksi tässä
+      for (let country of country_codes) {
+        if (country.country == maa) { // Jos country code lyhenne on sama kuin hyökkäyksen country code
+          yht += 1;
+          if (regions.length == 0) { // lisätään eka region
+            regions.push(country.region);
+            hyokkaykset.push(1);
+            continue;
+          }
+          for (let i = 0; i < regions.length; i++) { // Käydään läpi regionit, jos on jo aiemmin mukana, lisätään +1 hyökkäyksiin
+            if (regions[i] == country.region) {
+              hyokkaykset[i] += 1;
+              break;
+            }
+            if (i == regions.length-1) {
+              regions.push(country.region);
+              hyokkaykset.push(1);
+            }
+          }
+        }
+      }
+    }
+
+    // Käydään läpi kaikki regionit ja poistetaan ne joissa on <= 100 tapausta
+    // Lisätään nämä tapaukset loppuun "Other types" alkioon
+    let loput = 0;
+    for (let i = 0; i < regions.length;) {
+      if (hyokkaykset[i] <= 100) {
+        loput += hyokkaykset[i];
+        regions.splice(i, 1);
+        hyokkaykset.splice(i, 1);
+        continue;
+      }
+      i++; // Siirrytään seuraavaan jos mitään ei poistettu
+    }
+
+    // Lajitellaan regionit hyökkäysten mukaan
+    let yhdistetty = tuplaSort(regions, hyokkaykset); 
+    regions = yhdistetty[0];
+    hyokkaykset = yhdistetty[1];
+
+    // Lisätään loput regionit taulukkoon
+    regions.push("Other regions");
+    hyokkaykset.push(loput);
+
+
+    const chartti = new Chart (ctx, {
+      type: "pie",
+      data: {
+          labels: regions, // Alueet
+          datasets: [{
+              data: hyokkaykset, // Määrä
+              backgroundColor: varitMuted,
+              borderColor: rajaVari
+          }]
+      },
+      options: {   
+        plugins: {
+          datalabels: {
+            color: "#ffffff",
+            backgroundColor: "#000000",
+            anchor: 'center',
+            display: 'auto',
+            clip: 'true',
+            formatter: function(value) {
+              return Math.round((value / yht) * 1000) / 10 + '%';
+            }
+          },
+          legend: {
+            display: true,
+            position: 'right',
+            labels: {
+              color: "#000000"
+            }
+          }
+        }
+      }
+    });
+    return () => {
+      chartti.destroy(); // cleanup
+    };
+  });
 
   return (
   <>
@@ -413,6 +511,10 @@ function App() {
         <div className='tokaSivuChart'>
           <p>Most common vessel status*</p>
           <canvas ref={vesselStatusChartRef} id="vesselStatusPie"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <p>Attacks by geographic regions</p>
+          <canvas ref={geographicChartRef} id="geographicPie"></canvas>
         </div>
         <p>*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
         <div className="tokaSivuHF">
