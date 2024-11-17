@@ -42,16 +42,6 @@ const Modal = (props) => {
     const [valittuIndikaattori, setValittuIndikaattori] = useState("");
     const [valittuMaa, setValittuMaa] = useState("");
     const [auki, setAuki] = useState(false);
-    const [valittuMaaElem, setValittuMaaElem] = useState(null);
-
-    useEffect(() => {
-        if (props.maat.length === 1) {
-            setValittuMaa(props.maat[0]);
-        }
-        else {
-            setValittuMaa("");
-        }
-    }, [props.maat]);
 
     const handleCountryChange = (e) => {
         setValittuMaa(e.target.value);
@@ -64,6 +54,12 @@ const Modal = (props) => {
     const toggleAuki = () => {
         if (props.maat.length > 0){   // jos väh. 1 valittu maa, vaihtaa auki arvoa true/false
             setAuki(!auki);
+            if (props.maat.length === 1) {
+                setValittuMaa(props.maat[0]);
+            }
+            else {
+                setValittuMaa("");
+            }
         } else {
             alert("Please select a coutry");
         }
