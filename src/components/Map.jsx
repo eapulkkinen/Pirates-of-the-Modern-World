@@ -48,7 +48,68 @@ const Map = ({ koordinaattiLista }) => {
 
         //Ryppään luominen. Toimii yhtenä kartan tasona
         const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: 60    //säätää ryppäänluomisen etäisyyttä. default 80
+            maxClusterRadius: 60,    //säätää ryppäänluomisen etäisyyttä. default 80
+            iconCreateFunction: (cluster) => {
+                const numPisteet = cluster.getChildCount();
+
+                let className = 'marker-cluster-';
+                let color = '';
+                let width = '25px';
+                let height = '25px';
+
+                if (numPisteet < 25) {
+                    className += 'xs';
+                    color = 'rgba(0, 0, 255, 0.65)';
+                }
+                else if (numPisteet < 100) {
+                    className += 's';
+                    color = 'rgba(34, 139, 34, 0.7)';
+                    width = '28px';
+                    height = '28px';
+                }
+                else if (numPisteet < 250) {
+                    className += 'm';
+                    color = 'rgba(255, 255, 0, 0.75)';
+                    width = '30px';
+                    height = '30px';
+                }
+                else if (numPisteet < 500) {
+                    className += 'l';
+                    color = 'rgba(255, 100, 10, 0.75)';
+                    width = '32px';
+                    height = '32px';
+                }
+                else if (numPisteet < 1000) {
+                    className += 'xl';
+                    color = 'rgba(255, 0, 0, 0.8)';
+                    width = '35px';
+                    height = '35px';
+                }
+                else {
+                    className += 'xxl';
+                    color = 'rgba(139, 0, 0, 0.8)';
+                    width = '38px';
+                    height = '38px';
+                }
+
+                return L.divIcon({
+                    html: `<div style="
+                                background-color: ${color};
+                                border: 1px solid rgba(0, 0, 0, 0.8);
+                                border-radius: 50%;
+                                width: ${width};
+                                height: ${height};
+                                font-size: 14px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                            ">
+                            <span>${numPisteet}</span></div>`,
+                    className: className,
+                    iconSize: L.point(40, 40, true)
+                });
+            }
         });
 
         setMarkerClusterGroup(clusterGroup);
