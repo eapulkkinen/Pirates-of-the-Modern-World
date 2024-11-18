@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
-
+    var suuntaNuoli = document.getElementById("nuoli");
     const handleSort = () => {
         if (sortOrder === "alphabetical") {
             setSortOrder("descending");
+            suuntaNuoli.innerText = "⬆️";
         }
         else if (sortOrder === "descending") {
             setSortOrder("ascending");
+            suuntaNuoli.innerText = "⬇️";
         }
         else {
             setSortOrder("alphabetical")
+            suuntaNuoli.innerText = "";
         }
     };
 
@@ -38,6 +41,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
             <tr className="valittutr">
                 <th>Country</th>
                 <th onClick={handleSort} style={{ cursor: 'pointer' }}>Number of attacks</th>
+                <th id="nuoli"></th>
             </tr>
         </thead>
         <tbody>
