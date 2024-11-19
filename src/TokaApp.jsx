@@ -16,9 +16,10 @@ function App() {
    * Funktio jolla saadaan lajiteltua kaksi taulukko ns. linkitettynä
    * @param {*} t1 Ensimmäinen taulukko eli labelit
    * @param {*} t2 Toinen taulukko eli numerot
+   * @param {boolean} reverse false jos halutaan pienimmästä isoimpaan, true jos haluaa isoimmasta pienimpään
    * @returns t1 ja t2 lajiteltuina
    */
-  function tuplaSort(t1, t2) {
+  function tuplaSort(t1, t2, reverse = true) {
     // Luodaan yhdistetty taulukko jotta saadaan taulukot linkitettyä
     let yhdistetty = [];
     for (let i = 0; i < t1.length; i++) { 
@@ -28,7 +29,8 @@ function App() {
       };
       yhdistetty.push(obj);
     }
-    yhdistetty = yhdistetty.sort((a, b) => b.toka - a.toka); // Lajitellaan isoimmasta pienimpään
+    if (reverse) { yhdistetty = yhdistetty.sort((a, b) => b.toka - a.toka); } // Lajitellaan isoimmasta pienimpään
+    else { yhdistetty = yhdistetty.sort((a, b) => a.toka - b.toka); } // Lajitellaan pienimmästä isoimpaan
     for (let i = 0; i < t1.length; i++) { // Asetetaan "uudet sijainnit" taulukkoihin
       t1[i] = yhdistetty[i].eka;
       t2[i] = yhdistetty[i].toka;
@@ -489,6 +491,87 @@ function App() {
     };
   });
 
+  const atkByYearRef = useRef(null);
+  useEffect(() => {
+    const ctx = atkByYearRef.current.getContext("2d");
+
+    let hyokkaykset = [];
+    let vuodet = []
+    let index = 0;
+    for (let i = 1993; i <= 2020; i++) {
+      hyokkaykset.push(0);
+      for (let hyokkays of pirate_attacks) {
+        if (hyokkays.date.slice(0, 4) == i) {
+          hyokkaykset[index] += 1;
+        }
+      }
+      vuodet.push(i);
+      index++;
+    }
+
+    const chartti = new Chart (ctx, {
+      type: "line",
+      data: {
+          labels: vuodet, // x-akseli
+          datasets: [{
+              data: hyokkaykset, // y-akseli
+          }]
+      }
+    });
+    return () => {
+      chartti.destroy(); // cleanup
+    };
+  });
+
+  const atkByTimeRef = useRef(null);
+  useEffect(() => {
+    const ctx = atkByTimeRef.current.getContext("2d");
+
+    let hyokkaykset = [];
+    let ajat = []
+
+    for (let hyokkays of pirate_attacks) {
+      let aikaString = hyokkays.time;
+      if (aikaString == "NA") { continue; }
+      let hour = aikaString.slice(0, 2);
+      let aika = parseInt(hour);
+
+      if (ajat.length == 0) {
+        ajat.push(aika);
+        hyokkaykset.push(1);
+        continue;
+      }
+      for (let i = 0; i < ajat.length; i++) {
+        if (aika == ajat[i]) {
+          hyokkaykset[i] += 1;
+          break;
+        }
+        if (i == ajat.length-1) {
+          ajat.push(aika);
+          hyokkaykset.push(1);
+          break;
+        }
+      }
+    }
+
+    let yhdistetty = tuplaSort(hyokkaykset, ajat, false);
+    hyokkaykset = yhdistetty[0];
+    ajat = yhdistetty[1];
+
+    const chartti = new Chart (ctx, {
+      type: "line",
+      data: {
+          labels: ajat, // x-akseli
+          datasets: [{
+              data: hyokkaykset, // y-akseli
+          }]
+      }
+    });
+    return () => {
+      chartti.destroy(); // cleanup
+    };
+  });
+
   return (
   <>
       <div id="tokaSivuDiv">
@@ -515,6 +598,14 @@ function App() {
         <div className='tokaSivuChart'>
           <p>Attacks by geographic regions</p>
           <canvas ref={geographicChartRef} id="geographicPie"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <p>Attacks by year</p>
+          <canvas ref={atkByYearRef} id="atkByYearRef"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <p>Attacks by time*</p>
+          <canvas ref={atkByTimeRef} id="atkByTimeRef"></canvas>
         </div>
         <p>*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
         <div className="tokaSivuHF">
