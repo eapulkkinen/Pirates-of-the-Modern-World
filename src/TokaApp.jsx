@@ -697,7 +697,10 @@ function App() {
         <div className='tokaSivuChart'>
           <h2>Fun but pointless data</h2>
           <p>All of the attacks average distance from shore is {shore_distance_avg} kilometers</p>
-          <p>Tää on temp kun säädän sivun asettelua atm</p>
+          <p>Tämä on temp mutta voisi lisätä esim</p>
+          <p>Keskiverto lat ja lon ja niiden sijainti google mapsissa</p>
+          <p>Lorem ipsum dolor sit amet</p>
+          <p>consectetur adipiscing elit.</p>
         </div>
         <div className='tokaSivuChart'>
           <p>Attacks by year</p>
@@ -707,7 +710,7 @@ function App() {
           <p>Attacks by time*</p>
           <canvas ref={atkByTimeRef} id="atkByTimeRef"></canvas>
         </div>
-        <p>*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
+        <p id="disclaimerP">*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
         <div className="tokaSivuHF">
           <Footer />
         </div>

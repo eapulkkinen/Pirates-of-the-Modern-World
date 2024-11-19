@@ -244,6 +244,9 @@ div {
 
 #tokaSivuDiv button {
     background-color: #eae8d1;
+    border-radius: 4px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .tokaSivuHF {
@@ -260,4 +263,9 @@ div {
     font-size: large;
 }
 
+#disclaimerP {
+    display: inline-block;
+    width: 100vw;
+    text-align: left;
+}
 
