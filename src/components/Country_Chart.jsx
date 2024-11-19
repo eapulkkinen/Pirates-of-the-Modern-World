@@ -69,26 +69,44 @@ const Country_Chart = (props) => {
       const attacks = props.indikaattorit.map(i => i.attacks);
 
       // määritellään taulukon tiedot
-      const testi = new Chart (ctx, {
+      const kuvaaja = new Chart (ctx, {
         type: "line", // taulukon tyyppi "bar", "pie" jne myös mahdollisia
         data: {
             labels: vuosi, // x-akselin data
             datasets: [ // y-akselin data
               {
                 label: 'Attacks',
-                data: attacks 
+                data: attacks,
+                yAxisID: 'yVas',
               },
               {
                 label: props.valittuIndikaattori,
-                data: indicator
-              }
-          ]
-
-        }
+                data: indicator,
+                yAxisID: 'yOik',
+              },
+          ],
+        },
+        options: {
+          scales: {  // y-akselit
+            yVas: {
+              type: 'linear', 
+              display: true,
+              position: 'left',
+            },
+            yOik: {
+              type: 'linear', 
+              display: true,
+              position: 'right',
+              grid: {
+                drawOnChartArea: false,  // ei näytetä tämän y-akselin viivoja kuvaajassa selkeyden takia
+              },
+            },
+          },
+        },
       });
 
       return () => {
-        testi.destroy(); // cleanup
+        kuvaaja.destroy(); // cleanup
       };
 
     });
