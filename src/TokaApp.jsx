@@ -55,43 +55,63 @@ function App() {
   useEffect(() => {
     const ctx = attackPieChartRef.current.getContext("2d");
 
-    let index = 0;
-    let loput = 0;
     let yht = 0;
+    let maaTaulukko = country_codes.map(i => i.country_name); // Taulukko maiden nimistä
+    let maaLyhenteet = country_codes.map(i => i.country); // Taulukko maiden nimien lyhenteistä
+    let maat = [];
     let hyokkaykset = [];
 
-    var maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
-    for (let maa of country_codes.map(i => i.country)) { // Käydään läpi jokainen maa
-      let laskuri = 0;
-      for (let indicator of country_indicators) {
-        if (indicator.country == maa) { // Lisätään laskuriin maan hyökkäykset jokaiselta vuodelta
-          laskuri += indicator.attacks;
+    for (let i = 0; i < maaTaulukko.length; i++) {  // käydään läpi kaikki maat
+      for (let hyokkays of pirate_attacks) {
+        if (hyokkays.nearest_country == maaLyhenteet[i]) {
+          yht += 1;
+          if (maat.length == 0) { // Ensimmäinen alkio
+            maat.push(maaTaulukko[i]);
+            hyokkaykset.push(1);
+            continue;
+          }
+          for (let j = 0; j < maat.length; j++) { // Muut alkiot
+            if (maat[j] == maaTaulukko[i]) { // Tarkastetaan löytyykö alkio jo taulukosta
+              hyokkaykset[j] += 1;
+              break;
+            }
+            if (j == maat.length-1) { // Jos ei ole löytynyt, kyseessä on uusi tapaus joka lisätään taulukkoon
+              maat.push(maaTaulukko[i]);
+              hyokkaykset.push(1);
+              break;
+            }
+          }
         }
       }
-      yht += laskuri; // Lisätään lasketut hyökkäykset yhteen lukuun
-      if (laskuri <= 150) { // Jos maalla on alle 100 hyökkäystä, se lasketaan vain viimeiseen alkioon ja poistetaan taulukosta
-        maaTaulukko.splice(index, 1);
-        loput += laskuri;
+    }
+
+    // Käydään läpi kaikki tavat ja poistetaan ne joissa on alle 100 tapausta
+    // Lisätään nämä tapaukset loppuun "Other countries" alkioon
+    let loput = 0;
+    for (let i = 0; i < maat.length;) {
+      if (hyokkaykset[i] <= 153) {
+        loput += hyokkaykset[i];
+        maat.splice(i, 1);
+        hyokkaykset.splice(i, 1);
         continue;
       }
-      index++;
-      hyokkaykset.push(laskuri); // Lisätään hyökkäykset taulukkoon jos niitä on yli 100
+      i++; // Siirrytään seuraavaan jos mitään ei poistettu
     }
     
     // Lajitellaan maat hyökkäysten mukaan
-    let yhdistetty = tuplaSort(maaTaulukko, hyokkaykset); 
-    maaTaulukko = yhdistetty[0];
+    let yhdistetty = tuplaSort(maat, hyokkaykset); 
+    maat = yhdistetty[0];
     hyokkaykset = yhdistetty[1];
 
     // Lisätään loput maat taulukkoon
-    maaTaulukko.push("Other countries");
+    maat.push("Other countries");
     hyokkaykset.push(loput);
     
     // määritellään taulukon tiedot
     const chartti = new Chart (ctx, {
       type: "pie",
       data: {
-          labels: maaTaulukko, // Maat
+          labels: maat, // Maat
           datasets: [{
               data: hyokkaykset, // Hyökkäykset
               backgroundColor: varitMuted,
@@ -675,7 +695,7 @@ function App() {
         </div>
         <h1>Interesting data</h1>
         <div className='tokaSivuChart'>
-          <h2>10 countries have had over 150 pirate attacks between 1993-2020</h2>
+          <h2>Top 10 countries with the most attacks between 1993-2020</h2>
           <canvas ref={attackPieChartRef} id="attackPie"></canvas>
         </div>
         <div className='tokaSivuChart'>
