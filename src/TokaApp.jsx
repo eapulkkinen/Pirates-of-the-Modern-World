@@ -515,13 +515,18 @@ function App() {
           labels: vuodet, // x-akseli
           datasets: [{
               data: hyokkaykset, // y-akseli
-              tension: 0.1,
-              borderColor: '#7ca377'
-          }]
+              tension: 0,
+              borderColor: '#7ca377',
+              borderWidth: 5,
+              pointRadius: 0,
+            }]
       },
       options: {
         plugins: {
           legend: {
+            display: false
+          },
+          datalabels: {
             display: false
           }
         },
@@ -531,12 +536,24 @@ function App() {
               display: true,
               text: 'Year',
               color: '#000000'
+            },
+            border: {
+              color: '#000000'
+            },
+            ticks: {
+              color: '#000000'
             }
           },
           y: {
             title: {
               display: true,
               text: 'Number of attacks',
+              color: '#000000'
+            },
+            border: {
+              color: '#000000'
+            },
+            ticks: {
               color: '#000000'
             }
           }
@@ -590,12 +607,17 @@ function App() {
           datasets: [{
               data: hyokkaykset, // y-akseli
               tension: 0.1,
-              borderColor: '#7ca377'
+              borderColor: '#000000',
+              borderWidth: 5,
+              pointRadius: 0
           }]
       },
       options: {
         plugins: {
           legend: {
+            display: false
+          },
+          datalabels: {
             display: false
           }
         },
@@ -605,12 +627,24 @@ function App() {
               display: true,
               text: 'Hour',
               color: '#000000'
+            },
+            border: {
+              color: '#000000'
+            },
+            ticks: {
+              color: '#000000'
             }
           },
           y: {
             title: {
               display: true,
               text: 'Number of attacks',
+              color: '#000000'
+            },
+            border: {
+              color: '#000000'
+            },
+            ticks: {
               color: '#000000'
             }
           }
@@ -622,6 +656,17 @@ function App() {
     };
   });
 
+  //Lasketaan keskiverto etäisyys rannasta
+  let shore_distance_summa = 0;
+  let yht = 0;
+  for (let hyokkays of pirate_attacks) {
+    shore_distance_summa += parseInt(hyokkays.shore_distance);
+    yht += 1;
+  }
+  let shore_distance_avg = Math.round((shore_distance_summa / yht) * 100) / 100;
+
+
+
   return (
   <>
       <div id="tokaSivuDiv">
@@ -630,24 +675,29 @@ function App() {
         </div>
         <h1>Interesting data</h1>
         <div className='tokaSivuChart'>
-          <p>10 countries have had over 150 pirate attacks between 1993-2020</p>
+          <h2>10 countries have had over 150 pirate attacks between 1993-2020</h2>
           <canvas ref={attackPieChartRef} id="attackPie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <p>Most common attack types*</p>
+          <h2>Most common attack types*</h2>
           <canvas ref={atkTypeChartRef} id="atkTypePie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <p>Most common vessel types*</p>
+          <h2>Most common vessel types*</h2>
           <canvas ref={vesselTypeChartRef} id="vesselTypePie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <p>Most common vessel status*</p>
+          <h2>Most common vessel status*</h2>
           <canvas ref={vesselStatusChartRef} id="vesselStatusPie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <p>Attacks by geographic regions</p>
+          <h2>Attacks by geographic regions</h2>
           <canvas ref={geographicChartRef} id="geographicPie"></canvas>
+        </div>
+        <div className='tokaSivuChart'>
+          <h2>Fun but pointless data</h2>
+          <p>All of the attacks average distance from shore is {shore_distance_avg} kilometers</p>
+          <p>Tää on temp kun säädän sivun asettelua atm</p>
         </div>
         <div className='tokaSivuChart'>
           <p>Attacks by year</p>
