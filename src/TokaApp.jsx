@@ -515,7 +515,32 @@ function App() {
           labels: vuodet, // x-akseli
           datasets: [{
               data: hyokkaykset, // y-akseli
+              tension: 0.1,
+              borderColor: '#7ca377'
           }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Year',
+              color: '#000000'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Number of attacks',
+              color: '#000000'
+            }
+          }
+        }
       }
     });
     return () => {
@@ -564,7 +589,32 @@ function App() {
           labels: ajat, // x-akseli
           datasets: [{
               data: hyokkaykset, // y-akseli
+              tension: 0.1,
+              borderColor: '#7ca377'
           }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Hour',
+              color: '#000000'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Number of attacks',
+              color: '#000000'
+            }
+          }
+        }
       }
     });
     return () => {
