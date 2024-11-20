@@ -312,26 +312,23 @@ import Modal from './components/Modal/Modal'
       });
     }
 
-
+    /**
+     * Hakee maan hyökkäysten määrän valittuna vuonna
+     * @param {*} country maa jonka hyökkäyksiä käsitellään
+     * @returns valitun maan hyökkäykset valittuna vuonna
+     */
     const getAttackCount = (country) => {
       const countryCode = palautaMaataVastaavaMaakoodi(country);
       let count = 0;
-      if (vuosi === "all") {
-        //jokaisen vuoden hyökkäykset summataan ja palautetaan
-        const maaTiedot = country_indicators.filter(maadata =>
-          maadata['country'] === countryCode);
-        maaTiedot.forEach(maadata => {
-          count += maadata.attacks;
-        });
+      let hyokkaykset = haeMaidenHyokkaykset(countryCode);
+      if (hyokkaykset.length == 0) { return 0; } // Ei hyökkäyksiä
+      if (vuosi === "all") { return hyokkaykset.length; } // Palautetaan kaikki maan hyökkäykset
+      for (let i = 0; i < hyokkaykset.length; i++) {
+        if (hyokkaykset[i].date.slice(0, 4) == vuosi) { count++; }
+        // Hyökkäykset ovat vuosijärjestyksessä datassa, eli jos data on päässyt seuraavaan vuoteen
+        // Keskeytetään toiminta
+        if (hyokkaykset[i].date.slice(0, 4) > vuosi) { break; } 
       }
-      else {
-        let maadata = country_indicators.find(maandata => 
-          maandata.country === countryCode &&
-          maandata.year.toString() === vuosi
-        );
-        count = maadata ? maadata.attacks : 0;
-      }
-
       return count;
     }
 
