@@ -46,6 +46,7 @@ div {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background-color: white;
 }
 
 #headertitle {
@@ -250,6 +251,10 @@ div {
 }
 
 .tokaSivuHF {
+    background-color: #7ca377;
+}
+
+.tokaSivuHF > #header {
     background-color: #7ca377;
 }
 
