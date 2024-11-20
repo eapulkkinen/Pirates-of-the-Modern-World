@@ -240,7 +240,7 @@ div {
 
 /* Tokan sivun css */
 #tokaSivuDiv {
-    background-color: #99b3cc;
+    background-color: lightblue;
 }
 
 #tokaSivuDiv button {
@@ -253,6 +253,8 @@ div {
 .tokaSivuHF {
     background-color: #7ca377;
 }
+
+
 
 .tokaSivuHF > #header {
     background-color: #7ca377;
