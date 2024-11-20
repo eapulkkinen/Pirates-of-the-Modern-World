@@ -63,7 +63,7 @@ const Modal = (props) => {
                 setValittuMaa("");
             }
         } else {
-            alert("Please select a coutry");
+            alert("Please select a country");
         }
     }
 
