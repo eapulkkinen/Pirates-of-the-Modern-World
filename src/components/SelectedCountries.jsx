@@ -14,7 +14,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         }
         else {
             setSortOrder("alphabetical")
-            suuntaNuoli.innerText = "";
+            suuntaNuoli.innerText = "🔤";
         }
     };
 
@@ -40,8 +40,8 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr">
                 <th>Country</th>
-                <th onClick={handleSort} style={{ cursor: 'pointer' }}>Number of attacks</th>
-                <th id="nuoli"></th>
+                <th>Number of attacks</th>
+                <th id="nuoli" onClick={handleSort} style={{ cursor: 'pointer' }}></th>
             </tr>
         </thead>
         <tbody>
