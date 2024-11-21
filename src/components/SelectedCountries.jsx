@@ -6,15 +6,15 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const handleSort = () => {
         if (sortOrder === "alphabetical") {
             setSortOrder("descending");
-            suuntaNuoli.innerText = "⬆️";
+            suuntaNuoli.innerText = "⬆️"; //Suurin määrä ensin
         }
         else if (sortOrder === "descending") {
             setSortOrder("ascending");
-            suuntaNuoli.innerText = "⬇️";
+            suuntaNuoli.innerText = "⬇️"; //Pienin määrä ensin
         }
         else {
             setSortOrder("alphabetical")
-            suuntaNuoli.innerText = "";
+            suuntaNuoli.innerText = "🔤"; //Aakkosjärjestys
         }
     };
 
@@ -40,8 +40,8 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr">
                 <th>Country</th>
-                <th onClick={handleSort} style={{ cursor: 'pointer' }}>Number of attacks</th>
-                <th id="nuoli"></th>
+                <th>Number of attacks</th>
+                <th id="nuoli" onClick={handleSort} style={{ cursor: 'pointer' }}>🔤</th>
             </tr>
         </thead>
         <tbody>
