@@ -99,13 +99,18 @@ const Map = ({ koordinaattiLista }) => {
                                 border-radius: 50%;
                                 width: ${width};
                                 height: ${height};
-                                font-size: 14px;
+                                font-size: 16px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
                                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
                             ">
-                            <span>${numPisteet}</span></div>`,
+                            <span style="
+                color: black; /* Text color */
+                font-weight: bold;
+                -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.8);
+                text-fill-color: black; /* Ensure the text color is black */
+            ">${numPisteet}</span></div>`,
                     className: className,
                     iconSize: L.point(40, 40, true)
                 });
