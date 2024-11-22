@@ -23,13 +23,6 @@ body {
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
-div {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-/* Testiksi, jotta hahmottaa paremmin */ 
 #maindiv > div {
     height: 500px;
 }
@@ -58,7 +51,7 @@ div {
 /*Jos maita on valittu monta tulee scroll bar*/
 .valitutMaat {
     overflow-y: auto;
-    height: 78%;
+    height: auto;
     width: 100%;
 }
 
@@ -83,6 +76,8 @@ div {
     height: 100%;
     position: relative;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 #eventinformation {
@@ -148,12 +143,14 @@ div {
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 /*Jos ehdotuksia on liikaa tulee scroll bar*/
 #searchdiv {
     height: auto;
-    min-height: 70px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -278,4 +275,15 @@ div {
 
 #nuoli {
     font-size: large;
+}
+
+.suggestions {
+    max-height: 200px;
+    overflow-y: auto;
+    width: 90%;
+    text-align: left;
+    list-style: none;
+    margin: 0;
+    margin-left: 3px;
+    padding: 0;
 }

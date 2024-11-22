@@ -77,7 +77,7 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                     Show every country
               </label>
               {suggestions.length > 0 && (
-                <ul>
+                <ul className='suggestions'>
                 {suggestions.map((suggestion, index) => (
                     <li 
                     key={index}

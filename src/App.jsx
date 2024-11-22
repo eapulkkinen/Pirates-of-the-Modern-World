@@ -337,7 +337,6 @@ import Modal from './components/Modal/Modal'
         <Header vuosi={vuosi}/>
         <div id="maindiv">
           <div id="vasendiv" className="sivudiv">
-            <div id="searchdiv" className='searchdiv'>
             <Search
               onSearch={handleHaku} 
               suggestions={suggestions} 
@@ -345,7 +344,6 @@ import Modal from './components/Modal/Modal'
               onToggleAllCountries={handleToggleAllCountries}
               asetaHakuKoko={asetaHakuKoko}
             />
-            </div>
             <div id="valitutmaat" className="valitutMaat">
               {maat.length > 0 && (
                 <SelectedCountries
