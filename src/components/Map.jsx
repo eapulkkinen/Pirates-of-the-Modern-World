@@ -52,42 +52,56 @@ const Map = ({ koordinaattiLista }) => {
             iconCreateFunction: (cluster) => {
                 const numPisteet = cluster.getChildCount();
 
+                let mid = 150; // Värien keskikohta
+                let end = 1000; // Värien maksimi
+                let temp = numPisteet; // Jotta ei korvata alkuperäistä lukua
+                if (temp > end) { temp = end; } // Jos enemmän kuin maksimi, asetetaan maksimiin
+                let red = 0;
+                let green = 0;
+                let blue = 0;
+                let scale_value = 0;
+
+                if (numPisteet <= mid) {
+                    scale_value = (numPisteet - 1) / (mid - 1);
+                    green = (255 * scale_value);
+                    blue = (255 * (1 - scale_value));
+                } 
+                else if (mid < temp <= end) {
+                    scale_value = (temp - mid) / (end - mid);
+                    red = (255 * scale_value);
+                    green = (255 * (1 - scale_value)); 
+                }
+
                 let className = 'marker-cluster-';
-                let color = '';
+                let color = 'rgba(' + red + ', '+ green +', ' + blue + ', 0.85)';
                 let width = '25px';
                 let height = '25px';
 
                 if (numPisteet < 25) {
                     className += 'xs';
-                    color = 'rgba(0, 0, 255, 0.65)';
                 }
                 else if (numPisteet < 100) {
                     className += 's';
-                    color = 'rgba(34, 139, 34, 0.7)';
                     width = '28px';
                     height = '28px';
                 }
                 else if (numPisteet < 250) {
                     className += 'm';
-                    color = 'rgba(255, 255, 0, 0.75)';
                     width = '30px';
                     height = '30px';
                 }
                 else if (numPisteet < 500) {
                     className += 'l';
-                    color = 'rgba(255, 100, 10, 0.75)';
                     width = '32px';
                     height = '32px';
                 }
                 else if (numPisteet < 1000) {
                     className += 'xl';
-                    color = 'rgba(255, 0, 0, 0.8)';
                     width = '35px';
                     height = '35px';
                 }
                 else {
                     className += 'xxl';
-                    color = 'rgba(139, 0, 0, 0.8)';
                     width = '38px';
                     height = '38px';
                 }

@@ -39,7 +39,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <table id="valituttaulukko">
         <thead>
             <tr className="valittutr">
-                <th>Country</th>
+                <th className='thCountry'>Country</th>
                 <th>Number of attacks</th>
                 <th id="nuoli" onClick={handleSort} style={{ cursor: 'pointer' }}>🔤</th>
             </tr>
@@ -48,7 +48,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
             {sortedMaat().map((maa, index) => (
             <tr className="valittutr" key={index}>
                 <td>{maa}</td>
-                <td>{getAttackCount(maa)}</td>
+                <td className='tdAttackCount'>{getAttackCount(maa)}</td>
                 <td>
                     <button
                         onClick={() => handleMaaPoisto(maa)}

@@ -204,7 +204,7 @@ function App() {
           labels: tavat, // Tavat
           datasets: [{
               data: hyokkaykset, // Määrä
-              backgroundColor: varitBright,
+              backgroundColor: varitMuted,
               borderColor: rajaVari
           }]
       },
@@ -295,7 +295,7 @@ function App() {
           labels: tyypit, // Tavat
           datasets: [{
               data: hyokkaykset, // Määrä
-              backgroundColor: varitAlternating,
+              backgroundColor: varitMuted,
               borderColor: rajaVari
           }]
       },
@@ -386,7 +386,7 @@ function App() {
           labels: status, // Tavat
           datasets: [{
               data: hyokkaykset, // Määrä
-              backgroundColor: varitGrayscale,
+              backgroundColor: varitMuted,
               borderColor: rajaVari
           }]
       },
@@ -535,10 +535,10 @@ function App() {
           labels: vuodet, // x-akseli
           datasets: [{
               data: hyokkaykset, // y-akseli
-              tension: 0,
-              borderColor: '#7ca377',
+              tension: 0.1,
+              borderColor: '#000000',
               borderWidth: 5,
-              pointRadius: 0,
+              pointRadius: 0
             }]
       },
       options: {
@@ -723,11 +723,11 @@ function App() {
           <p>consectetur adipiscing elit.</p>
         </div>
         <div className='tokaSivuChart'>
-          <p>Attacks by year</p>
+          <h2>Attacks by year</h2>
           <canvas ref={atkByYearRef} id="atkByYearRef"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <p>Attacks by time*</p>
+          <h2>Attacks by time*</h2>
           <canvas ref={atkByTimeRef} id="atkByTimeRef"></canvas>
         </div>
         <p id="disclaimerP">*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>

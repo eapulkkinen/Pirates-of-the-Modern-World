@@ -1,5 +1,8 @@
+
 body {
     margin-top: 0;
+    width: 99vw;
+    overflow-x: hidden;
 }
 
 #maindiv {
@@ -12,13 +15,13 @@ body {
 
 /* Sivupalkit 20% ruudunleveydestä */
 .sivudiv {
-    width: 20%;
+    width: 20vw;
     margin-top: 1%;
 }
 
 /* Kartta 60% ruudunleveydestä */
 #karttadiv {
-    width: 55%;
+    width: calc(60vw - 20px);
     z-index: 0;
     margin-left: 10px;
     margin-right: 10px;
@@ -26,22 +29,28 @@ body {
 
 /* Testiksi, jotta hahmottaa paremmin */ 
 #maindiv > div {
-    height: 500px;
+    height: 75vh;
 }
 
 #header {
-    width: 100%;
+    width: 99vw;
+    height: 10vh;
     padding-bottom: 1%;
     margin-bottom: 0;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 5;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     background-color: white;
+}
+
+#header button {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #headertitle {
@@ -53,8 +62,20 @@ body {
 /*Jos maita on valittu monta tulee scroll bar*/
 .valitutMaat {
     overflow-y: auto;
-    height: auto;
-    width: 100%;
+    scrollbar-width: thin;
+    height: 61.2vh;
+    width: 20vw;
+    z-index: 1;
+    position: absolute;
+    transform: translate(0, 8.8vh);
+}
+
+.thCountry{
+    text-align: left;
+}
+
+.tdAttackCount {
+    text-align: center;
 }
 
 
@@ -69,12 +90,15 @@ body {
 }
 
 .hyokkayslkm {
-    height: 5%;
+    height: 5vh;
     width: 100%;
+    position: absolute;
+    transform: translate(0, 68vh);
 }
 
 .oikeadiv {
     overflow-y: auto;
+    scrollbar-width: thin;
     height: 100%;
     position: relative;
     align-items: center;
@@ -142,7 +166,7 @@ body {
 }
 
 #footerdiv {
-    width: 100%;
+    width: 99vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -157,6 +181,8 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    z-index: 2;
+
 }
 
 #searchdiv * {
@@ -249,6 +275,10 @@ body {
     margin-right: 10px;
 }
 
+#tokaSivuDiv h1 {
+    text-align: center;
+}
+
 .tokaSivuHF {
     background-color: #7ca377;
 }
@@ -263,6 +293,10 @@ body {
     width: 48vw;
     height: 100%;
     display: inline-block;
+}
+
+.tokaSivuChart h2 {
+    text-align: center;
 }
 
 .tokaSivuChart > p {
@@ -282,10 +316,12 @@ body {
 .suggestions {
     max-height: 200px;
     overflow-y: auto;
+    scrollbar-width: thin;
     width: 90%;
     text-align: left;
     list-style: none;
     margin: 0;
     margin-left: 3px;
     padding: 0;
+    background-color: #d3d3d3;
 }

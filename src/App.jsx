@@ -228,17 +228,14 @@ import Modal from './components/Modal/Modal'
      */
     const asetaHakuKoko = (taulukko) => {
       const hakuDiv = document.getElementById("searchdiv"); // haun ja valittujen maiden div joilla säädetään ulkonäköä
-      const valitutMaatDiv = document.getElementById("valitutmaat");
   
       console.log(taulukko);
       if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
         hakuDiv.style.height = "8.8%";
-        valitutMaatDiv.style.height = "78%";
       } else {
         let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
         if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
         hakuDiv.style.height =  x + "%";
-        valitutMaatDiv.style.height = 88.8 - x + "%"; // Valitut maat pienemmäksi
       }
     }
 
