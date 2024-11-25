@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
-    var suuntaNuoli = document.getElementById("nuoli");
+    const [thText, setThText] = useState("Number of attacks🔤");
+
     const handleSort = () => {
+        let text = "Number of attacks";
         if (sortOrder === "alphabetical") {
             setSortOrder("descending");
-            suuntaNuoli.innerText = "⬆️"; //Suurin määrä ensin
-        }
-        else if (sortOrder === "descending") {
+            text = text + "⬆️";
+        } else if (sortOrder === "descending") {
             setSortOrder("ascending");
-            suuntaNuoli.innerText = "⬇️"; //Pienin määrä ensin
+            text = text + "⬇️";
+        } else {
+            setSortOrder("alphabetical");
+            text = text + "🔤";
         }
-        else {
-            setSortOrder("alphabetical")
-            suuntaNuoli.innerText = "🔤"; //Aakkosjärjestys
-        }
+        setThText(text)
     };
 
     const sortedMaat = () => {
@@ -40,10 +41,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr">
                 <th className='thCountry'>Country</th>
-                <div id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}>
-                    <th>Number of attacks</th>
-                    <th id="nuoli">🔤</th>
-                </div>
+                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> {thText}</th>
             </tr>
         </thead>
         <tbody>
