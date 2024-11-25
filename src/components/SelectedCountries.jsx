@@ -40,8 +40,10 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr">
                 <th className='thCountry'>Country</th>
-                <th>Number of attacks</th>
-                <th id="nuoli" onClick={handleSort} style={{ cursor: 'pointer' }}>🔤</th>
+                <div id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}>
+                    <th>Number of attacks</th>
+                    <th id="nuoli">🔤</th>
+                </div>
             </tr>
         </thead>
         <tbody>
