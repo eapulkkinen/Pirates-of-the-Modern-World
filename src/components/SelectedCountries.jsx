@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
-    const [thText, setThText] = useState("Number of attacks🔤");
+    const [thText, setThText] = useState("Number of attacks 🔤");
 
     const handleSort = () => {
-        let text = "Number of attacks";
+        let text = "Number of attacks ";
         if (sortOrder === "alphabetical") {
             setSortOrder("descending");
             text = text + "⬆️";
