@@ -1,8 +1,15 @@
+:root {
+    --mainVari: lightblue;
+    --mainVariAlt: #99b3cc;
+    --tokaVari: lightgreen;
+}  
+
 
 body {
     margin-top: 0;
-    width: 99vw;
+    margin-left: 0;
     overflow-x: hidden;
+    background-color: var(--mainVari);
 }
 
 #maindiv {
@@ -25,6 +32,7 @@ body {
     z-index: 0;
     margin-left: 10px;
     margin-right: 10px;
+    border: 4px solid white;
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
@@ -33,7 +41,7 @@ body {
 }
 
 #header {
-    width: 99vw;
+    width: 100vw;
     height: 10vh;
     padding-bottom: 1%;
     margin-bottom: 0;
@@ -45,12 +53,13 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: white;
+    background-color: var(--tokaVari);
 }
 
 #header button {
     margin-left: 10px;
     margin-right: 10px;
+    border-radius: 4px;
 }
 
 #headertitle {
@@ -63,7 +72,7 @@ body {
 .valitutMaat {
     overflow-y: auto;
     scrollbar-width: thin;
-    height: 61.2vh;
+    height: 56vh;
     width: 20vw;
     z-index: 1;
     position: absolute;
@@ -90,10 +99,15 @@ body {
 }
 
 .hyokkayslkm {
-    height: 5vh;
-    width: 100%;
+    height: 5%;
+    width: 20vw;
     position: absolute;
-    transform: translate(0, 68vh);
+    transform: translate(-4px, 66vh);
+    background-color: var(--mainVariAlt);
+    border: 3px solid white;
+    border-radius: 20px;
+    text-align: center;
+    padding-bottom: 1%;
 }
 
 .oikeadiv {
@@ -122,6 +136,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    margin-left: 8px;
 }
 
 .inactivenappi {
@@ -189,6 +204,7 @@ body {
     max-width: 100%;
     box-sizing: border-box;
 }
+
 
 #searchinputjabutton {
     display: flex;
@@ -264,30 +280,11 @@ body {
 }
 
 /* Tokan sivun css */
-#tokaSivuDiv {
-    background-color: lightblue;
-}
-
-#tokaSivuDiv button {
-    background-color: #eae8d1;
-    border-radius: 4px;
-    margin-left: 10px;
-    margin-right: 10px;
-}
 
 #tokaSivuDiv h1 {
     text-align: center;
 }
 
-.tokaSivuHF {
-    background-color: #7ca377;
-}
-
-
-
-.tokaSivuHF > #header {
-    background-color: #7ca377;
-}
 
 .tokaSivuChart {
     width: 48vw;
@@ -323,5 +320,16 @@ body {
     margin: 0;
     margin-left: 3px;
     padding: 0;
-    background-color: #d3d3d3;
+    background-color: white;
+    border-left: 4px solid var(--mainVariAlt);
+    border-right: 4px solid var(--mainVariAlt);
+    border-bottom: 4px solid var(--mainVariAlt);
+    border-radius: 0px 0px 10px 10px;
+
+}
+
+.suggestions li{
+    margin-left: 5px;
+    margin-right: 5px;
+    border-bottom: 2px solid var(--mainVariAlt);
 }
