@@ -151,14 +151,14 @@ body {
     border-radius: 20px;
     width: 15vw;
     position: absolute;
-    left: 2.5vw;
+    left: 12.5%;
 }
 
 #infobox {
     text-align: left;
     padding-left: 10px;
     position: absolute;
-    top: 16vh;
+    top: 23.5%;
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
@@ -252,7 +252,7 @@ body {
     flex-wrap: nowrap;
     gap: 2px;
     position: absolute;
-    top: 8vw;
+    top: 17%;
 }
 
 #searchinputjabutton input {
@@ -267,8 +267,8 @@ body {
 
 #showEveryCountry {
     position: absolute;
-    top: 12vh;
-    left: 5vw;
+    top: 12%;
+    left: 5%;
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
@@ -339,7 +339,7 @@ body {
     border-radius: 0px 0px 20px 20px;
     width: 20vw;
     position: absolute;
-    left: 40vw;
+    left: 40%;
 }
 
 
@@ -383,8 +383,8 @@ body {
     border-bottom: 4px solid var(--mainVariAlt);
     border-radius: 0px 0px 10px 10px;
     position: absolute;
-    top: 19.7vh;
-    left: 0.4vw;
+    top: 19.8%;
+    left: 0.4%;
     width: 16.45vw;
 }
 
