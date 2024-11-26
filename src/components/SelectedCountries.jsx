@@ -41,8 +41,12 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr">
                 <th className='thCountry'>Country</th>
+<<<<<<< HEAD
                     <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> Number of attacks </th>
                     <th id="nuoli" onClick={handleSort} style={{ cursor: "pointer"}}> {thIcon}</th>
+=======
+                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> {thText}</th>
+>>>>>>> 2487e6e (CSS asettelua)
             </tr>
         </thead>
         <tbody>

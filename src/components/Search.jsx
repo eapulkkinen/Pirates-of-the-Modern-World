@@ -68,7 +68,7 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                     </input>
                     <button onClick={handleSearch} type="submit">Search</button>
                 </div>
-                <label>
+                <label id='showEveryCountry'>
                     <input                  
                         type="checkbox"
                         onChange={handleCheckboxChange}
