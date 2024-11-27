@@ -18,7 +18,6 @@ const Header = () => {
 
     /**
      * Tarkistaa onko nykyinen sivu Main
-     * Erittäin huono tilapäinen ratkaisu, muista muokata myöhemmin
      * @returns true jos ollaan mainissa, false jos ei olla
      */
     const onkoMain = () => {

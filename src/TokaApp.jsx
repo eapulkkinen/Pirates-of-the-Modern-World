@@ -131,7 +131,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -222,7 +222,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -313,7 +313,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -393,8 +393,8 @@ function App() {
       options: {   
         plugins: {
           datalabels: {
-            color: "#000000",
-            backgroundColor: "#ffffff",
+            color: "#ffffff",
+            backgroundColor: "#000000",
             anchor: 'center',
             display: 'auto',
             clip: 'true',
@@ -404,7 +404,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -498,7 +498,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -555,7 +555,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
