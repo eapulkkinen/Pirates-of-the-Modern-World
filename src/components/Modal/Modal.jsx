@@ -15,7 +15,7 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
     return (
 
             <select onChange={e => onIndicatorChange(e.target.value)}>
-                <option value="">Select an indicator</option>
+                <option value="all_attacks">All attacks</option>
                 <option value="corruption_index">Corruption Index</option>
                 <option value="homicide_rate">Homicide Rate</option>
                 <option value="GDP">GDP</option>
@@ -24,7 +24,7 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
                 <option value="population">Population</option>
                 <option value="unemployment_rate">Unemployment Rate</option>
                 <option value="totalgr">Total Government Revenue</option>
-                <option value="industryofgdp">INdustry of GDP</option>
+                <option value="industryofgdp">Industry of GDP</option>
             </select>
 
     );

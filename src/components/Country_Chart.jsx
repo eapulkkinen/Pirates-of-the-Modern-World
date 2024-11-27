@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
+import pirate_attacks from '../data/pirate_attacks';
 
 /**
  * Luo kaavion halutuilla spekseillä
@@ -17,6 +18,20 @@ const Country_Chart = (props) => {
       let indikaattoriTaulukko 
 
       switch (props.valittuIndikaattori) {
+        case "all_attacks":
+          let hyokkaykset = [];
+          let index = 0;
+          for (let i = 1993; i <= 2020; i++) {      // kopioitu TokaApp.jsx: ästä pienellä muutoksella
+            hyokkaykset.push(0);
+            for (let hyokkays of pirate_attacks) {
+              if (hyokkays.date.slice(0, 4) == i) {
+                hyokkaykset[index] += 1;
+              }
+            }
+            index++;
+          }
+          indikaattoriTaulukko = hyokkaykset;
+          break;
         case "corruption_index": 
           const corruption = props.indikaattorit.map(i => i.corruption_index);
           indikaattoriTaulukko = corruption;
@@ -64,7 +79,10 @@ const Country_Chart = (props) => {
     const chartRef = useRef(null); // asetetaan viite canvas elementtiin
     useEffect(() => {
       const ctx = chartRef.current.getContext("2d");
-      const vuosi = props.indikaattorit.map(i => i.year); // luodaan datasta taulukot
+      const vuosi = [];     // luodaan datasta taulukot
+      for (let i = 1993; i <= 2020; i++) {
+        vuosi.push(i);
+      };
       const indicator = valitseIndikaattori();
       const attacks = props.indikaattorit.map(i => i.attacks);
 
