@@ -511,6 +511,63 @@ function App() {
     };
   });
 
+  // Luodaan piirakkakaavio hyökkäyksistä per maanosa
+  const distanceChartRef = useRef(null);
+  useEffect(() => {
+    const ctx = distanceChartRef.current.getContext("2d");
+
+    let distances = ["<10km", "10km-25km", "25km-50km", "50km-100km", ">100km"];
+    let hyokkaykset = [0, 0, 0, 0, 0];
+    let yht = 0;
+    
+    for (let hyokkays of pirate_attacks) { 
+      yht++;
+      if (hyokkays.shore_distance < 10) { hyokkaykset[0] += 1; }
+      else if (hyokkays.shore_distance < 25) {hyokkaykset[1] += 1; }
+      else if (hyokkays.shore_distance < 50) {hyokkaykset[2] += 1; }
+      else if (hyokkays.shore_distance < 100) {hyokkaykset[3] += 1; }
+      else {hyokkaykset[4] += 1; }
+    }
+
+
+
+    const chartti = new Chart (ctx, {
+      type: "pie",
+      data: {
+          labels: distances, // etäisyydet
+          datasets: [{
+              data: hyokkaykset, // Määrä
+              backgroundColor: varitMuted,
+              borderColor: rajaVari
+          }]
+      },
+      options: {   
+        plugins: {
+          datalabels: {
+            color: "#ffffff",
+            backgroundColor: "#000000",
+            anchor: 'center',
+            display: 'auto',
+            clip: 'true',
+            formatter: function(value) {
+              return Math.round((value / yht) * 1000) / 10 + '%';
+            }
+          },
+          legend: {
+            display: true,
+            position: 'left',
+            labels: {
+              color: "#000000"
+            }
+          }
+        }
+      }
+    });
+    return () => {
+      chartti.destroy(); // cleanup
+    };
+  });
+
   const atkByYearRef = useRef(null);
   useEffect(() => {
     const ctx = atkByYearRef.current.getContext("2d");
@@ -676,17 +733,6 @@ function App() {
     };
   });
 
-  //Lasketaan keskiverto etäisyys rannasta
-  let shore_distance_summa = 0;
-  let yht = 0;
-  for (let hyokkays of pirate_attacks) {
-    shore_distance_summa += parseInt(hyokkays.shore_distance);
-    yht += 1;
-  }
-  let shore_distance_avg = Math.round((shore_distance_summa / yht) * 100) / 100;
-
-
-
   return (
   <>
       <div id="tokaSivuDiv">
@@ -715,12 +761,8 @@ function App() {
           <canvas ref={geographicChartRef} id="geographicPie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <h2>Fun but pointless data</h2>
-          <p>All of the attacks average distance from shore is {shore_distance_avg} kilometers</p>
-          <p>Tämä on temp mutta voisi lisätä esim</p>
-          <p>Keskiverto lat ja lon ja niiden sijainti google mapsissa</p>
-          <p>Lorem ipsum dolor sit amet</p>
-          <p>consectetur adipiscing elit.</p>
+          <h2>Attacks by distance from shore</h2>
+          <canvas ref={distanceChartRef} id="distancePie"></canvas>
         </div>
         <div className='tokaSivuChart'>
           <h2>Attacks by year</h2>
