@@ -36,6 +36,7 @@ import Modal from './components/Modal/Modal'
     useEffect(() => {
       if (paivita) { // Ei suoriteta jos paivita = false
         if (maitaValittu() && yksiVuosiValittu()) {
+          let startTime = performance.now();
           const sortatutMaakoodit = sortMaatJaPalautaKoodit();
           console.log("yks valittu vaan")
           const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);
@@ -46,8 +47,12 @@ import Modal from './components/Modal/Modal'
           const hyokkaykset = a(suodatetutHyokkaykset);
 
           setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+          let endTime = performance.now();
+          let timeTaken = endTime - startTime;
+          console.log(timeTaken);
         }
         else if (maitaValittu() && !yksiVuosiValittu()) {
+          let startTime = performance.now();
           console.log("useampi vuosi valittu");
           const sortatutMaakoodit = sortMaatJaPalautaKoodit();
           const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);
@@ -55,6 +60,9 @@ import Modal from './components/Modal/Modal'
           const hyokkaykset = a(maidenHyokkaykset);
 
           setKoordinaatit(hyokkaykset);
+          let endTime = performance.now();
+          let timeTaken = endTime - startTime;
+          console.log(timeTaken);
         }
       } else {
         setPaivita(true); // Asetetaan paivita takaisin true
