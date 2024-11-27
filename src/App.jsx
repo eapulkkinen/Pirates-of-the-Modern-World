@@ -52,7 +52,6 @@ import Modal from './components/Modal/Modal'
           console.log(timeTaken);
         }
         else if (maitaValittu() && !yksiVuosiValittu()) {
-          let startTime = performance.now();
           console.log("useampi vuosi valittu");
           const sortatutMaakoodit = sortMaatJaPalautaKoodit();
           const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);
@@ -60,9 +59,6 @@ import Modal from './components/Modal/Modal'
           const hyokkaykset = a(maidenHyokkaykset);
 
           setKoordinaatit(hyokkaykset);
-          let endTime = performance.now();
-          let timeTaken = endTime - startTime;
-          console.log(timeTaken);
         }
       } else {
         setPaivita(true); // Asetetaan paivita takaisin true
