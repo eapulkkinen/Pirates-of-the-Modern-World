@@ -61,14 +61,20 @@ function App() {
   const maitaValittu = () => {
     return maat.length > 0;
   }
+
+
   const yksiVuosiValittu = () => {
     return !(vuosi == 'all');
   }
+
+
   const sortMaatJaPalautaKoodit = () => {
     const maatSorted = maat.slice().sort(); //järjestää maat kopion
     const maakoodit = maatSorted.map(maa => countryCodeMap[maa]);
     return maakoodit
   }
+
+
   /**
    * Hakee countrycodea vastaavan maan nimen
    * @param {string} countrycode maatunniste esim "FIN" 
@@ -85,11 +91,15 @@ function App() {
       return countrycode;
     }
   };
+
+
   const palautaMaataVastaavaMaakoodi = (maanNimi) => {
     const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
     const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
     return countryName;
   }
+
+
   /**
    * Hakee maakoodien mukaan kaikki hyökkäykset joissa nearest_country
    * vastaa maakoodia.
@@ -102,6 +112,8 @@ function App() {
     });
     return maidenHyokkaykset;
   };
+
+
   /**
    * Hakee maakoodien mukaan kaikki hyökkäykset joissa nearest_country
    * vastaa maakoodia.
@@ -116,6 +128,7 @@ function App() {
     return maidenHyokkaykset;
   };
   
+
   /**
    * Palauttaa hyökkäykset, jotka on tapahtunut valittuna vuonna/vuosina.
    * @param {*} loydetytHyokkaykset 
@@ -136,6 +149,8 @@ function App() {
       return loydetytHyokkaykset;
     }
   }
+
+
   /**
    * Suodattaa hyökkäykset maakoodien perusteella.
    * Valitsee siis hyökkäykset, jotka ovat tapahtuneet
@@ -151,6 +166,8 @@ function App() {
     });
     return maidenHyokkaykset;
   };
+
+
   /**
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
@@ -197,6 +214,8 @@ function App() {
     }
     console.log('Syötetyt maat:', newMaat);
   }
+
+
   /**
    * Säätää hakudiv laatikon koon ehdotusten mukaan
    * Jos ehdotuksia ei ole palataan perustilaan
@@ -213,7 +232,9 @@ function App() {
       if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
       hakuDiv.style.height =  x + "%";
     }
-  }
+  };
+
+
   /**
    * Kaikkien maiden checkboxin toiminta maiden taulukointiin
    * ja näyttöön tapahtuu täällä. 
@@ -233,6 +254,7 @@ function App() {
     }
   }
 
+
   /**
    * Sliderin arvo talteen ja asetetaan se käytettäväksi vuodeksi
    * @param {*} newVuosi Sliderista valittava vuosi
@@ -241,6 +263,7 @@ function App() {
     setVuosi(newVuosi);
     console.log('Valittu vuosi:', newVuosi);
   }
+
 
   /**
    * Maan poistaminen valituista maista
@@ -276,6 +299,8 @@ function App() {
       return uudetMaat; //periaatteessa setMaat(uudetMaat)
     });
   }
+
+
   /**
    * Hakee maan hyökkäysten määrän valittuna vuonna
    * @param {*} country maa jonka hyökkäyksiä käsitellään
@@ -295,6 +320,8 @@ function App() {
     }
     return count;
   }
+
+  
   return (
     <>
       <Header vuosi={vuosi}/>
