@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
-    const [thText, setThText] = useState("Number of attacks 🔤");
+    const [thIcon, setThIcon] = useState("🔤");
 
     const handleSort = () => {
-        let text = "Number of attacks ";
+        let icon = "🔤";
         if (sortOrder === "alphabetical") {
             setSortOrder("descending");
-            text = text + "⬆️";
+            icon = "⬆️";
         } else if (sortOrder === "descending") {
             setSortOrder("ascending");
-            text = text + "⬇️";
+            icon = "⬇️";
         } else {
             setSortOrder("alphabetical");
-            text = text + "🔤";
+            icon = "🔤";
         }
-        setThText(text)
+        setThIcon(icon);
     };
 
     const sortedMaat = () => {
@@ -41,7 +41,8 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr">
                 <th className='thCountry'>Country</th>
-                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> {thText}</th>
+                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> Number of attacks </th>
+                    <th id="nuoli" onClick={handleSort} style={{ cursor: "pointer"}}> {thIcon}</th>
             </tr>
         </thead>
         <tbody>

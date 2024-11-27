@@ -35,34 +35,49 @@ import Modal from './components/Modal/Modal'
      */
     useEffect(() => {
       if (paivita) { // Ei suoriteta jos paivita = false
-        if (maat.length > 0) {
-          const maatSorted = maat.sort();
-          const maakoodit = maatSorted.map(maa => countryCodeMap[maa]);
-          const maidenHyokkaykset = haeMaidenHyokkaykset(maakoodit);
+        if (maitaValittu() && yksiVuosiValittu()) {
+          const sortatutMaakoodit = sortMaatJaPalautaKoodit();
+          console.log("yks valittu vaan")
+          const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);
           const suodatetutHyokkaykset = suodataHyokkayksetVuodella(maidenHyokkaykset);
-          console.log(`Maiden ${maakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
-          console.log('Kaikki suodatettavat maat:', maatSorted);
+          console.log(`Maiden ${sortatutMaakoodit} hyokkäykset vuonna ${vuosi}:`, suodatetutHyokkaykset);
           //Hyökkäysten koordinaatit, jotta "piirto"funktio on selvempi
-          const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
-            const nearestCountryCode = hyokkays.nearest_country;
-            const eezCountryCode = hyokkays.eez_country;
-
-            const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
-            const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
-
-            return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
-              ...hyokkays,
-              countryname: countryName,
-              eezcountryname: eezCountryName
-            };
-          });
+          
+          const hyokkaykset = a(suodatetutHyokkaykset);
 
           setKoordinaatit(hyokkaykset); //parametri : ([{longitude:15.25125, latitude:65.2315}, ...])
+        }
+        else if (maitaValittu() && !yksiVuosiValittu()) {
+          console.log("useampi vuosi valittu");
+          const sortatutMaakoodit = sortMaatJaPalautaKoodit();
+          const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);
+
+          const hyokkaykset = a(maidenHyokkaykset);
+
+          setKoordinaatit(hyokkaykset);
         }
       } else {
         setPaivita(true); // Asetetaan paivita takaisin true
       }
     }, [maat, vuosi]); //kun maat TAI vuosi muuttuu
+
+
+    const maitaValittu = () => {
+      return maat.length > 0;
+    }
+
+
+    const yksiVuosiValittu = () => {
+      return !(vuosi == 'all');
+    }
+
+
+    const sortMaatJaPalautaKoodit = () => {
+      const maatSorted = maat.sort();
+      const maakoodit = maatSorted.map(maa => countryCodeMap[maa]);
+
+      return maakoodit
+    }
 
 
     /**
@@ -89,7 +104,6 @@ import Modal from './components/Modal/Modal'
     };
 
 
-
     const palautaMaataVastaavaMaakoodi = (maanNimi) => {
       const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
       const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
@@ -114,6 +128,25 @@ import Modal from './components/Modal/Modal'
     };
 
 
+    const a = (suodatetutHyokkaykset) => {
+      const hyokkaykset = suodatetutHyokkaykset.map(hyokkays => {
+        const nearestCountryCode = hyokkays.nearest_country;
+        const eezCountryCode = hyokkays.eez_country;
+
+        const countryName = palautaMaakoodiaVastaavaMaa(nearestCountryCode);
+        const eezCountryName = palautaMaakoodiaVastaavaMaa(eezCountryCode);
+
+        return {  //palautetaan objekti jossa hyökkäyksen ominaisuudet sekä maan ja eez maan nimi
+          ...hyokkays,
+          countryname: countryName,
+          eezcountryname: eezCountryName
+        };
+      });
+      
+      return hyokkaykset;
+    }
+
+
     /**
      * Hakee maakoodien mukaan kaikki hyökkäykset joissa nearest_country
      * vastaa maakoodia.
@@ -123,6 +156,21 @@ import Modal from './components/Modal/Modal'
     const haeMaidenHyokkaykset = (maakoodit) => {
       const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
         return maakoodit.includes(hyokkays.nearest_country);
+      });
+      return maidenHyokkaykset;
+    };
+
+
+    /**
+     * Hakee maakoodien mukaan kaikki hyökkäykset joissa nearest_country
+     * vastaa maakoodia.
+     * @param {*} maakoodit taulukko maakoodeista ["FIN","SWE",...]
+     * @returns Taulukon hyökkäyksistä, jotka vastaa maakoodeja
+     */
+    const haeMaidenHyokkayksetVuodella = (maakoodit, vuosi="all") => {
+      const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
+        const hyokkaysVuosi = hyokkays.date.split('-')[0];
+        return (maakoodit.includes(hyokkays.nearest_country) && vuosi === hyokkaysVuosi.toString());
       });
       return maidenHyokkaykset;
     };
