@@ -68,9 +68,6 @@ const Country_Chart = (props) => {
           const industry = props.indikaattorit.map(i => i.industryofgdp);
           indikaattoriTaulukko = industry;
           break;
-        default:
-          const oletus = props.indikaattorit.map(i => i.unemployment_rate);
-          indikaattoriTaulukko = oletus;
       }
 
       return indikaattoriTaulukko;
