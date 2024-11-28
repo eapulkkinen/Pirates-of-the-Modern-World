@@ -21,9 +21,9 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [paivita, setPaivita] = useState(true); // boolean jolla estetään päivittyminen kesken haun
 
-  var maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+  let maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
   maaTaulukko = maaTaulukko.sort();
-  var valitsemattomatMaat = maaTaulukko;
+  let valitsemattomatMaat = maaTaulukko;
   const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
     accumulator[country_name] = country;
     return accumulator;
@@ -40,7 +40,7 @@ function App() {
     }
 
     if (maitaValittu()) {
-      const sortatutMaakoodit = sortMaatJaPalautaKoodit();
+      const sortatutMaakoodit = palautaMaidenKooditNimella();
       const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);  //kaikki valittujen maiden hyökkäykset
 
       const hyokkaykset = yksiVuosiValittu()
@@ -58,21 +58,31 @@ function App() {
   }, [maat, vuosi]);
 
 
+  /**
+   * Palauttaa onko yhtäkään maata valittu.
+   * @returns Maita valittu => true, muuten false
+   */
   const maitaValittu = () => {
     return maat.length > 0;
-  }
+  };
 
-
+  /**
+   * Palauttaa onko valittu jokin tietty vuosi.
+   * @returns Yksittäinen vuosi valittu => true, muuten false
+   */
   const yksiVuosiValittu = () => {
     return !(vuosi == 'all');
-  }
+  };
 
 
-  const sortMaatJaPalautaKoodit = () => {
-    const maatSorted = maat.slice().sort(); //järjestää maat kopion
-    const maakoodit = maatSorted.map(maa => countryCodeMap[maa]);
-    return maakoodit
-  }
+  /**
+   * Palauttaa taulukon maakoodeista maiden nimien perusteella
+   * @returns Taulukon maakoodeista
+   */
+  const palautaMaidenKooditNimella = () => {
+    const maakoodit = maat.map(maa => countryCodeMap[maa]);
+    return maakoodit;
+  };
 
 
   /**
@@ -93,11 +103,16 @@ function App() {
   };
 
 
+  /**
+   * Palauttaa maata vastaavan maakoodin.
+   * @param {string} maanNimi Maan nimi 
+   * @returns Maakoodin
+   */
   const palautaMaataVastaavaMaakoodi = (maanNimi) => {
     const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
     const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
     return countryName;
-  }
+  };
 
 
   /**
@@ -109,21 +124,6 @@ function App() {
   const haeMaidenHyokkaykset = (maakoodit) => {
     const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
       return maakoodit.includes(hyokkays.nearest_country);
-    });
-    return maidenHyokkaykset;
-  };
-
-
-  /**
-   * Hakee maakoodien mukaan kaikki hyökkäykset joissa nearest_country
-   * vastaa maakoodia.
-   * @param {*} maakoodit taulukko maakoodeista ["FIN","SWE",...]
-   * @returns Taulukon hyökkäyksistä, jotka vastaa maakoodeja
-   */
-  const haeMaidenHyokkayksetVuodella = (maakoodit, vuosi="all") => {
-    const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
-      const hyokkaysVuosi = hyokkays.date.split('-')[0];
-      return (maakoodit.includes(hyokkays.nearest_country) && vuosi === hyokkaysVuosi.toString());
     });
     return maidenHyokkaykset;
   };
@@ -148,7 +148,7 @@ function App() {
     else {
       return loydetytHyokkaykset;
     }
-  }
+  };
 
 
   /**
@@ -213,7 +213,7 @@ function App() {
       asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
     }
     console.log('Syötetyt maat:', newMaat);
-  }
+  };
 
 
   /**
@@ -227,7 +227,8 @@ function App() {
     console.log(taulukko);
     if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
       hakuDiv.style.height = "8.8%";
-    } else {
+    } 
+    else {
       let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
       if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
       hakuDiv.style.height =  x + "%";
@@ -252,7 +253,7 @@ function App() {
       setMaat([]);
       setKoordinaatit([]);
     }
-  }
+  };
 
 
   /**
@@ -278,6 +279,7 @@ function App() {
       console.log('Maat poiston jälkeen:', uudetMaat);
       // poistettujen maiden koordinaattien poisto kartalta
       let hyokkaykset;
+      
       if (vuosi === "all") {
         hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
         console.log('Vuosi : all')
@@ -286,6 +288,7 @@ function App() {
         const maanHyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
         hyokkaykset = suodataHyokkayksetVuodella(maanHyokkaykset);
       }
+      
       const maaKoodi = uudetMaat.map(maa => countryCodeMap[maa]);
       const maanHyokkaykset = suodataMaidenHyokkaykset(hyokkaykset, maaKoodi);
       const hyokkaystenKoordinaatit = maanHyokkaykset.map(hyokkays => ({
@@ -295,7 +298,9 @@ function App() {
         date: hyokkays.date,
         countrycode: hyokkays.nearest_country
       }));
+      
       setKoordinaatit(hyokkaystenKoordinaatit); //koordinaattien päivitys kartalle (eli suomeksi tässä funktiossa koordinaattien poisto)
+      
       return uudetMaat; //periaatteessa setMaat(uudetMaat)
     });
   }
@@ -318,10 +323,11 @@ function App() {
       // Keskeytetään toiminta
       if (hyokkaykset[i].date.slice(0, 4) > vuosi) { break; } 
     }
+    
     return count;
   }
 
-  
+
   return (
     <>
       <Header vuosi={vuosi}/>
