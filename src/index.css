@@ -38,7 +38,6 @@ body {
     border-left: 4px solid var(--kolmasVari);
     border-right: 4px solid var(--kolmasVari);
     border-bottom: 4px solid var(--kolmasVari);
-
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
@@ -287,7 +286,6 @@ body {
     box-sizing: border-box;
 }
 
-
 #searchinputjabutton {
     display: flex;
     white-space: nowrap;
@@ -381,6 +379,7 @@ body {
     position: absolute;
     left: 40%;
 }
+
 
 
 .tokaSivuChart {
