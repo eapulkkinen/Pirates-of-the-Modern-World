@@ -81,23 +81,58 @@ body {
     text-align: center;
 }
 
-/*Jos maita on valittu monta tulee scroll bar*/
 .valitutMaat {
     overflow-y: auto;
-    scrollbar-width: thin;
     height: 56vh;
-    width: 20vw;
+    width: 19vw;
     z-index: 1;
     position: absolute;
     transform: translate(0, 8.8vh);
+    background-color: var(--mainVariAlt);
+    border: 3px solid var(--kolmasVari);
+    border-radius: 20px;
+    padding-left: 0.5vw;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE ja Edge */
+
+    /* WebKit selaimet (Chrome, Safari, etc.) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+#valittuOtsikot th{
+    font-size: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--mainVariAlt);
+    margin-top: 20px;
+}
+
+#valittuOtsikot th::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: -10px;
+    right: -2px;
+    height: 2px;
+    background-color: var(--kolmasVari);
 }
 
 .thCountry{
     text-align: left;
 }
 
+
+
 .tdAttackCount {
     text-align: center;
+}
+
+.tdRasti {
+    padding-left: 4px;
 }
 
 
@@ -113,9 +148,9 @@ body {
 
 .hyokkayslkm {
     height: 5%;
-    width: 20vw;
+    width: 19.5vw;
     position: absolute;
-    transform: translate(-4px, 66vh);
+    transform: translate(0, 66vh);
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
@@ -125,12 +160,19 @@ body {
 
 .oikeadiv {
     overflow-y: auto;
-    scrollbar-width: thin;
     height: 95%;
     position: relative;
     align-items: center;
     justify-content: center;
     text-align: center;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE ja Edge */
+
+    /* WebKit selaimet (Chrome, Safari, etc.) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .modalNappi {
@@ -166,6 +208,10 @@ body {
     padding-bottom: 2%;
 }
 
+#infobox:empty {
+    display: none;
+}
+  
 #vasendiv {
     overflow-x: hidden;
     box-sizing: border-box;
@@ -227,7 +273,6 @@ body {
     border-top: 8px solid var(--kolmasVari);
 }
 
-/*Jos ehdotuksia on liikaa tulee scroll bar*/
 #searchdiv {
     height: auto;
     width: 100%;
@@ -235,7 +280,6 @@ body {
     flex-direction: column;
     box-sizing: border-box;
     z-index: 2;
-
 }
 
 #searchdiv * {
@@ -246,24 +290,20 @@ body {
 
 #searchinputjabutton {
     display: flex;
-    width: 22%;
     white-space: nowrap;
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 2px;
     position: absolute;
-    top: 17%;
+    top: 16.75%;
+    left: 0.75vw;
 }
 
 #searchinputjabutton input {
-    width: 75%;
     box-sizing: border-box;
+    width: 19.25vw;
 }
 
-#searchinputjabutton button {
-    width: auto;
-    box-sizing: border-box;
-}
 
 #showEveryCountry {
     position: absolute;
@@ -370,7 +410,6 @@ body {
 .suggestions {
     max-height: 200px;
     overflow-y: auto;
-    scrollbar-width: thin;
     width: 90%;
     text-align: left;
     list-style: none;
@@ -378,14 +417,20 @@ body {
     margin-left: 3px;
     padding: 0;
     background-color: var(--kolmasVari);
-    border-left: 4px solid var(--mainVariAlt);
-    border-right: 4px solid var(--mainVariAlt);
-    border-bottom: 4px solid var(--mainVariAlt);
+
     border-radius: 0px 0px 10px 10px;
     position: absolute;
-    top: 19.8%;
-    left: 0.4%;
-    width: 16.45vw;
+    top: 19.55%;
+    left: 0.65vw;
+    width: 19.1vw;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE ja Edge */
+
+    /* WebKit selaimet (Chrome, Safari, etc.) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .suggestions li{

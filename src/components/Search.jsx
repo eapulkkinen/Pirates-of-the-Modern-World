@@ -66,7 +66,6 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                         placeholder="Search for a country" 
                         onChange={handleChange}>
                     </input>
-                    <button onClick={handleSearch} type="submit">Search</button>
                 </div>
                 <label id='showEveryCountry'>
                     <input                  
