@@ -122,7 +122,7 @@ const Modal = (props) => {
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
                 <p> {valittuMaa} </p>
                 <>
-                <Country_Chart indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
+                <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
                 </>
                 <button
                 className='modalSulkuNappi'
