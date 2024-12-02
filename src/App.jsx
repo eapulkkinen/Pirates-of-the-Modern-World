@@ -351,8 +351,7 @@ function App() {
           </div>
           <div id="hyokkayslkm" className='hyokkayslkm'>
                 <p>
-                  Number of attacks with selected
-                  options : {koordinaattiLista.length}
+                  Total attacks with selected options: {koordinaattiLista.length}
                 </p>
           </div>
         </div>

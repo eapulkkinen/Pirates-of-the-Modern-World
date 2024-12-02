@@ -7,7 +7,6 @@
     --neljasVariAlt: #cac9b3;
 }  
 
-
 body {
     margin-top: 0;
     margin-left: 0;
@@ -26,7 +25,6 @@ body {
 /* Sivupalkit 20% ruudunleveydestä */
 .sivudiv {
     width: 20vw;
-    margin-top: 1%;
 }
 
 /* Kartta 60% ruudunleveydestä */
@@ -37,7 +35,6 @@ body {
     margin-right: 10px;
     border-left: 4px solid var(--kolmasVari);
     border-right: 4px solid var(--kolmasVari);
-    border-bottom: 4px solid var(--kolmasVari);
 }
 
 /* Testiksi, jotta hahmottaa paremmin */ 
@@ -47,8 +44,8 @@ body {
 
 #header {
     width: 100vw;
-    height: 10vh;
-    padding-bottom: 1%;
+    height: 12.5vh;
+    padding-bottom: 2vh;
     margin-bottom: 0;
     position: sticky;
     top: 0;
@@ -65,9 +62,11 @@ body {
 #header button {
     margin-left: 10px;
     margin-right: 10px;
+    margin-top: 5px;
     border-radius: 100px;
     background-color: var(--neljasVari);
     border: 3px solid var(--kolmasVari);
+    font-size: 16px;
 }
 
 #header button:hover {
@@ -78,11 +77,12 @@ body {
     margin-top: 0;
     margin-bottom: 0;
     text-align: center;
+    font-size: 35px;
 }
 
 .valitutMaat {
     overflow-y: auto;
-    height: 56vh;
+    height: 55vh;
     width: 19vw;
     z-index: 1;
     position: absolute;
@@ -91,6 +91,7 @@ body {
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
     padding-left: 0.5vw;
+    font-size: 17px;
 
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE ja Edge */
@@ -101,23 +102,51 @@ body {
     }
 }
 
-#valittuOtsikot th{
+.valitutMaat tr:nth-child(odd) td {
+    position: relative;
+    background-color: var(--mainVari);
+}
+
+.valitutMaat tr:nth-child(odd) td::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -9999px; /* Extend to the far left */
+    right: -2px; /* Extend to the far right */
+    background-color: var(--mainVari);
+    z-index: -1; /* Keep it behind the content */
+}
+
+#valittuOtsikot th {
     font-size: 20px;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 3; 
     background-color: var(--mainVariAlt);
-    margin-top: 20px;
+    padding: 10px;
+}
+
+#valittuOtsikot th::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -10px; 
+    right: -2px; 
+    background-color: var(--mainVariAlt);
+    z-index: -1; 
 }
 
 #valittuOtsikot th::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: -10px;
-    right: -2px;
+    bottom: -2px; 
+    left: -9999px; 
+    right: -2px; 
     height: 2px;
-    background-color: var(--kolmasVari);
+    background-color: var(--kolmasVari); 
+    z-index: 1;
 }
 
 .thCountry{
@@ -131,12 +160,12 @@ body {
 }
 
 .tdRasti {
-    padding-left: 4px;
+    padding-left: 12px;
 }
 
 
 #valituttaulukko {
-    width: 100%;
+    width: 19vw;
 }
 
 #valituttaulukko > th, td {
@@ -146,38 +175,38 @@ body {
 }
 
 .hyokkayslkm {
-    height: 5%;
-    width: 19.5vw;
+    height: 5vh;
+    width: 17.5vw;
     position: absolute;
-    transform: translate(0, 66vh);
+    top: 78vh;
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
     text-align: center;
-    padding-bottom: 1%;
+    padding-bottom: 2vh;
+    padding-top: 1vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    font-size: 20px;
+}
+
+.hyokkayslkm p {
+    margin-top: 0px;
 }
 
 .oikeadiv {
-    overflow-y: auto;
-    height: 95%;
+    height: 75vh;
     position: relative;
     align-items: center;
     justify-content: center;
     text-align: center;
-
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE ja Edge */
-
-    /* WebKit selaimet (Chrome, Safari, etc.) */
-    &::-webkit-scrollbar {
-        display: none;
-    }
 }
 
 .modalNappi {
     border-radius: 100px;
     background-color: var(--neljasVari);
     border: 6px solid var(--kolmasVari);
+    font-size: 18px;
 }
 
 .modalNappi:hover {
@@ -186,25 +215,40 @@ body {
 
 #eventinformation {
     font-weight: bold;
-    font-size: larger;
+    font-size: 25px;
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
     width: 15vw;
     position: absolute;
-    left: 12.5%;
+    left: 2.5vw;
+    top: 8vh;
 }
 
 #infobox {
     text-align: left;
-    padding-left: 10px;
     position: absolute;
-    top: 23.5%;
+    top: 17vh;
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 53vh;
+    font-size: 17px;
+
+    overflow-y: auto;
+
+    
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE ja Edge */
+
+    /* WebKit selaimet (Chrome, Safari, etc.) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 #infobox:empty {
@@ -234,7 +278,7 @@ body {
     float: right;
     max-width: 100%;
     margin-left: auto;
-    margin-right: 1%;
+    margin-right: 1vw;
 }
 
 #oikeaylanapit > button {
@@ -248,7 +292,7 @@ body {
 
 #titlejanav {
     position: relative;
-    left: 50%;
+    left: 50vw;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
@@ -274,7 +318,7 @@ body {
 
 #searchdiv {
     height: auto;
-    width: 100%;
+    width: 20vw;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -282,7 +326,7 @@ body {
 }
 
 #searchdiv * {
-    max-width: 100%;
+    max-width: 20vw;
     box-sizing: border-box;
 }
 
@@ -293,25 +337,25 @@ body {
     flex-wrap: nowrap;
     gap: 2px;
     position: absolute;
-    top: 16.75%;
-    left: 0.75vw;
+    top: 17.5vh;
 }
 
 #searchinputjabutton input {
     box-sizing: border-box;
-    width: 19.25vw;
+    width: 19.75vw;
 }
 
 
 #showEveryCountry {
     position: absolute;
-    top: 12%;
-    left: 5%;
+    top: 13.5vh;
+    left: 5vw;
     background-color: var(--mainVariAlt);
     border: 3px solid var(--kolmasVari);
     border-radius: 20px;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    font-size: 17px;
 }
 
 .tooltip-container {
@@ -325,17 +369,18 @@ body {
 .tooltip {
     position: absolute;
     visibility: hidden;
-    background-color: lightgray;
+    background-color: var(--kolmasVari);
     color: black;
     text-align: center;
     padding: 8px;
     border-radius: 2px;
-    border: 1px solid #d3d3d3;
+    border: 2px solid var(--mainVari);
+    border-radius: 20%;
     z-index: 10000;
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    font-size: 10px;
+    font-size: 16px;
     height: auto;
     min-width: 12vh;
     width: 20vh;
@@ -350,7 +395,7 @@ body {
 
 .question-mark {
     cursor: pointer;
-    background-color: lightgray;
+    background-color: var(--kolmasVari);
     border-radius: 25%;
     width: auto;
     height: auto;
@@ -368,6 +413,12 @@ body {
     margin-bottom: 4px;
 }
 
+#sliderDiv { 
+    text-align: center; 
+    padding: 10px; 
+    border-top: 4px solid var(--kolmasVari);
+}
+
 /* Tokan sivun css */
 
 #paaOtsikko {
@@ -377,7 +428,7 @@ body {
     border-radius: 0px 0px 20px 20px;
     width: 20vw;
     position: absolute;
-    left: 40%;
+    left: 40vw;
 }
 
 
@@ -392,36 +443,29 @@ body {
     text-align: center;
 }
 
-.tokaSivuChart > p {
-    font-size: large;
-}
-
 #disclaimerP {
     display: inline-block;
     width: 100vw;
     text-align: left;
 }
 
-#nuoli {
-    font-size: x-large;
-}
-
 .suggestions {
     max-height: 200px;
     overflow-y: auto;
-    width: 90%;
     text-align: left;
     list-style: none;
     margin: 0;
     margin-left: 3px;
     padding: 0;
     background-color: var(--kolmasVari);
+    font-size: 17px;
 
+    border-bottom: 2px solid var(--mainVariAlt);
     border-radius: 0px 0px 10px 10px;
     position: absolute;
-    top: 19.55%;
-    left: 0.65vw;
-    width: 19.1vw;
+    top: 20vh;
+    left: 0.4vw;
+    width: 19.6vw;
 
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE ja Edge */

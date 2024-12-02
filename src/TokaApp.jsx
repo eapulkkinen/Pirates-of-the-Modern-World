@@ -123,7 +123,6 @@ function App() {
           datalabels: {
             color: "#ffffff",
             backgroundColor: "#000000",
-            anchor: 'end',
             clip: 'true',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
@@ -736,9 +735,7 @@ function App() {
   return (
   <>
       <div id="tokaSivuDiv">
-        <div className="tokaSivuHF">
-          <Header />
-        </div>
+        <Header />
         <h1 id='paaOtsikko'>Interesting data</h1>
         <div className='tokaSivuChart'>
           <h2>Top 10 countries with the most attacks between 1993-2020</h2>
@@ -773,9 +770,7 @@ function App() {
           <canvas ref={atkByTimeRef} id="atkByTimeRef"></canvas>
         </div>
         <p id="disclaimerP">*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
-        <div className="tokaSivuHF">
-          <Footer />
-        </div>
+        <Footer />
       </div>
   </>
   );

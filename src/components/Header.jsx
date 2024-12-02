@@ -50,7 +50,7 @@ const Header = () => {
     return (
         <div id="header">
             <div id="titlejanav">
-                <h1 id="headertitle"> Pirates of the Modern World 🏴‍☠️</h1>
+                <h1 id="headertitle">Pirates of the Modern World</h1>
                 <div id='navnapit'>
                     <button type='submit'
                         onClick={toggleMain}
