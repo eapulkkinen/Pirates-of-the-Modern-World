@@ -55,16 +55,10 @@ const Modal = (props) => {
 
     const toggleAuki = () => {
         if (props.maat.length > 0){   // jos väh. 1 valittu maa, vaihtaa auki arvoa true/false
-            setAuki(!auki);           // asetetaan myös valittu indikaattori tyhjäksi
-            setValittuIndikaattori("");        
-            //samalla tarkastetaan, jos on valittu vain 1 maa ja tällöin
-            //se asetetaan automaattisesti tarkasteltavaksi
-            if (props.maat.length === 1) {
-                setValittuMaa(props.maat[0]);
-            }
-            else {
-                setValittuMaa("");
-            }
+            setAuki(!auki);           
+            setValittuIndikaattori("");        // asetetaan myös valittu indikaattori tyhjäksi
+            setValittuMaa(props.maat[0]);      // asetetaan ensimmäinen valittu maa automaattisesti valituksi
+            
         }
         else {
             setAuki(!auki);             //jos ei valittu yhtään maata, vaihtaa auki ja huomautus 
