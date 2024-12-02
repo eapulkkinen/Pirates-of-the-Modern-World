@@ -25,7 +25,7 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
                 <option value="unemployment_rate">Unemployment Rate</option>
                 <option value="totalgr">Total Government Revenue</option>
                 <option value="industryofgdp">Industry of GDP</option>
-                <option value="all_attacks">All attacks</option>
+                <option value="all_attacks">All Attacks</option>
             </select>
 
     );
