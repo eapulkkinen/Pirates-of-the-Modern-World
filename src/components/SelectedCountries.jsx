@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMemo } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
@@ -20,18 +21,23 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     };
 
     const sortedMaat = () => {
+        const attackCounts = useMemo(() => {
+            const attackCounts = {};
+            maat.forEach((maa) => {
+                attackCounts[maa] = getAttackCount(maa);
+            });
+            return attackCounts;
+        }, [maat, getAttackCount]);
+    
         if (sortOrder === "alphabetical") {
             return maat;
-        } 
-        else {
+        } else {
             return [...maat].sort((a, b) => {
                 if (sortOrder === "descending") {
-                    return getAttackCount(b) - getAttackCount(a);
-                } 
-                else if (sortOrder === "ascending") {
-                    return getAttackCount(a) - getAttackCount(b);
+                    return attackCounts[b] - attackCounts[a];
+                } else if (sortOrder === "ascending") {
+                    return attackCounts[a] - attackCounts[b];
                 }
-                return [];
             });
         }
     };
