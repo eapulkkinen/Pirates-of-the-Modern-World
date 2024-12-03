@@ -4,6 +4,8 @@ import country_indicators from '../../data/country_indicators';
 import './Modal.css';
 import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
+import Question_Mark from '../Question_Mark';
+
 
 /**
  * tekee dropdown valikon ja muuttaa modalin tilaa parametrina tuodulla funktiolla
@@ -96,6 +98,53 @@ const Modal = (props) => {
         return maanIndikaattorit;
     }
 
+    /**
+     * Valitsee valittuIndikaattoria vastaavan selitys tekstin kysymysmerkkiin
+     * @returns haluttu teksti kysymysmerkille
+     */
+    const valitseKysymysmerkkiTeksti = () => {
+
+        let kysymysmerkkiTeksti;
+  
+        switch (valittuIndikaattori) {
+          case "":
+            kysymysmerkkiTeksti = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, esse. Nisi, sit alias accusantium expedita nostrum nobis sunt. Quam fuga fugiat aliquid, assumenda laudantium numquam sed perferendis nulla voluptatum alias!';
+            break;
+          case "all_attacks":
+            kysymysmerkkiTeksti = 'kaikki hyökit';
+            break;
+          case "corruption_index": 
+            kysymysmerkkiTeksti = 'korruptio';
+            break;
+          case "homicide_rate":
+            kysymysmerkkiTeksti = 'murhat';
+            break;
+          case "GDP":
+            kysymysmerkkiTeksti = 'gdp';
+            break;
+          case "total_fisheries_per_ton":
+            kysymysmerkkiTeksti = 'kalastus';
+            break;
+          case "total_military":
+            kysymysmerkkiTeksti = 'armeija';
+            break;
+          case "population":
+            kysymysmerkkiTeksti = 'väkiluku';
+            break;
+          case "unemployment_rate":
+            kysymysmerkkiTeksti = 'työttömyys';
+            break;
+          case "totalgr":
+            kysymysmerkkiTeksti = 'valtion tulot';
+            break;
+          case "industryofgdp":
+            kysymysmerkkiTeksti = 'joku en tiiä mikä';
+            break;
+        }
+  
+        return kysymysmerkkiTeksti;
+      }
+
 
     return (
         <>
@@ -120,6 +169,7 @@ const Modal = (props) => {
                     ))}
                 </select>
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
+                <Question_Mark teksti={valitseKysymysmerkkiTeksti()}/>
                 <p> {valittuMaa} </p>
                 <>
                 <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>

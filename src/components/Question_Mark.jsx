@@ -1,20 +1,22 @@
 import React from "react";
 import '../index.css';
 
-const Questio_Mark = () => {
+/**
+ * Tekee pienen kysymysmerkin, jonka päälle kursorin asettaessa näytetään laatikko, jossa on tekstiä
+ * @param {String} teksti näytettävä teksti 
+ * @returns kysymysmerkki hommelin
+ */
+const Question_Mark = ({teksti}) => {
     return (
         <div class="tooltip-container">
         <div class="question-mark">?</div>
         <div class="tooltip">
         <span class="tooltip-text">
-        Exclusive Economic Zone (EEZ) is an area
-        of the sea in which a sovereign state has
-        exclusive rights regarding the exploration
-        and use of marine resources.
+        {teksti}
         </span>
         </div>
         </div>
     );
 }
 
-export default Questio_Mark;
+export default Question_Mark;
