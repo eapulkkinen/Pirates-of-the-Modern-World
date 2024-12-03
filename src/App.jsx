@@ -11,6 +11,7 @@ import country_codes from './data/country_codes';
 import pirate_attacks from './data/pirate_attacks';
 import country_indicators from './data/country_indicators';
 import Modal from './components/Modal/Modal'
+import Questio_Mark from './components/Question_Mark';
 
 
 function App() {
