@@ -736,7 +736,7 @@ function App() {
   <>
       <div id="tokaSivuDiv">
         <Header />
-        <h1 id='paaOtsikko'>Interesting data</h1>
+        <h1 id='paaOtsikko'>Additional charts based on the data</h1>
         <div className='tokaSivuChart'>
           <h2>Top 10 countries with the most attacks between 1993-2020</h2>
           <canvas ref={attackPieChartRef} id="attackPie"></canvas>

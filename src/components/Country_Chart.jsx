@@ -9,6 +9,20 @@ import pirate_attacks from '../data/pirate_attacks';
  */
 const Country_Chart = (props) => {
 
+  const indicatorLabels = [
+    { indic: "", label: "Indicator"},
+    { indic: "corruption_index", label: "Corruption Index"},
+    { indic: "homicide_rate", label: "Homicide Rate"},
+    { indic: "GDP", label: "GDP"},
+    { indic: "total_fisheries_per_ton", label: "Fisheries Production Per Ton"},
+    { indic: "total_military", label: "Total Military"},
+    { indic: "population", label: "Population"},
+    { indic: "unemployment_rate", label: "Unemployment Rate"},
+    { indic: "totalgr", label: "Total Government Revenue"},
+    { indic: "industryofgdp", label: "Industry of GDP"},
+    { indic: "all_attacks", label: "All Attacks"}
+  ]
+
     /**
      * valitsee props.valittuIndikaattori perusteella tarvittavan indikaattoridatan
      * @returns Haluttu indikaattoridata
@@ -73,6 +87,7 @@ const Country_Chart = (props) => {
       return indikaattoriTaulukko;
     }
 
+    // Tehdään kuvaaja
     const chartRef = useRef(null); // asetetaan viite canvas elementtiin
     useEffect(() => {
       const ctx = chartRef.current.getContext("2d");
@@ -82,6 +97,7 @@ const Country_Chart = (props) => {
       };
       const indicator = valitseIndikaattori();
       const attacks = props.indikaattorit.map(i => i.attacks);
+      const hyokkaysLabel = `Attacks in ${props.maa}`;
 
       // määritellään taulukon tiedot
       const kuvaaja = new Chart (ctx, {
@@ -90,30 +106,65 @@ const Country_Chart = (props) => {
             labels: vuosi, // x-akselin data
             datasets: [ // y-akselin data
               {
-                label: 'Attacks',
+                label: hyokkaysLabel,
                 data: attacks,
-                yAxisID: 'yVas',
+                yAxisID: 'y',
               },
               {
-                label: props.valittuIndikaattori,
+                label: indicatorLabels.find((i) => i.indic === props.valittuIndikaattori).label, //haetaan taulukosta oikea labeli
                 data: indicator,
-                yAxisID: 'yOik',
+                yAxisID: 'y1',
               },
           ],
         },
         options: {
-          scales: {  // y-akselit
-            yVas: {
+          scales: {  //akselit
+            x: {
+              title: {
+                display: true,
+                text: 'Year',
+                color: '#000000'
+              },
+              border: {
+                color: '#000000'
+              },
+              ticks: {
+                color: '#000000'
+              }
+            },
+            y: {
               type: 'linear', 
               display: true,
               position: 'left',
+              title: {
+                display: true,
+                text: hyokkaysLabel,
+                color: '#000000'
+              },
+              border: {
+                color: '#000000'
+              },
+              ticks: {
+                color: '#000000'
+              },
             },
-            yOik: {
+            y1: {
               type: 'linear', 
               display: true,
               position: 'right',
               grid: {
                 drawOnChartArea: false,  // ei näytetä tämän y-akselin viivoja kuvaajassa selkeyden takia
+              },
+              title: {
+                display: true,
+                text: indicatorLabels.find((i) => i.indic === props.valittuIndikaattori).label,
+                color: '#000000'
+              },
+              border: {
+                color: '#000000'
+              },
+              ticks: {
+                color: '#000000'
               },
             },
           },
