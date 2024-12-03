@@ -24,7 +24,7 @@ const Slider = ({ onChange, vuosi }) => {
 
     if (isChecked) {
       setPreviousSliderValue(vuosi);
-      onChange("All");
+      onChange("all");
     }
     else {
       onChange(previousSliderValue);
