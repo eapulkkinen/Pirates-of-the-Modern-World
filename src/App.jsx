@@ -350,13 +350,9 @@ function App() {
             )}
           </div>
           <div id="hyokkayslkm" className='hyokkayslkm'>
-            {
-              maat.length > 0 && (
                 <p>
-                  Number of attacks with selected
-                  options : {koordinaattiLista.length}
+                  Total attacks with selected options: {koordinaattiLista.length}
                 </p>
-              )}
           </div>
         </div>
         <div id="karttadiv">
@@ -366,6 +362,7 @@ function App() {
           <div className="oikeadiv">
             <Modal maat={maat}/>
             <p id="eventinformation">Event information</p>
+            
             <div id="infobox"></div>
           </div>
         </div>

@@ -123,7 +123,6 @@ function App() {
           datalabels: {
             color: "#ffffff",
             backgroundColor: "#000000",
-            anchor: 'end',
             clip: 'true',
             formatter: function(value) {
               return Math.round((value / yht) * 1000) / 10 + '%';
@@ -131,7 +130,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -222,7 +221,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -313,7 +312,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -393,8 +392,8 @@ function App() {
       options: {   
         plugins: {
           datalabels: {
-            color: "#000000",
-            backgroundColor: "#ffffff",
+            color: "#ffffff",
+            backgroundColor: "#000000",
             anchor: 'center',
             display: 'auto',
             clip: 'true',
@@ -404,7 +403,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -498,7 +497,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'right',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -555,7 +554,7 @@ function App() {
           },
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
             labels: {
               color: "#000000"
             }
@@ -736,10 +735,8 @@ function App() {
   return (
   <>
       <div id="tokaSivuDiv">
-        <div className="tokaSivuHF">
-          <Header />
-        </div>
-        <h1>Interesting data</h1>
+        <Header />
+        <h1 id='paaOtsikko'>Additional charts based on the data</h1>
         <div className='tokaSivuChart'>
           <h2>Top 10 countries with the most attacks between 1993-2020</h2>
           <canvas ref={attackPieChartRef} id="attackPie"></canvas>
@@ -773,9 +770,7 @@ function App() {
           <canvas ref={atkByTimeRef} id="atkByTimeRef"></canvas>
         </div>
         <p id="disclaimerP">*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
-        <div className="tokaSivuHF">
-          <Footer />
-        </div>
+        <Footer />
       </div>
   </>
   );

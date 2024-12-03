@@ -26,6 +26,7 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
                 <option value="totalgr">Total Government Revenue</option>
                 <option value="industryofgdp">Industry of GDP</option>
                 <option value="all_attacks">All Attacks</option>
+                <option value="all_attacks">All Attacks</option>
             </select>
 
     );
@@ -101,7 +102,7 @@ const Modal = (props) => {
         <>
         <button 
         onClick={toggleAuki}
-        className='modalNappi'>Click for more info on chosen countries</button>
+        className='modalNappi'>Click here for more info on chosen countries</button>
 
         
         {auki && !huomautus && (                      // jos auki = true ja huomautus false, niin näytetään modal
@@ -122,6 +123,7 @@ const Modal = (props) => {
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
                 <p> {valittuMaa} </p>
                 <>
+                <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
                 <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
                 </>
                 <button

@@ -24,7 +24,7 @@ const Slider = ({ onChange, vuosi }) => {
 
     if (isChecked) {
       setPreviousSliderValue(vuosi);
-      onChange("all");
+      onChange("All");
     }
     else {
       onChange(previousSliderValue);
@@ -32,7 +32,7 @@ const Slider = ({ onChange, vuosi }) => {
   }
 
   return (
-    <div style={{ textAlign: 'center', padding: '10px' }}> 
+    <div id='sliderDiv'> 
       <h1 id="sliderheader"> Year to be displayed: {vuosi}</h1>
       <input
         type="range"
@@ -41,17 +41,17 @@ const Slider = ({ onChange, vuosi }) => {
         step="1"
         value={showAll ? "1993" : vuosi}
         onChange={handleSliderChange}
-        style={{ width: '400px' }} 
+        id='sliderInput'
         disabled={showAll}
       />
-      <label>
+      <label id='kaikkiVuodetLabel'>
         <input 
           type="checkbox" 
-          id="kaikkivuodetcb"
+          id="kaikkiVuodetCheck"
           onChange={handleCheckboxChange}
           checked={showAll}
         />
-        Show all
+        Show all years
       </label>
       
     </div>
