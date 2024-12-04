@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
+import pirate_attacks from '../data/pirate_attacks';
 
 /**
  * Luo kaavion halutuilla spekseillä
@@ -7,6 +8,20 @@ import {Chart} from 'chart.js/auto';
  * @returns kaavio
  */
 const Country_Chart = (props) => {
+
+  const indicatorLabels = [
+    { indic: "", label: "Indicator"},
+    { indic: "corruption_index", label: "Corruption Index"},
+    { indic: "homicide_rate", label: "Homicide Rate"},
+    { indic: "GDP", label: "GDP"},
+    { indic: "total_fisheries_per_ton", label: "Fisheries Production Per Ton"},
+    { indic: "total_military", label: "Total Military"},
+    { indic: "population", label: "Population"},
+    { indic: "unemployment_rate", label: "Unemployment Rate"},
+    { indic: "totalgr", label: "Total Government Revenue"},
+    { indic: "industryofgdp", label: "Industry of GDP"},
+    { indic: "all_attacks", label: "All Attacks"}
+  ]
 
     /**
      * valitsee props.valittuIndikaattori perusteella tarvittavan indikaattoridatan
@@ -17,6 +32,20 @@ const Country_Chart = (props) => {
       let indikaattoriTaulukko 
 
       switch (props.valittuIndikaattori) {
+        case "all_attacks":
+          let hyokkaykset = [];
+          let index = 0;
+          for (let i = 1993; i <= 2020; i++) {      // kopioitu TokaApp.jsx: ästä pienellä muutoksella
+            hyokkaykset.push(0);
+            for (let hyokkays of pirate_attacks) {
+              if (hyokkays.date.slice(0, 4) == i) {
+                hyokkaykset[index] += 1;
+              }
+            }
+            index++;
+          }
+          indikaattoriTaulukko = hyokkaykset;
+          break;
         case "corruption_index": 
           const corruption = props.indikaattorit.map(i => i.corruption_index);
           indikaattoriTaulukko = corruption;
@@ -53,20 +82,22 @@ const Country_Chart = (props) => {
           const industry = props.indikaattorit.map(i => i.industryofgdp);
           indikaattoriTaulukko = industry;
           break;
-        default:
-          const oletus = props.indikaattorit.map(i => i.unemployment_rate);
-          indikaattoriTaulukko = oletus;
       }
 
       return indikaattoriTaulukko;
     }
 
+    // Tehdään kuvaaja
     const chartRef = useRef(null); // asetetaan viite canvas elementtiin
     useEffect(() => {
       const ctx = chartRef.current.getContext("2d");
-      const vuosi = props.indikaattorit.map(i => i.year); // luodaan datasta taulukot
+      const vuosi = [];     // luodaan datasta taulukot
+      for (let i = 1993; i <= 2020; i++) {
+        vuosi.push(i);
+      };
       const indicator = valitseIndikaattori();
       const attacks = props.indikaattorit.map(i => i.attacks);
+      const hyokkaysLabel = `Attacks in ${props.maa}`;
 
       // määritellään taulukon tiedot
       const kuvaaja = new Chart (ctx, {
@@ -75,30 +106,65 @@ const Country_Chart = (props) => {
             labels: vuosi, // x-akselin data
             datasets: [ // y-akselin data
               {
-                label: 'Attacks',
+                label: hyokkaysLabel,
                 data: attacks,
-                yAxisID: 'yVas',
+                yAxisID: 'y',
               },
               {
-                label: props.valittuIndikaattori,
+                label: indicatorLabels.find((i) => i.indic === props.valittuIndikaattori).label, //haetaan taulukosta oikea labeli
                 data: indicator,
-                yAxisID: 'yOik',
+                yAxisID: 'y1',
               },
           ],
         },
         options: {
-          scales: {  // y-akselit
-            yVas: {
+          scales: {  //akselit
+            x: {
+              title: {
+                display: true,
+                text: 'Year',
+                color: '#000000'
+              },
+              border: {
+                color: '#000000'
+              },
+              ticks: {
+                color: '#000000'
+              }
+            },
+            y: {
               type: 'linear', 
               display: true,
               position: 'left',
+              title: {
+                display: true,
+                text: hyokkaysLabel,
+                color: '#000000'
+              },
+              border: {
+                color: '#000000'
+              },
+              ticks: {
+                color: '#000000'
+              },
             },
-            yOik: {
+            y1: {
               type: 'linear', 
               display: true,
               position: 'right',
               grid: {
                 drawOnChartArea: false,  // ei näytetä tämän y-akselin viivoja kuvaajassa selkeyden takia
+              },
+              title: {
+                display: true,
+                text: indicatorLabels.find((i) => i.indic === props.valittuIndikaattori).label,
+                color: '#000000'
+              },
+              border: {
+                color: '#000000'
+              },
+              ticks: {
+                color: '#000000'
               },
             },
           },

@@ -1,37 +1,43 @@
 import React, { useState } from 'react';
+import { useMemo } from 'react';
 
 function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
-    const [thText, setThText] = useState("Number of attacks 🔤");
+    const [thIcon, setThIcon] = useState("🔤");
 
     const handleSort = () => {
-        let text = "Number of attacks ";
+        let icon = "🔤";
         if (sortOrder === "alphabetical") {
             setSortOrder("descending");
-            text = text + "⬆️";
+            icon = "⬆️";
         } else if (sortOrder === "descending") {
             setSortOrder("ascending");
-            text = text + "⬇️";
+            icon = "⬇️";
         } else {
             setSortOrder("alphabetical");
-            text = text + "🔤";
+            icon = "🔤";
         }
-        setThText(text)
+        setThIcon(icon);
     };
 
     const sortedMaat = () => {
+        const attackCounts = useMemo(() => {
+            const attackCounts = {};
+            maat.forEach((maa) => {
+                attackCounts[maa] = getAttackCount(maa);
+            });
+            return attackCounts;
+        }, [maat, getAttackCount]);
+    
         if (sortOrder === "alphabetical") {
             return maat;
-        } 
-        else {
+        } else {
             return [...maat].sort((a, b) => {
                 if (sortOrder === "descending") {
-                    return getAttackCount(b) - getAttackCount(a);
-                } 
-                else if (sortOrder === "ascending") {
-                    return getAttackCount(a) - getAttackCount(b);
+                    return attackCounts[b] - attackCounts[a];
+                } else if (sortOrder === "ascending") {
+                    return attackCounts[a] - attackCounts[b];
                 }
-                return [];
             });
         }
     };
@@ -39,9 +45,10 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
     return (
         <table id="valituttaulukko">
         <thead>
-            <tr className="valittutr">
-                <th className='thCountry'>Country</th>
-                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> {thText}</th>
+            <tr className="valittutr" id='valittuOtsikot'>
+                    <th className='thCountry'>Country</th>
+                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> Number of attacks </th>
+                    <th id="nuoli" onClick={handleSort} style={{ cursor: "pointer"}}> {thIcon}</th>
             </tr>
         </thead>
         <tbody>
@@ -49,7 +56,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
             <tr className="valittutr" key={index}>
                 <td>{maa}</td>
                 <td className='tdAttackCount'>{getAttackCount(maa)}</td>
-                <td>
+                <td className='tdRasti'>
                     <button
                         onClick={() => handleMaaPoisto(maa)}
                         style={{ cursor: 'pointer' }}

@@ -24,7 +24,8 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
                 <option value="population">Population</option>
                 <option value="unemployment_rate">Unemployment Rate</option>
                 <option value="totalgr">Total Government Revenue</option>
-                <option value="industryofgdp">INdustry of GDP</option>
+                <option value="industryofgdp">Industry of GDP</option>
+                <option value="all_attacks">All Attacks</option>
             </select>
 
     );
@@ -42,6 +43,7 @@ const Modal = (props) => {
     const [valittuIndikaattori, setValittuIndikaattori] = useState("");
     const [valittuMaa, setValittuMaa] = useState("");
     const [auki, setAuki] = useState(false);
+    const [huomautus, setHuomautus] = useState(false);
 
     const handleCountryChange = (e) => {
         setValittuMaa(e.target.value);
@@ -53,17 +55,14 @@ const Modal = (props) => {
 
     const toggleAuki = () => {
         if (props.maat.length > 0){   // jos väh. 1 valittu maa, vaihtaa auki arvoa true/false
-            setAuki(!auki);
-            //samalla tarkastetaan, jos on valittu vain 1 maa ja tällöin
-            //se asetetaan automaattisesti tarkasteltavaksi
-            if (props.maat.length === 1) {
-                setValittuMaa(props.maat[0]);
-            }
-            else {
-                setValittuMaa("");
-            }
-        } else {
-            alert("Please select a country");
+            setAuki(!auki);           
+            setValittuIndikaattori("");        // asetetaan myös valittu indikaattori tyhjäksi
+            setValittuMaa(props.maat[0]);      // asetetaan ensimmäinen valittu maa automaattisesti valituksi
+            
+        }
+        else {
+            setAuki(!auki);             //jos ei valittu yhtään maata, vaihtaa auki ja huomautus 
+            setHuomautus(!huomautus);   // arvoja true/false
         }
     }
 
@@ -102,11 +101,11 @@ const Modal = (props) => {
         <>
         <button 
         onClick={toggleAuki}
-        className='modalNappi'>Click for more info on chosen countries</button>
+        className='modalNappi'>Click here for more info on chosen countries</button>
 
         
-        {auki && (                      // jos auki = true, niin näytetään modal komponentti
-            <div className='modal'>
+        {auki && !huomautus && (                      // jos auki = true ja huomautus false, niin näytetään modal
+            <div className='modal'>                   
             <div 
             onClick={toggleAuki}
             className='overlay'></div>  
@@ -123,7 +122,7 @@ const Modal = (props) => {
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
                 <p> {valittuMaa} </p>
                 <>
-                <Country_Chart indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
+                <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
                 </>
                 <button
                 className='modalSulkuNappi'
@@ -133,6 +132,25 @@ const Modal = (props) => {
 
         </div>
 
+        )}
+
+        {auki && huomautus &&(      // jos auki ja huomautus true, näytetään huomautus
+            <div className='modal'>
+            <div 
+            onClick={toggleAuki}
+            className='overlay'></div>  
+
+            <div className='huomSisalto'>
+                
+                <p className='huomTeksti'>Please select a country!</p>
+                
+                <button
+                className='modalSulkuNappi'
+                onClick={toggleAuki}
+                >CLOSE</button>
+            </div>
+
+        </div>
         )}
         
         </>

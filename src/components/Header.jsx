@@ -18,7 +18,6 @@ const Header = () => {
 
     /**
      * Tarkistaa onko nykyinen sivu Main
-     * Erittäin huono tilapäinen ratkaisu, muista muokata myöhemmin
      * @returns true jos ollaan mainissa, false jos ei olla
      */
     const onkoMain = () => {
@@ -51,7 +50,7 @@ const Header = () => {
     return (
         <div id="header">
             <div id="titlejanav">
-                <h1 id="headertitle"> Pirates of the Modern World 🏴‍☠️</h1>
+                <h1 id="headertitle">Pirates of the Modern World</h1>
                 <div id='navnapit'>
                     <button type='submit'
                         onClick={toggleMain}
@@ -77,8 +76,8 @@ const Header = () => {
 
             {aukiHelp && (
             <div className='modal'>
-            <div className='modalSisalto'>
-                <h1>Welcome to the Pirates of the Modern World App 🏴‍☠️</h1>
+            <div className='modalSisalto' id='helpModal'>
+                <h1>Welcome to the Pirates of the Modern World App</h1>
                 <p>The app can show you information regarding pirate attacks between the years 1993 and 2020</p>
                 <p>Choose a country you want info on by searching for it, or just choose "Show every country" to see all countries</p>
                 <p>Choose the year with the slider below the map, or just choose "Show all" to see all years</p>
@@ -93,7 +92,7 @@ const Header = () => {
             )}
             {aukiAbout && (
             <div className='modal'>
-            <div className='modalSisalto'>
+            <div className='modalSisalto' id='aboutModal'>
                 <h1>About</h1>
                 <p>Lorem ipsum jne jne</p>
                 <button

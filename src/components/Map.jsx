@@ -10,13 +10,13 @@ import punainen from '../assets/ValittuMerkki.png';
 var sininenMerkki = L.icon({ //valitsemattoman markerin ikoni
     iconUrl: sininen,
     iconSize: [38, 70],
-    iconAnchor: [20, 60]
+    iconAnchor: [20, 63]
 });
 
 var punainenMerkki = L.icon({ //valitun markerin ikoni
     iconUrl: punainen,
     iconSize: [38,70],
-    iconAnchor: [20, 60]
+    iconAnchor: [20, 63]
 });
 
 var aiemminValittu = null; //Aiemmin valitun markerin alustus
@@ -207,7 +207,7 @@ const Map = ({ koordinaattiLista }) => {
                 marker.date = koordinaatit.date;
                 marker.time = koordinaatit.time;
                 let googleLinkki = 'https://google.com/maps/place/' + koordinaatit.latitude + ',' + koordinaatit.longitude; //Muodostetaan linkki google mapsiin samoilla koordinaateilla
-                marker.bindPopup('<b>View on Google Maps</b><br><a href="' + googleLinkki + '" target="_blank">Click here</a>', { offset: L.point(0, -20) }); //Määritellään millainen markerin popup on
+                marker.bindPopup('<b>View on Google Maps</b><br><a href="' + googleLinkki + '" target="_blank">Click here</a>', { offset: L.point(0, -30) }); //Määritellään millainen markerin popup on
 
                 marker.addEventListener("click", (e) => { // jos markeria klikataan suoritetaan tämä
                     let infobox = document.getElementById('infobox'); //valitaan valmiiksi luotu html elementti
