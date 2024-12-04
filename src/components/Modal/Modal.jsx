@@ -169,7 +169,7 @@ const Modal = (props) => {
                     ))}
                 </select>
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
-                <Question_Mark teksti={valitseKysymysmerkkiTeksti()}/>
+                <Question_Mark ikoni={'?'}teksti={valitseKysymysmerkkiTeksti()}/>
                 <p> {valittuMaa} </p>
                 <>
                 <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
