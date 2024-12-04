@@ -89,7 +89,6 @@ import Modal from './components/Modal/Modal'
     };
 
 
-
     const palautaMaataVastaavaMaakoodi = (maanNimi) => {
       const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
       const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
