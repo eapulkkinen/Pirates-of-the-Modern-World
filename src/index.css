@@ -533,8 +533,8 @@ body {
     border-radius: 0px 0px 10px 10px;
     position: absolute;
     top: 20vh;
-    left: 0.4vw;
-    width: 19.6vw;
+    left: 1.35vw;
+    width: 17.4vw;
 
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE ja Edge */
