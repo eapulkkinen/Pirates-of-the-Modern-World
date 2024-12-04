@@ -108,13 +108,13 @@ const Modal = (props) => {
   
         switch (valittuIndikaattori) {
           case "":
-            kysymysmerkkiTeksti = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, esse. Nisi, sit alias accusantium expedita nostrum nobis sunt. Quam fuga fugiat aliquid, assumenda laudantium numquam sed perferendis nulla voluptatum alias!';
+            kysymysmerkkiTeksti = "Here you can choose country specific indicators to compare with attacks that have happened nearest to, or in the country.";
             break;
           case "all_attacks":
-            kysymysmerkkiTeksti = 'kaikki hyökit';
+            kysymysmerkkiTeksti = 'All Attacks shows the amount of attacks in every country combined.';
             break;
           case "corruption_index": 
-            kysymysmerkkiTeksti = 'korruptio';
+            kysymysmerkkiTeksti = 'Corruption Index shows the Corruption Perceptions Index scores of the country. The scale of the scores changed in 2012 and the scores before that are not comparable.';
             break;
           case "homicide_rate":
             kysymysmerkkiTeksti = 'murhat';
@@ -161,7 +161,6 @@ const Modal = (props) => {
 
             <div className='modalSisalto'>
                 <select onChange={handleCountryChange} value={valittuMaa} >
-                    <option id="valittuoption" value="">Select a country</option>
                     {props.maat.map((option, index) => (
                         <option key={index} value={option}>
                          {option}
