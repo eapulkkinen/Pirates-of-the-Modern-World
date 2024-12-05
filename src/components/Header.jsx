@@ -1,8 +1,11 @@
 import {useState} from 'react';
 import './Modal/Modal.css';
 
-const Header = () => {
 
+/**
+ * Tähän käyttöoikeudet
+ */
+const Header = () => {
     const [aukiHelp, setAukiHelp] = useState(false);
     const [aukiAbout, setAukiAbout] = useState(false);
 
@@ -11,10 +14,12 @@ const Header = () => {
         setAukiHelp(!aukiHelp);
     }
 
+
     // Asettaa About ikkunan näkyväksi / pois näkyvistä
     const toggleAbout = () => {
         setAukiAbout(!aukiAbout);
     }
+
 
     /**
      * Tarkistaa onko nykyinen sivu Main
@@ -25,24 +30,20 @@ const Header = () => {
         return false;
     }
 
+
     // Avaa main karttasivun jos se ei ole auki, jos on auki, ei tee mitään
     const toggleMain = () => {
-        if (onkoMain()) {
-            console.log("Ollaan jo Mainissa");
-        }
-        else {
+        if (!onkoMain()) {
             window.location.href= "../../index.html";
         }
 
     }
 
+
     // Avaa lisäsivun jos se ei ole auki, jos on auki, ei tee mitään
     const toggleGraphs = () => {
         if (onkoMain()) {
             window.location.href = "../../toka.html";
-        }
-        else {
-            console.log("Ollaan jo tokalla sivulla");
         }
     }
     

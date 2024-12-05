@@ -1,4 +1,6 @@
-
+/**
+ * Tähän käyttöoikeudet
+ */
 const Footer = () => {
     return (
             <div id="footerdiv">

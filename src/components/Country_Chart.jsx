@@ -1,8 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
 import pirate_attacks from '../data/pirate_attacks';
 
 /**
+ * Tähän käyttöoikeudet
+ * 
  * Luo kaavion halutuilla spekseillä
  * @param {*} props indikaattorit = kaikki valitun maan indikaattorit, valittuIndikaattori = indikaattori joka halutaan näyttää
  * @returns kaavio
