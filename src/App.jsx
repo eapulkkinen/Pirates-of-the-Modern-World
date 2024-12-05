@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
@@ -7,9 +6,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Search from './components/Search';
 import SelectedCountries from './components/SelectedCountries';
-import country_codes from './data/country_codes';
-import pirate_attacks from './data/pirate_attacks';
-import country_indicators from './data/country_indicators';
+import CountryCodes from './data/country_codes';
+import PirateAttacks from './data/pirate_attacks';
 import Modal from './components/Modal/Modal';
 
 
@@ -21,10 +19,10 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [paivita, setPaivita] = useState(true); // boolean jolla estetään päivittyminen kesken haun
 
-  let maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+  let maaTaulukko = CountryCodes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
   maaTaulukko = maaTaulukko.sort();
   let valitsemattomatMaat = maaTaulukko;
-  const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
+  const countryCodeMap = CountryCodes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
     accumulator[country_name] = country;
     return accumulator;
   }, {});
@@ -92,7 +90,7 @@ function App() {
    */
   const palautaMaakoodiaVastaavaMaa = (countrycode) => {
     if (countrycode !== "NA") {
-      const potentialCountryName = country_codes.find(maa => maa.country === countrycode);   
+      const potentialCountryName = CountryCodes.find(maa => maa.country === countrycode);   
       //find palauttaa undefined => 'unknown' tai löydetyn maan 'Finland'
       const countryName = potentialCountryName ? potentialCountryName.country_name : 'Unknown';
       return countryName;
@@ -109,7 +107,7 @@ function App() {
    * @returns Maakoodin
    */
   const palautaMaataVastaavaMaakoodi = (maanNimi) => {
-    const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
+    const potentialCountryName = CountryCodes.find(maa => maa.country_name === maanNimi);   
     const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
     return countryName;
   };
@@ -122,7 +120,7 @@ function App() {
    * @returns Taulukon hyökkäyksistä, jotka vastaa maakoodeja
    */
   const haeMaidenHyokkaykset = (maakoodit) => {
-    const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
+    const maidenHyokkaykset = PirateAttacks.filter(hyokkays => {
       return maakoodit.includes(hyokkays.nearest_country);
     });
     return maidenHyokkaykset;
