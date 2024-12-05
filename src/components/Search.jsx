@@ -1,42 +1,30 @@
 import { useState } from 'react';
 
-
-
-// TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, asetaHakuKoko }) => {
+const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatValittuna, asetaHakuKoko }) => {
     const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
-    const [showAll, setShowAll] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
+    const [naytaKaikki, setNaytaKaikki] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
     /**
      * Hakupalkin muutos otetaan talteen valueen ja
      * se asetetaan hakusanaksi. 
      * @param {*} e tapahtuma 
      */
-    const handleChange = (e) => {
-        const value = e.target.value
-        setHakusana(value);
-        onSearch(value);
+    const kasitteleMuutos = (e) => {
+        const syote = e.target.value
+        setHakusana(syote);
+        hae(syote);
     };
 
 
     /**
      * Hakuehdotuksen valinnan käsittely
-     * @param {*} suggestion klikattu hakuehdotus 
+     * @param {*} ehdotus klikattu hakuehdotus 
      */
-    const handleSuggestionClick = (suggestion) => {
-        onSearch(suggestion);
+    const ehdotuksenValinta = (ehdotus) => {
+        hae(ehdotus);
         setHakusana('');    //hakusana kenttä tyhjennetään
-        setSuggestions([]); //ehdotukset pois
+        setEhdotukset([]); //ehdotukset pois
         asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
-    };
-    
-
-    /**
-     * Haun käsittely, kun painetaan Search.
-     */
-    const handleSearch = () => {
-        onSearch(hakusana);
-        setHakusana('');
     };
 
 
@@ -44,14 +32,13 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
      * Checkboxin käsittely
      * @param {*} e checkbox tilanvaihdos-tapahtuma 
      */
-    const handleCheckboxChange = (e) => {
-        const isChecked = e.target.checked;
-        setShowAll(isChecked);
-        onToggleAllCountries(isChecked);    //Pääohjelmaan tieto tilasta
+    const muutaCheckbox = (e) => {
+        const valittu = e.target.checked;
+        setNaytaKaikki(valittu);
+        kaikkiMaatValittuna(valittu);
 
-        //Jos checkbox chekattu
-        if (isChecked) {
-            setSuggestions([]); 
+        if (valittu) {
+            setEhdotukset([]); 
             asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
         }  
     };
@@ -64,28 +51,28 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                         type="text" 
                         value = {hakusana}
                         placeholder="Search for a country" 
-                        onChange={handleChange}>
+                        onChange={kasitteleMuutos}>
                     </input>
                 </div>
                 <label id='showEveryCountry'>
                     <input                  
                         type="checkbox"
-                        onChange={handleCheckboxChange}
-                        checked={showAll}
+                        onChange={muutaCheckbox}
+                        checked={naytaKaikki}
                     />
-                    Show every country
+                    Select every country
               </label>
-              {suggestions.length > 0 && (
+              {ehdotukset.length > 0 && (
                 <ul className='suggestions'>
-                {suggestions.map((suggestion, index) => (
+                {ehdotukset.map((ehdotus, index) => (
                     <li 
                     key={index}
                     onClick={() => {
-                        handleSuggestionClick(suggestion);
+                        ehdotuksenValinta(ehdotus);
                     }}
                     style={{ cursor: 'pointer' }}
                     >
-                    {suggestion}
+                    {ehdotus}
                     </li>
                 ))}
                 </ul>

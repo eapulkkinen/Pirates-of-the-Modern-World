@@ -6,14 +6,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Search from './components/Search';
 import SelectedCountries from './components/SelectedCountries';
-<<<<<<< HEAD
 import CountryCodes from './data/country_codes';
 import PirateAttacks from './data/pirate_attacks';
-=======
-import country_codes from './data/country_codes';
-import pirate_attacks from './data/pirate_attacks';
-import country_indicators from './data/country_indicators';
->>>>>>> 48dbc633bc7ba7f3615ab4ba2656e9eb22fc067b
 import Modal from './components/Modal/Modal';
 
 
