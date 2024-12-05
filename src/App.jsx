@@ -177,8 +177,8 @@ function App() {
     const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
     
     const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
-    const maaSet = new Set(maaTaulukko);
-    const realMaat = maaList.filter(maa => maaSet.has(maa))   //syötetyt maat suodatetaan datasta löytyvistä maista
+    const datanMaat = new Set(maaTaulukko);
+    const realMaat = maaList.filter(maa => datanMaat.has(maa))   //syötetyt maat suodatetaan datasta löytyvistä maista
 
     const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
 
