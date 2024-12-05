@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 
 // TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, asetaHakuKoko }) => {
+const Search = ({ onSearch, ehdotukset, setEhdotukset, onToggleAllCountries, asetaHakuKoko }) => {
     const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
     const [showAll, setShowAll] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
@@ -26,17 +26,8 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
     const handleSuggestionClick = (suggestion) => {
         onSearch(suggestion);
         setHakusana('');    //hakusana kenttä tyhjennetään
-        setSuggestions([]); //ehdotukset pois
+        setEhdotukset([]); //ehdotukset pois
         asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
-    };
-    
-
-    /**
-     * Haun käsittely, kun painetaan Search.
-     */
-    const handleSearch = () => {
-        onSearch(hakusana);
-        setHakusana('');
     };
 
 
@@ -51,7 +42,7 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
 
         //Jos checkbox chekattu
         if (isChecked) {
-            setSuggestions([]); 
+            setEhdotukset([]); 
             asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
         }  
     };
@@ -75,17 +66,17 @@ const Search = ({ onSearch, suggestions, setSuggestions, onToggleAllCountries, a
                     />
                     Show every country
               </label>
-              {suggestions.length > 0 && (
+              {ehdotukset.length > 0 && (
                 <ul className='suggestions'>
-                {suggestions.map((suggestion, index) => (
+                {ehdotukset.map((ehdotus, index) => (
                     <li 
                     key={index}
                     onClick={() => {
-                        handleSuggestionClick(suggestion);
+                        handleSuggestionClick(ehdotus);
                     }}
                     style={{ cursor: 'pointer' }}
                     >
-                    {suggestion}
+                    {ehdotus}
                     </li>
                 ))}
                 </ul>
