@@ -171,7 +171,7 @@ function App() {
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
    * löytyvät haetut maat valituiksi.
-   * @param {*} hakusana Hakuun syötetty merkkijono
+   * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
    */
   const handleHaku = (hakusana) => {
     const syote = hakusana.trim();
@@ -189,6 +189,11 @@ function App() {
   };
 
 
+  /**
+   * Hakuehdotusten käsittely
+   * @param {*} valitutMaat Taulukko valituiden maiden nimistä
+   * @param {*} hakusana Hakupalkkiin kirjoitettu teksti
+   */
   const kasitteleHakuehdotukset = (valitutMaat, hakusana) => {
     if (valitutMaat.length > 0) {
       paivitaValitsemattomatMaat(valitutMaat);
@@ -207,6 +212,11 @@ function App() {
   }
 
 
+  /**
+   * Päivittää valitsemattomatMaat-atribuutin vastaamaan nykyhetkeä.
+   * @param {*} valitutMaat vakiona valitut maat, mutta varmuuden vuoksi parametrimahdollisuus (jos setMaat ei kerkeä muuttamaan maa-attribuuttia ennen tämän suoritusta)
+   * @returns 
+   */
   const paivitaValitsemattomatMaat = (valitutMaat = maat) => {
     valitsemattomatMaat = maaTaulukko.filter(maa => !valitutMaat.includes(maa));
     return valitsemattomatMaat;
@@ -308,18 +318,18 @@ function App() {
    */
   const getHyokkaysmaara = (country) => {
     const countryCode = palautaMaataVastaavaMaakoodi(country);
-    let count = 0;
+    let maara = 0;
     let hyokkaykset = haeMaidenHyokkaykset(countryCode);
     if (hyokkaykset.length == 0) { return 0; } // Ei hyökkäyksiä
     if (vuosi === "all") { return hyokkaykset.length; } // Palautetaan kaikki maan hyökkäykset
     for (let i = 0; i < hyokkaykset.length; i++) {
-      if (hyokkaykset[i].date.slice(0, 4) == vuosi) { count++; }
+      if (hyokkaykset[i].date.slice(0, 4) == vuosi) { maara++; }
       // Hyökkäykset ovat vuosijärjestyksessä datassa, eli jos data on päässyt seuraavaan vuoteen
       // Keskeytetään toiminta
       if (hyokkaykset[i].date.slice(0, 4) > vuosi) { break; } 
     }
     
-    return count;
+    return maara;
   }
 
 
