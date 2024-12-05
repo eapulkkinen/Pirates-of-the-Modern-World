@@ -13,7 +13,6 @@ import Modal from './components/Modal/Modal';
 
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);  // listan alkiot tyyppiä {longitude, latitude, countrycode}
-  const [hakusyote, setHaku] = useState('');
   const [maat, setMaat] = useState([]);
   const [vuosi, setVuosi] = useState('1993');
   const [suggestions, setSuggestions] = useState([]);
@@ -173,7 +172,6 @@ function App() {
    * @param {*} hakusana Hakuun syötetty merkkijono
    */
   const handleHaku = (hakusana) => {
-    setHaku(hakusana);
     console.log("Haettavat maat:", hakusana)
     const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
     
