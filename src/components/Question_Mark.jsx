@@ -11,10 +11,10 @@ import '../index.css';
  */
 const Question_Mark = ({ikoni, teksti}) => {
     return (
-        <div class="tooltip-container">
-        <div class="question-mark">{ikoni}</div>
-        <div class="tooltip">
-        <span class="tooltip-text">
+        <div className="tooltip-container">
+        <div className="question-mark">{ikoni}</div>
+        <div className="tooltip">
+        <span className="tooltip-text">
         {teksti}
         </span>
         </div>
