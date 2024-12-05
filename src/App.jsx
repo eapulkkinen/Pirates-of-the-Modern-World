@@ -174,36 +174,29 @@ function App() {
    * @param {*} hakusana Hakuun syötetty merkkijono
    */
   const handleHaku = (hakusana) => {
-    const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
-    
-    const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
+    const syote = hakusana.trim();
     const datanMaat = new Set(maaTaulukko);
-    const datastaLoytyvatValitut = maaList.filter(maa => datanMaat.has(maa))   //syötetyt maat suodatetaan datasta löytyvistä maista
+    let valitutMaat = maat;
 
-    const lisattavatMaat = datastaLoytyvatValitut.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
-
-    if (lisattavatMaat.length == 0) { 
-      setPaivita(false); // Ei päivitetä turhaan
+    if (datanMaat.has(syote) && valitsemattomatMaat.includes(syote)) {
+      valitutMaat.push(syote);
+      setMaat(valitutMaat);
+    } else {
+      setPaivita(false);
     }
 
-    const valitutMaat = [...maat, ...lisattavatMaat];
-
-    setMaat(valitutMaat);
-    
-    kasitteleHakuehdotukset(valitutMaat, maaList, hakusana);
+    kasitteleHakuehdotukset(valitutMaat, syote);
   };
 
 
-  const kasitteleHakuehdotukset = (valitutMaat, syotetytMaat, hakusana) => {
-    const viimeinenSyotettyMaa = syotetytMaat[syotetytMaat.length - 1].trim();
-
+  const kasitteleHakuehdotukset = (valitutMaat, hakusana) => {
     if (valitutMaat.length > 0) {
       paivitaValitsemattomatMaat(valitutMaat);
     }
 
-    if (hakusana.trim().length > 0 && viimeinenSyotettyMaa !== '') {
+    if (hakusana.length > 0 ) {
       const ehdotukset = valitsemattomatMaat.filter(maa =>
-          maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
+          maa.toLowerCase().startsWith(hakusana.toLowerCase())
       );
       setEhdotukset(ehdotukset);
       asetaHakuKoko(ehdotukset); 
