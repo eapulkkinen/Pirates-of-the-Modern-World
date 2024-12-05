@@ -1,118 +1,112 @@
 import { useEffect, useState } from 'react';
-import L, { icon, marker } from 'leaflet';    //Leafletin perusominaisuudet
+import L, { icon, marker } from 'leaflet'; 
 import * as geolib from 'geolib';
-import 'leaflet/dist/leaflet.css'; //Leaflet CSS
+import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import sininen from '../assets/Merkki.png';
 import punainen from '../assets/ValittuMerkki.png';
 
-var sininenMerkki = L.icon({ //valitsemattoman markerin ikoni
-    iconUrl: sininen,
-    iconSize: [38, 70],
-    iconAnchor: [20, 63]
-});
 
-var punainenMerkki = L.icon({ //valitun markerin ikoni
-    iconUrl: punainen,
-    iconSize: [38,70],
-    iconAnchor: [20, 63]
-});
-
-var aiemminValittu = null; //Aiemmin valitun markerin alustus
-
+/**
+ * Tähän käyttöoikeudet
+ */
 const Map = ({ koordinaattiLista }) => {
-    const [map, setMap] = useState(null);
-    const [markerClusterGroup, setMarkerClusterGroup] = useState(null);
-    const [markers, setMarkers] = useState([]);
-    const [selectedMarker, setSelectedMarker] = useState(null);
+    const [kartta, setKartta] = useState(null);
+    const [markerRypas, setRypas] = useState(null);
+    const [markerit, setMarkerit] = useState([]);
+    const [valittuMarker, setValittuMarker] = useState(null);
+
+    let sininenMerkki = L.icon({ //valitsemattoman markerin ikoni
+        iconUrl: sininen,
+        iconSize: [38, 70],
+        iconAnchor: [20, 63]
+    });
+    let punainenMerkki = L.icon({ //valitun markerin ikoni
+        iconUrl: punainen,
+        iconSize: [38,70],
+        iconAnchor: [20, 63]
+    });
+    let aiemminValittu = null; //Aiemmin valitun markerin alustus
 
     useEffect(() => {     
-        //setView [] sisään koordinaatit kartan keskityspisteeksi ja luku sen jälkeen on zoomin määrä
-        const initMap = L.map('karttadiv', {
-            worldCopyJump: false,   //ei piirretä uusia pisteitä siirryttäessä toiseen karttaan
+        const initKartta = L.map('karttadiv', {
+            worldCopyJump: false, 
             maxBounds: [
-                [-120, -210], // Eteläisimmät ja läntisimmät koordinaatit
-                [120, 210]    // Pohjoisimmat ja itäisimmät koordinaatit
+                [-120, -210],
+                [120, 210]    
             ]
         }).setView([20, 0], 2);
 
-        // tileLayerin parametreja muuttamalla saa vaihdettua kartan tyyppiä
         L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}', {
             attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             minZoom: 1,
             ext: 'png'
-        }).addTo(initMap);
+        }).addTo(initKartta);
 
-        setMap(initMap);
+        setKartta(initKartta);
 
-        //Ryppään luominen. Toimii yhtenä kartan tasona
-        const clusterGroup = L.markerClusterGroup({
-            maxClusterRadius: 60,    //säätää ryppäänluomisen etäisyyttä. default 80
+        const markerRypas = L.markerClusterGroup({
+            maxClusterRadius: 60,
             iconCreateFunction: (cluster) => {
                 const numPisteet = cluster.getChildCount();
 
                 let mid = 150; // Värien keskikohta
-                let end = 1000; // Värien maksimi
+                let max = 1000; // Värien maksimi
                 let temp = numPisteet; // Jotta ei korvata alkuperäistä lukua
-                if (temp > end) { temp = end; } // Jos enemmän kuin maksimi, asetetaan maksimiin
-                let red = 0;
-                let green = 0;
-                let blue = 0;
-                let scale_value = 0;
+                if (temp > max) { temp = max; } // Jos enemmän kuin maksimi, asetetaan maksimiin
+                let puna = 0;
+                let vihrea = 0;
+                let sini = 0;
+                let skalaari = 0;
 
                 if (numPisteet <= mid) {
-                    scale_value = (numPisteet - 1) / (mid - 1);
-                    green = (255 * scale_value);
-                    blue = (255 * (1 - scale_value));
+                    skalaari = (numPisteet - 1) / (mid - 1);
+                    vihrea = (255 * skalaari);
+                    sini = (255 * (1 - skalaari));
                 } 
-                else if (mid < temp <= end) {
-                    scale_value = (temp - mid) / (end - mid);
-                    red = (255 * scale_value);
-                    green = (255 * (1 - scale_value)); 
+                else if (mid < temp <= max) {
+                    skalaari = (temp - mid) / (max - mid);
+                    puna = (255 * skalaari);
+                    vihrea = (255 * (1 - skalaari)); 
                 }
 
                 let className = 'marker-cluster-';
-                let color = 'rgba(' + red + ', '+ green +', ' + blue + ', 0.85)';
-                let width = '25px';
-                let height = '25px';
+                let vari = 'rgba(' + puna + ', '+ vihrea +', ' + sini + ', 0.85)';
+                let leveys = '25px';
+                let korkeus = '25px';
 
                 if (numPisteet < 25) {
                     className += 'xs';
-                }
-                else if (numPisteet < 100) {
+                } else if (numPisteet < 100) {
                     className += 's';
-                    width = '28px';
-                    height = '28px';
-                }
-                else if (numPisteet < 250) {
+                    leveys = '28px';
+                    korkeus = '28px';
+                } else if (numPisteet < 250) {
                     className += 'm';
-                    width = '30px';
-                    height = '30px';
-                }
-                else if (numPisteet < 500) {
+                    leveys = '30px';
+                    korkeus = '30px';
+                } else if (numPisteet < 500) {
                     className += 'l';
-                    width = '32px';
-                    height = '32px';
-                }
-                else if (numPisteet < 1000) {
+                    leveys = '32px';
+                    korkeus = '32px';
+                } else if (numPisteet < 1000) {
                     className += 'xl';
-                    width = '35px';
-                    height = '35px';
-                }
-                else {
+                    leveys = '35px';
+                    korkeus = '35px';
+                } else {
                     className += 'xxl';
-                    width = '38px';
-                    height = '38px';
+                    leveys = '38px';
+                    korkeus = '38px';
                 }
 
                 return L.divIcon({
                     html: `<div style="
-                                background-color: ${color};
+                                background-color: ${vari};
                                 border: 1px solid rgba(0, 0, 0, 0.8);
                                 border-radius: 50%;
-                                width: ${width};
-                                height: ${height};
+                                width: ${leveys};
+                                height: ${korkeus};
                                 font-size: 16px;
                                 display: flex;
                                 align-items: center;
@@ -131,45 +125,46 @@ const Map = ({ koordinaattiLista }) => {
             }
         });
 
-        setMarkerClusterGroup(clusterGroup);
-        initMap.addLayer(clusterGroup);
+        setRypas(markerRypas);
+        initKartta.addLayer(markerRypas);
 
         return () => {
-            initMap.remove();
+            initKartta.remove();
         };
     }, []);
 
+    
     useEffect(() => {
-        if (map && markerClusterGroup) {
+        if (kartta && markerRypas) {
             //Jos suodatuksilla ei löydy yhtään hyökkäystä, poistetaan karttapisteet varmuuden vuoksi
-            //ja markers, valittumarker sekä infobox tyhjennetään.
+            //ja markerit, valittumarker sekä infobox tyhjennetään.
             if (koordinaattiLista.length === 0) {  
-                markerClusterGroup.clearLayers();
+                markerRypas.clearLayers();
                 document.getElementById('infobox').innerHTML = "";
-                setMarkers([]);
-                setSelectedMarker(null);
+                setMarkerit([]);
+                setValittuMarker(null);
                 return;
             }
 
             //Tarkastetaan löytyykö klikattu marker vielä suodatusvalinnoilla
             //löydetyistä hyökkäyksistä, jos ei, infobox tyhjennetään ja
             //valittu marker nulliksi.
-            if (selectedMarker !== null  && !koordinaattiLista.some(
+            if (valittuMarker !== null  && !koordinaattiLista.some(
                 koord => 
-                    koord.latitude === selectedMarker.latitude &&
-                    koord.longitude === selectedMarker.longitude &&
-                    koord.date === selectedMarker.date &&
-                    koord.time === selectedMarker.time
+                    koord.latitude === valittuMarker.latitude &&
+                    koord.longitude === valittuMarker.longitude &&
+                    koord.date === valittuMarker.date &&
+                    koord.time === valittuMarker.time
                     )
                 ) {
                     document.getElementById('infobox').innerHTML = "";
-                    setSelectedMarker(null)
+                    setValittuMarker(null)
             }
 
             
-            //Etsitään markersien poistettavia hyökkäyksiä, joita ei nykyisessä
+            //Etsitään markeritien poistettavia hyökkäyksiä, joita ei nykyisessä
             //koordinaattilistassa (edellisillä suodatuksilla löydetyt hyökkäykset).
-            const poistettavatMarkerit = markers.filter(marker => {
+            const poistettavatMarkerit = markerit.filter(marker => {
                 return !koordinaattiLista.some(koords => 
                     marker.getLatLng().lat === koords.latitude &&
                     marker.getLatLng().lng === koords.longitude &&
@@ -179,10 +174,10 @@ const Map = ({ koordinaattiLista }) => {
             });
 
             //poistettavat markerit pois kartalta
-            poistettavatMarkerit.forEach(marker => markerClusterGroup.removeLayer(marker));
+            poistettavatMarkerit.forEach(marker => markerRypas.removeLayer(marker));
 
             //Koordinaattilistasta löytyvät markerit talteen
-            const validMarkers = markers.filter(marker => {
+            const validmarkerit = markerit.filter(marker => {
                 return koordinaattiLista.some(koords => 
                     marker.getLatLng().lat === koords.latitude &&
                     marker.getLatLng().lng === koords.longitude &&
@@ -192,8 +187,8 @@ const Map = ({ koordinaattiLista }) => {
             });
 
             //luodaan uusien suodatusten mukaiset koordinaatit ja niiden tiedot taulukoksi
-            const newCoords = koordinaattiLista.filter(koordinaatti =>
-                !markers.some(marker =>
+            const uudetKoords = koordinaattiLista.filter(koordinaatti =>
+                !markerit.some(marker =>
                     marker.getLatLng().lat === koordinaatti.latitude &&
                     marker.getLatLng().lng === koordinaatti.longitude &&
                     marker.date === koordinaatti.date &&
@@ -202,8 +197,8 @@ const Map = ({ koordinaattiLista }) => {
             );
 
             //luodaan uusista koordinaateista markerit ja laitetaan ne taulukkoon
-            const newMarkers = newCoords.map(koordinaatit => {
-                var marker = L.marker([koordinaatit.latitude, koordinaatit.longitude], {icon: sininenMerkki});
+            const newmarkerit = uudetKoords.map(koordinaatit => {
+                let marker = L.marker([koordinaatit.latitude, koordinaatit.longitude], {icon: sininenMerkki});
                 marker.date = koordinaatit.date;
                 marker.time = koordinaatit.time;
                 let googleLinkki = 'https://google.com/maps/place/' + koordinaatit.latitude + ',' + koordinaatit.longitude; //Muodostetaan linkki google mapsiin samoilla koordinaateilla
@@ -216,22 +211,21 @@ const Map = ({ koordinaattiLista }) => {
                     if (aiemminValittu != null && aiemminValittu != marker) aiemminValittu.setIcon(sininenMerkki); //Vaihtaa aiemmin valitun markerin värin takaisin alkuperäiseen
                     aiemminValittu = marker; //Piirtämisen jälkeen sijoitetaan valittu marker aiemminValituksi seuraavaa klikkausta varten
                     // Muutetaan päiväys pv.kk.vuosi muotoon
-                    const date = koordinaatit.date;
-                    const pvm = date.split('-');
-                    let dateFixed = pvm[2] + "." + pvm[1] + "." + pvm[0];
+                    const pvm = koordinaatit.date.split('-');
+                    const fixPvm = pvm[2] + "." + pvm[1] + "." + pvm[0];
 
                     // Muutetaan koordinaatit XX° XX′ XX″ muotoon 
-                    const latFixed = geolib.decimalToSexagesimal(koordinaatit.latitude);
-                    const lonFixed = geolib.decimalToSexagesimal(koordinaatit.longitude);
+                    const fixLat = geolib.decimalToSexagesimal(koordinaatit.latitude);
+                    const fixLon = geolib.decimalToSexagesimal(koordinaatit.longitude);
 
                     // Leikataan hyökkäyksen kuvauksesta alkuosa, koska se tieto tulee ilmi muista kohdista
                     const att_desc = koordinaatit.attack_description.split('\n');
 
                     // Luodaan olio jolla on tapahtuman tiedot
                     let tiedot = {
-                        date: dateFixed,
+                        date: fixPvm,
                         time: koordinaatit.time,
-                        coordinates: `${latFixed}, ${lonFixed}`,
+                        coordinates: `${fixLat}, ${fixLon}`,
                         location_description: koordinaatit.location_description,
                         nearest_country: koordinaatit.countryname,
                         EEZ_country: koordinaatit.eezcountryname,
@@ -253,14 +247,14 @@ const Map = ({ koordinaattiLista }) => {
                     for (let i = 0; i < keys.length; i++) {
                         if (tiedot[keys[i]] != "NA") { // Käsitellään ominaisuus vain jos se ei ole "NA"
                             // Luodaan otsikko joka näytetään infoboksissa
-                            let titles = keys[i].split('_');
-                            let title = "";
-                            for (let j in titles) {
+                            let otsikot = keys[i].split('_');
+                            let otsikko = "";
+                            for (let j in otsikot) {
                                 if (j == 0) {
                                     // Muutetaan otsikon ensimmäinen kirjain isoksi
-                                    title = titles[j].charAt(0).toUpperCase() + titles[j].slice(1);
+                                    otsikko = otsikot[j].charAt(0).toUpperCase() + otsikot[j].slice(1);
                                 } else {
-                                    title += " " + titles[j];
+                                    otsikko += " " + otsikot[j];
                                 }
                             }
 
@@ -269,7 +263,7 @@ const Map = ({ koordinaattiLista }) => {
 
                             if (keys[i] === "EEZ_country") {
                                 p.innerHTML = `
-                                <span style="font-weight:bold">${title}</span>
+                                <span style="font-weight:bold">${otsikko}</span>
                                 <div class="tooltip-container">
                                     <div class="question-mark">?</div>
                                     <div class="tooltip">
@@ -284,33 +278,25 @@ const Map = ({ koordinaattiLista }) => {
                                 </span>
                                 <span> :</span>
                                 <span> ${tiedot[keys[i]]}</span>`;
-                            }
-                            else {
-                                p.innerHTML += `<span style="font-weight:bold">${title}:</span> ${tiedot[keys[i]]}<br>`
+                            } else {
+                                p.innerHTML += `<span style="font-weight:bold">${otsikko}:</span> ${tiedot[keys[i]]}<br>`
                             }
 
-                            // Lisätään ominaisuus infobox elementtiin
-                            // Ominaisuuden otsikko asetetaan boldatuksi
                             infobox.appendChild(p);
                         }                        
                     }
-                    //tooltipillä saisi ehkä eez vinkin näkyviin,
-                    //mutta vaatii hieman koodin refaktorointia,
-                    //että sen saa suoraan eez kohdalle
         
-                    setSelectedMarker(marker);
+                    setValittuMarker(marker);
                 });
 
-                markerClusterGroup.addLayers(marker)
+                markerRypas.addLayers(marker)
                 return marker;
             });
             
-            //Vanhojen validien ja uusien karttapisteiden "merge" palautettavaksi taulukoksi
-            const allMarkers = [...validMarkers, ...newMarkers];
-
-            setMarkers(allMarkers);
+            const allmarkerit = [...validmarkerit, ...newmarkerit];
+            setMarkerit(allmarkerit);
         }
-    }, [map, koordinaattiLista]);
+    }, [kartta, koordinaattiLista]);
 
 
     return (

@@ -2,6 +2,8 @@ import React from "react";
 import '../index.css';
 
 /**
+ * Tähän käyttöoikeudet
+ * 
  * Tekee pienen halutun näköisen merkin (kirjain, emoji tms.), jonka päälle kursorin asettaessa näytetään laatikko, jossa on tekstiä
  * @param {*} ikoni joku merkki
  * @param {*} teksti haluttu teksti
