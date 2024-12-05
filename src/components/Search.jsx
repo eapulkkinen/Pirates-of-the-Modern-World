@@ -1,9 +1,6 @@
 import { useState } from 'react';
 
-
-
-// TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, ehdotukset, setEhdotukset, kaikkiMaatValittuna, asetaHakuKoko }) => {
+const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatvalittuna, asetaHakuKoko }) => {
     const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
     const [naytaKaikki, setNaytaKaikki] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
@@ -15,16 +12,16 @@ const Search = ({ onSearch, ehdotukset, setEhdotukset, kaikkiMaatValittuna, aset
     const kasitteleMuutos = (e) => {
         const syote = e.target.value
         setHakusana(syote);
-        onSearch(syote);
+        hae(syote);
     };
 
 
     /**
      * Hakuehdotuksen valinnan käsittely
-     * @param {*} suggestion klikattu hakuehdotus 
+     * @param {*} ehdotus klikattu hakuehdotus 
      */
-    const handleSuggestionClick = (suggestion) => {
-        onSearch(suggestion);
+    const ehdotuksenValinta = (ehdotus) => {
+        hae(ehdotus);
         setHakusana('');    //hakusana kenttä tyhjennetään
         setEhdotukset([]); //ehdotukset pois
         asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
@@ -35,13 +32,12 @@ const Search = ({ onSearch, ehdotukset, setEhdotukset, kaikkiMaatValittuna, aset
      * Checkboxin käsittely
      * @param {*} e checkbox tilanvaihdos-tapahtuma 
      */
-    const handleCheckboxChange = (e) => {
-        const isChecked = e.target.checked;
-        setNaytaKaikki(isChecked);
-        kaikkiMaatValittuna(isChecked);    //Pääohjelmaan tieto tilasta
+    const muutaCheckbox = (e) => {
+        const valittu = e.target.checked;
+        setNaytaKaikki(valittu);
+        kaikkiMaatvalittuna(valittu);
 
-        //Jos checkbox chekattu
-        if (isChecked) {
+        if (valittu) {
             setEhdotukset([]); 
             asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
         }  
@@ -61,18 +57,18 @@ const Search = ({ onSearch, ehdotukset, setEhdotukset, kaikkiMaatValittuna, aset
                 <label id='showEveryCountry'>
                     <input                  
                         type="checkbox"
-                        onChange={handleCheckboxChange}
+                        onChange={muutaCheckbox}
                         checked={naytaKaikki}
                     />
                     Show every country
               </label>
               {ehdotukset.length > 0 && (
-                <ul className='suggestions'>
+                <ul className='ehdotuss'>
                 {ehdotukset.map((ehdotus, index) => (
                     <li 
                     key={index}
                     onClick={() => {
-                        handleSuggestionClick(ehdotus);
+                        ehdotuksenValinta(ehdotus);
                     }}
                     style={{ cursor: 'pointer' }}
                     >
