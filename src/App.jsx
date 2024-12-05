@@ -186,7 +186,9 @@ function App() {
       setPaivita(false); // Ei päivitetä turhaan
     }
 
-    setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
+    const valitutMaat = [...maat, ...newMaat].sort();
+
+    setMaat(valitutMaat);   //mahdollisiin ennalta valittuihin lisätään newMaat
     
     if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
       kasitteleHakuehdotukset(maaList);
