@@ -269,15 +269,14 @@ function App() {
    * @param {*} poistettavaMaa poistettava maa-objekti  
    */
   const handleMaaPoisto = (poistettavaMaa) => {
-    console.log('Maat ennen poistoa:', maat);
-    console.log('Poistettava maa', poistettavaMaa)
-    
-    setMaat(maatEnnenPoistoa => {   //Valituiksi maiksi asetetaan alla tapahtuvan return
-      const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa); //luodaan uusi taulukko, joka ei sisällä poistettavaa maata
-      console.log('Maat poiston jälkeen:', uudetMaat);
-      // poistettujen maiden koordinaattien poisto kartalta
-      let hyokkaykset;
+    setMaat(maatEnnenPoistoa => {
+       // Luodaan uusi taulukko, joka ei sisällä poistettavaa maata
+      const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa);
       
+      // poistettujen maiden koordinaattien poisto kartalta
+      //let hyokkaykset;
+      
+      /** 
       if (vuosi === "all") {
         hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
         console.log('Vuosi : all')
@@ -297,9 +296,10 @@ function App() {
         countrycode: hyokkays.nearest_country
       }));
       
-      setKoordinaatit(hyokkaystenKoordinaatit); //koordinaattien päivitys kartalle (eli suomeksi tässä funktiossa koordinaattien poisto)
+      setKoordinaatit(hyokkaystenKoordinaatit);
+      */
       
-      return uudetMaat; //periaatteessa setMaat(uudetMaat)
+      return uudetMaat;
     });
   }
 
@@ -332,7 +332,7 @@ function App() {
       <div id="maindiv">
         <div id="vasendiv" className="sivudiv">
           <Search
-            onSearch={handleHaku} 
+            hae={handleHaku} 
             ehdotukset={ehdotukset} 
             setEhdotukset={setEhdotukset} 
             kaikkiMaatValittuna={kaikkiMaatValittuna}
