@@ -240,10 +240,10 @@ function App() {
    * Jos checkbox = checked, niin kaikki maat asetetaan valituiksi.
    * Jos sen tila muuttuu checked => unchecked kaikki maat poistetaan
    * valituista 
-   * @param {*} isChecked tieto onko checkboxin tilasta
+   * @param {*} valittu tieto onko checkboxin tilasta
    */
-  const kaikkiMaatValittuna = (isChecked) => {
-    if (isChecked) {
+  const kaikkiMaatValittuna = (valittu) => {
+    if (valittu) {
       setMaat(maaTaulukko)
     }
     else {

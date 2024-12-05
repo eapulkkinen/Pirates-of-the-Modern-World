@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatvalittuna, asetaHakuKoko }) => {
+const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatValittuna, asetaHakuKoko }) => {
     const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
     const [naytaKaikki, setNaytaKaikki] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
@@ -35,7 +35,7 @@ const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatvalittuna, asetaHaku
     const muutaCheckbox = (e) => {
         const valittu = e.target.checked;
         setNaytaKaikki(valittu);
-        kaikkiMaatvalittuna(valittu);
+        kaikkiMaatValittuna(valittu);
 
         if (valittu) {
             setEhdotukset([]); 
@@ -60,7 +60,7 @@ const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatvalittuna, asetaHaku
                         onChange={muutaCheckbox}
                         checked={naytaKaikki}
                     />
-                    Show every country
+                    Select every country
               </label>
               {ehdotukset.length > 0 && (
                 <ul className='ehdotuss'>
