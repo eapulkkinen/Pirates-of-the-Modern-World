@@ -17,7 +17,7 @@ function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
         let ikoni = "🔤";
         if (sortJarjestys === "alphabetical") {
             setSortJarjestys("descending");
-            icon = "⬇️";
+            ikoni = "⬇️";
         } else if (sortJarjestys === "descending") {
             setSortJarjestys("ascending");
             ikoni = "⬆️";
