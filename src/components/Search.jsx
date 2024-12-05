@@ -63,7 +63,7 @@ const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatValittuna, asetaHaku
                     Select every country
               </label>
               {ehdotukset.length > 0 && (
-                <ul className='ehdotuss'>
+                <ul className='suggestions'>
                 {ehdotukset.map((ehdotus, index) => (
                     <li 
                     key={index}
