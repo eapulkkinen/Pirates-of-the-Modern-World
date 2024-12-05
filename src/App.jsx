@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Slider from './components/Slider';
@@ -7,40 +6,42 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Search from './components/Search';
 import SelectedCountries from './components/SelectedCountries';
-import country_codes from './data/country_codes';
-import pirate_attacks from './data/pirate_attacks';
-import country_indicators from './data/country_indicators';
-import Modal from './components/Modal/Modal'
+import CountryCodes from './data/country_codes';
+import PirateAttacks from './data/pirate_attacks';
+import Modal from './components/Modal/Modal';
 
 
+/** 
+ * Tähän käyttöoikeudet  
+ */
 function App() {
-  const [koordinaattiLista, setKoordinaatit] = useState([]);  // listan alkiot tyyppiä {longitude, latitude, countrycode}
-  const [hakusyote, setHaku] = useState('');
-  const [maat, setMaat] = useState([]);
-  const [vuosi, setVuosi] = useState('1993');
-  const [suggestions, setSuggestions] = useState([]);
-  const [paivita, setPaivita] = useState(true); // boolean jolla estetään päivittyminen kesken haun
+  const [koordinaattiLista, setKoordinaatit] = useState([]);  // [ {longitude, latitude, countrycode}, ... ]
+  const [maat, setMaat] = useState([]); // valitut maat [ "Afghanistan", ... ]
+  const [vuosi, setVuosi] = useState('1993'); // valittu vuosi
+  const [ehdotukset, setEhdotukset] = useState([]); // [ "Afghanistan", ... ]
+  const [paivita, setPaivita] = useState(true); // boolean, jolla estetään päivittyminen kesken haun
 
-  let maaTaulukko = country_codes.map(i => i.country_name); //hakee datasta löytyvät maiden nimet taulukkoon ["Aruba","Afghanistan", ...]
+  // Hakee datasta löytyvät maiden nimet taulukkoon
+  let maaTaulukko = CountryCodes.map(i => i.country_name); 
   maaTaulukko = maaTaulukko.sort();
   let valitsemattomatMaat = maaTaulukko;
-  const countryCodeMap = country_codes.reduce((accumulator, { country_name, country }) => {  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
+
+  // [ {"country": "Finland", "countrycode": "FIN"}, ...]
+  const countryCodeMap = CountryCodes.reduce((accumulator, { country_name, country }) => {
     accumulator[country_name] = country;
     return accumulator;
   }, {});
 
-  /**
-   * Kartan päivitys.
-   * Tapahtuu AINA kun valitut maat tai vuosi muuttuu.
-   */
+
+  //Kartan päivitys AINA kun valitut maat tai vuosi muuttuu.
   useEffect(() => {
-    if (!paivita) { // Ei suoriteta jos paivita = false
+    if (!paivita) { // Ei suoriteta jos paivita === false
       setPaivita(true);
       return;
     }
 
     if (maitaValittu()) {
-      const sortatutMaakoodit = palautaMaidenKooditNimella();
+      const sortatutMaakoodit = palautaMaidenKooditNimenPerusteella();
       const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);  //kaikki valittujen maiden hyökkäykset
 
       const hyokkaykset = yksiVuosiValittu()
@@ -66,6 +67,7 @@ function App() {
     return maat.length > 0;
   };
 
+
   /**
    * Palauttaa onko valittu jokin tietty vuosi.
    * @returns Yksittäinen vuosi valittu => true, muuten false
@@ -79,7 +81,7 @@ function App() {
    * Palauttaa taulukon maakoodeista maiden nimien perusteella
    * @returns Taulukon maakoodeista
    */
-  const palautaMaidenKooditNimella = () => {
+  const palautaMaidenKooditNimenPerusteella = () => {
     const maakoodit = maat.map(maa => countryCodeMap[maa]);
     return maakoodit;
   };
@@ -92,12 +94,11 @@ function App() {
    */
   const palautaMaakoodiaVastaavaMaa = (countrycode) => {
     if (countrycode !== "NA") {
-      const potentialCountryName = country_codes.find(maa => maa.country === countrycode);   
       //find palauttaa undefined => 'unknown' tai löydetyn maan 'Finland'
-      const countryName = potentialCountryName ? potentialCountryName.country_name : 'Unknown';
-      return countryName;
-    }
-    else {
+      let maanNimi = CountryCodes.find(maa => maa.country === countrycode);   
+       maanNimi = maanNimi ? maanNimi.country_name : 'Unknown';
+      return maanNimi;
+    } else {
       return countrycode;
     }
   };
@@ -109,9 +110,9 @@ function App() {
    * @returns Maakoodin
    */
   const palautaMaataVastaavaMaakoodi = (maanNimi) => {
-    const potentialCountryName = country_codes.find(maa => maa.country_name === maanNimi);   
-    const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
-    return countryName;
+    let countrycode = CountryCodes.find(maa => maa.country_name === maanNimi);   
+    countrycode = countrycode ? countrycode.country : 'Unknown';
+    return countrycode;
   };
 
 
@@ -122,7 +123,7 @@ function App() {
    * @returns Taulukon hyökkäyksistä, jotka vastaa maakoodeja
    */
   const haeMaidenHyokkaykset = (maakoodit) => {
-    const maidenHyokkaykset = pirate_attacks.filter(hyokkays => {
+    const maidenHyokkaykset = PirateAttacks.filter(hyokkays => {
       return maakoodit.includes(hyokkays.nearest_country);
     });
     return maidenHyokkaykset;
@@ -135,8 +136,7 @@ function App() {
    * @returns Taulukon hyökkäyksistä jotka on tapahtunut valittuna vuonna
    */
   const suodataHyokkayksetVuodella = (loydetytHyokkaykset) => {
-    const valittuVuosi = vuosi;
-    if (valittuVuosi !== "all") { //jos syötetty yksittäinen vuosi
+    if (vuosi !== "all") { //jos valittu yksittäinen vuosi
       const suodatetutHyokkaykset = loydetytHyokkaykset.filter(hyokkays => {
         const hyokkaysVuosi = hyokkays.date.split('-')[0];
         return vuosi === hyokkaysVuosi.toString(); 
@@ -145,9 +145,8 @@ function App() {
       
       return suodatetutHyokkaykset;
     }
-    else {
-      return loydetytHyokkaykset;
-    }
+    
+    return loydetytHyokkaykset;
   };
 
 
@@ -175,8 +174,6 @@ function App() {
    * @param {*} hakusana Hakuun syötetty merkkijono
    */
   const handleHaku = (hakusana) => {
-    setHaku(hakusana);
-    console.log("Haettavat maat:", hakusana)
     const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
     
     const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
@@ -185,35 +182,41 @@ function App() {
 
     const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
 
-    // Jos input on vain haku ja ei lisää uutta maata, asetetaa paivita = false
-    // Tämä estää turhan päivittämisen ja vähentää lagia kun markkereita on paljon
-    if (newMaat.length == 0) { setPaivita(false); } 
+    if (newMaat.length == 0) { 
+      setPaivita(false); // Ei päivitetä turhaan
+    }
+
     setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
     
     if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
-      const viimeinenSyotettyMaa = maaList[maaList.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
-      
-      //jos syöte ei ole vain tyhjää eli esim "Suomi +     " vaan vaikka "Suomi +     Ruotsi" niin mennään if sisään
-      if (viimeinenSyotettyMaa.trim() !== '') {
-          if (maat.length > 0) valitsemattomatMaat = valitsemattomatMaat.filter(maa => !maat.includes(maa)); //kun maita on valittu, valitut poistetaan ehdotuksista
-        const filteredSuggestions = valitsemattomatMaat.filter(maa => 
-          maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
-        );
-        setSuggestions(filteredSuggestions);
-        asetaHakuKoko(filteredSuggestions); //asetetaan hakuboxin koko hakuehdotuksien määrän mukaan
-      }
-      //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
-      else {
-        setSuggestions([]);
-        asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
-      }
+      kasitteleHakuehdotukset(maaList);
       // Jos haussa ei muuta kuin tyhjää
     } else {
-      setSuggestions([]);
+      setEhdotukset([]);
       asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
     }
     console.log('Syötetyt maat:', newMaat);
   };
+
+
+  const kasitteleHakuehdotukset = (syotetytMaat) => {
+    const viimeinenSyotettyMaa = syotetytMaat[syotetytMaat.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
+      
+    //jos syöte ei ole vain tyhjää eli esim "Suomi +     " vaan vaikka "Suomi +     Ruotsi" niin mennään if sisään
+    if (viimeinenSyotettyMaa.trim() !== '') {
+         if (maat.length > 0) valitsemattomatMaat = valitsemattomatMaat.filter(maa => !maat.includes(maa)); //kun maita on valittu, valitut poistetaan ehdotuksista
+        const filteredehdotukset = valitsemattomatMaat.filter(maa => 
+          maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
+        );
+        setEhdotukset(filteredehdotukset);
+        asetaHakuKoko(filteredehdotukset); //asetetaan hakuboxin koko hakuehdotuksien määrän mukaan
+      }
+      //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
+      else {
+        setEhdotukset([]);
+        asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
+      }
+  }
 
 
   /**
@@ -227,8 +230,7 @@ function App() {
     console.log(taulukko);
     if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
       hakuDiv.style.height = "8.8%";
-    } 
-    else {
+    } else {
       let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
       if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
       hakuDiv.style.height =  x + "%";
@@ -242,10 +244,10 @@ function App() {
    * Jos checkbox = checked, niin kaikki maat asetetaan valituiksi.
    * Jos sen tila muuttuu checked => unchecked kaikki maat poistetaan
    * valituista 
-   * @param {*} isChecked tieto onko checkboxin tilasta
+   * @param {*} valittu tieto onko checkboxin tilasta
    */
-  const handleToggleAllCountries = (isChecked) => {
-    if (isChecked) {
+  const kaikkiMaatValittuna = (valittu) => {
+    if (valittu) {
       setMaat(maaTaulukko)
     }
     else {
@@ -271,20 +273,17 @@ function App() {
    * @param {*} poistettavaMaa poistettava maa-objekti  
    */
   const handleMaaPoisto = (poistettavaMaa) => {
-    console.log('Maat ennen poistoa:', maat);
-    console.log('Poistettava maa', poistettavaMaa)
-    
-    setMaat(maatEnnenPoistoa => {   //Valituiksi maiksi asetetaan alla tapahtuvan return
-      const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa); //luodaan uusi taulukko, joka ei sisällä poistettavaa maata
-      console.log('Maat poiston jälkeen:', uudetMaat);
+    setMaat(maatEnnenPoistoa => {
+       // Luodaan uusi taulukko, joka ei sisällä poistettavaa maata
+      const uudetMaat = maatEnnenPoistoa.filter(maa => maa !== poistettavaMaa);
+      
       // poistettujen maiden koordinaattien poisto kartalta
       let hyokkaykset;
-      
+
       if (vuosi === "all") {
         hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
         console.log('Vuosi : all')
-      }
-      else {
+      } else {
         const maanHyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
         hyokkaykset = suodataHyokkayksetVuodella(maanHyokkaykset);
       }
@@ -299,9 +298,9 @@ function App() {
         countrycode: hyokkays.nearest_country
       }));
       
-      setKoordinaatit(hyokkaystenKoordinaatit); //koordinaattien päivitys kartalle (eli suomeksi tässä funktiossa koordinaattien poisto)
+      setKoordinaatit(hyokkaystenKoordinaatit);
       
-      return uudetMaat; //periaatteessa setMaat(uudetMaat)
+      return uudetMaat;
     });
   }
 
@@ -311,7 +310,7 @@ function App() {
    * @param {*} country maa jonka hyökkäyksiä käsitellään
    * @returns valitun maan hyökkäykset valittuna vuonna
    */
-  const getAttackCount = (country) => {
+  const getHyokkaysmaara = (country) => {
     const countryCode = palautaMaataVastaavaMaakoodi(country);
     let count = 0;
     let hyokkaykset = haeMaidenHyokkaykset(countryCode);
@@ -334,17 +333,17 @@ function App() {
       <div id="maindiv">
         <div id="vasendiv" className="sivudiv">
           <Search
-            onSearch={handleHaku} 
-            suggestions={suggestions} 
-            setSuggestions={setSuggestions} 
-            onToggleAllCountries={handleToggleAllCountries}
+            hae={handleHaku} 
+            ehdotukset={ehdotukset} 
+            setEhdotukset={setEhdotukset} 
+            kaikkiMaatValittuna={kaikkiMaatValittuna}
             asetaHakuKoko={asetaHakuKoko}
           />
           <div id="valitutmaat" className="valitutMaat">
             {maat.length > 0 && (
               <SelectedCountries
                 maat={maat}
-                getAttackCount={getAttackCount}
+                getHyokkaysmaara={getHyokkaysmaara}
                 handleMaaPoisto={handleMaaPoisto}
               />
             )}
