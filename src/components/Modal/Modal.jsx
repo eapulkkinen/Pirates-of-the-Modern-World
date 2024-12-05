@@ -4,6 +4,8 @@ import country_indicators from '../../data/country_indicators';
 import './Modal.css';
 import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
+import Question_Mark from '../Question_Mark';
+
 
 /**
  * tekee dropdown valikon ja muuttaa modalin tilaa parametrina tuodulla funktiolla
@@ -96,6 +98,53 @@ const Modal = (props) => {
         return maanIndikaattorit;
     }
 
+    /**
+     * Valitsee valittuIndikaattoria vastaavan selitys tekstin kysymysmerkkiin
+     * @returns haluttu teksti kysymysmerkille
+     */
+    const valitseKysymysmerkkiTeksti = () => {
+
+        let kysymysmerkkiTeksti;
+  
+        switch (valittuIndikaattori) {
+          case "":
+            kysymysmerkkiTeksti = "Here you can choose country specific indicators to compare with attacks that have happened nearest to, or in the country.";
+            break;
+          case "all_attacks":
+            kysymysmerkkiTeksti = 'All Attacks shows the amount of attacks in every country combined.';
+            break;
+          case "corruption_index": 
+            kysymysmerkkiTeksti = 'Corruption Index shows the Corruption Perceptions Index scores of the country. The scale of the scores changed in 2012 and the scores before that are not comparable.';
+            break;
+          case "homicide_rate":
+            kysymysmerkkiTeksti = 'murhat';
+            break;
+          case "GDP":
+            kysymysmerkkiTeksti = 'gdp';
+            break;
+          case "total_fisheries_per_ton":
+            kysymysmerkkiTeksti = 'kalastus';
+            break;
+          case "total_military":
+            kysymysmerkkiTeksti = 'armeija';
+            break;
+          case "population":
+            kysymysmerkkiTeksti = 'väkiluku';
+            break;
+          case "unemployment_rate":
+            kysymysmerkkiTeksti = 'työttömyys';
+            break;
+          case "totalgr":
+            kysymysmerkkiTeksti = 'valtion tulot';
+            break;
+          case "industryofgdp":
+            kysymysmerkkiTeksti = 'joku en tiiä mikä';
+            break;
+        }
+  
+        return kysymysmerkkiTeksti;
+      }
+
 
     return (
         <>
@@ -112,7 +161,6 @@ const Modal = (props) => {
 
             <div className='modalSisalto'>
                 <select onChange={handleCountryChange} value={valittuMaa} >
-                    <option id="valittuoption" value="">Select a country</option>
                     {props.maat.map((option, index) => (
                         <option key={index} value={option}>
                          {option}
@@ -120,6 +168,7 @@ const Modal = (props) => {
                     ))}
                 </select>
                 <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
+                <Question_Mark ikoni={'?'}teksti={valitseKysymysmerkkiTeksti()}/>
                 <p> {valittuMaa} </p>
                 <>
                 <Country_Chart maa={valittuMaa} indikaattorit={haeMaanIndikaattorit(palautaNimeaVastaavaKoodi(valittuMaa))} valittuIndikaattori={valittuIndikaattori}/>
