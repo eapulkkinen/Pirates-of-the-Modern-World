@@ -8,6 +8,9 @@ import pirate_attacks from './data/pirate_attacks';
 import country_codes from './data/country_codes';
 
 
+/** 
+ * Tähän käyttöoikeudet  
+ */
 function App() {
 
   /**

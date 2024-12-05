@@ -1,33 +1,39 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 
 
+/** 
+ * Tähän käyttöoikeudet  
+ */
 const Slider = ({ onChange, vuosi }) => {
-  const [showAll, setShowAll] = useState(false);
-  const [previousSliderValue, setPreviousSliderValue] = useState(vuosi);
+  const [naytaKaikki, setNaytaKaikki] = useState(false);
+  const [aiempiValittuVuosi, setAiempiValittuVuosi] = useState(vuosi);
 
   /**
    * Sliderin muutoksen käsittely
    * @param {*} e tapahtuma 
    */
-  const handleSliderChange = (e) => {
+  const kasitteleSliderMuutos = (e) => {
     //Tarkistetaan onko kaikki vuodet valittuna
-    if (!showAll) {
-      onChange(showAll ? "all" : e.target.value);
-      setPreviousSliderValue(e.target.value);
+    if (!naytaKaikki) {
+      onChange(naytaKaikki ? "all" : e.target.value);
+      setAiempiValittuVuosi(e.target.value);
     }
   };
 
-  const handleCheckboxChange = (e) => {
-    const isChecked = e.target.checked;
-    setShowAll(e.target.checked);
+  /**
+   * Checkboxin muutoksen käsittely
+   * @param {*} e tapahtuma 
+   */
+  const kasiteleCheckboxMuutos = (e) => {
+    const valittu = e.target.checked;
+    setNaytaKaikki(e.target.checked);
 
-    if (isChecked) {
-      setPreviousSliderValue(vuosi);
+    if (valittu) {
+      setAiempiValittuVuosi(vuosi);
       onChange("all");
     }
     else {
-      onChange(previousSliderValue);
+      onChange(aiempiValittuVuosi);
     }
   }
 
@@ -39,17 +45,17 @@ const Slider = ({ onChange, vuosi }) => {
         min="1993"
         max="2020"
         step="1"
-        value={showAll ? "1993" : vuosi}
-        onChange={handleSliderChange}
+        value={naytaKaikki ? "1993" : vuosi}
+        onChange={kasitteleSliderMuutos}
         id='sliderInput'
-        disabled={showAll}
+        disabled={naytaKaikki}
       />
       <label id='kaikkiVuodetLabel'>
         <input 
           type="checkbox" 
           id="kaikkiVuodetCheck"
-          onChange={handleCheckboxChange}
-          checked={showAll}
+          onChange={kasiteleCheckboxMuutos}
+          checked={naytaKaikki}
         />
         Show all years
       </label>
