@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMemo } from 'react';
 
-function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
+function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
     const [sortOrder, setSortOrder] = useState("alphabetical");
     const [thIcon, setThIcon] = useState("🔤");
 
@@ -24,10 +24,10 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
         const attackCounts = useMemo(() => {
             const attackCounts = {};
             maat.forEach((maa) => {
-                attackCounts[maa] = getAttackCount(maa);
+                attackCounts[maa] = getHyokkaysmaara(maa);
             });
             return attackCounts;
-        }, [maat, getAttackCount]);
+        }, [maat, getHyokkaysmaara]);
     
         if (sortOrder === "alphabetical") {
             return maat;
@@ -55,7 +55,7 @@ function SelectedCountries({ maat, getAttackCount, handleMaaPoisto }) {
             {sortedMaat().map((maa, index) => (
             <tr className="valittutr" key={index}>
                 <td>{maa}</td>
-                <td className='tdAttackCount'>{getAttackCount(maa)}</td>
+                <td className='tdAttackCount'>{getHyokkaysmaara(maa)}</td>
                 <td className='tdRasti'>
                     <button
                         onClick={() => handleMaaPoisto(maa)}
