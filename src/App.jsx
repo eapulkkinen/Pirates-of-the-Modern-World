@@ -94,12 +94,11 @@ function App() {
    */
   const palautaMaakoodiaVastaavaMaa = (countrycode) => {
     if (countrycode !== "NA") {
-      const potentialCountryName = CountryCodes.find(maa => maa.country === countrycode);   
       //find palauttaa undefined => 'unknown' tai löydetyn maan 'Finland'
-      const countryName = potentialCountryName ? potentialCountryName.country_name : 'Unknown';
-      return countryName;
-    }
-    else {
+      let maanNimi = CountryCodes.find(maa => maa.country === countrycode);   
+       maanNimi = maanNimi ? maanNimi.country_name : 'Unknown';
+      return maanNimi;
+    } else {
       return countrycode;
     }
   };
@@ -111,9 +110,9 @@ function App() {
    * @returns Maakoodin
    */
   const palautaMaataVastaavaMaakoodi = (maanNimi) => {
-    const potentialCountryName = CountryCodes.find(maa => maa.country_name === maanNimi);   
-    const countryName = potentialCountryName ? potentialCountryName.country : 'Unknown';
-    return countryName;
+    let countrycode = CountryCodes.find(maa => maa.country_name === maanNimi);   
+    countrycode = countrycode ? countrycode.country : 'Unknown';
+    return countrycode;
   };
 
 
@@ -137,8 +136,7 @@ function App() {
    * @returns Taulukon hyökkäyksistä jotka on tapahtunut valittuna vuonna
    */
   const suodataHyokkayksetVuodella = (loydetytHyokkaykset) => {
-    const valittuVuosi = vuosi;
-    if (valittuVuosi !== "all") { //jos syötetty yksittäinen vuosi
+    if (vuosi !== "all") { //jos valittu yksittäinen vuosi
       const suodatetutHyokkaykset = loydetytHyokkaykset.filter(hyokkays => {
         const hyokkaysVuosi = hyokkays.date.split('-')[0];
         return vuosi === hyokkaysVuosi.toString(); 
@@ -147,9 +145,8 @@ function App() {
       
       return suodatetutHyokkaykset;
     }
-    else {
-      return loydetytHyokkaykset;
-    }
+    
+    return loydetytHyokkaykset;
   };
 
 
@@ -245,7 +242,7 @@ function App() {
    * valituista 
    * @param {*} isChecked tieto onko checkboxin tilasta
    */
-  const handleToggleAllCountries = (isChecked) => {
+  const kaikkiMaatValittuna = (isChecked) => {
     if (isChecked) {
       setMaat(maaTaulukko)
     }
@@ -338,7 +335,7 @@ function App() {
             onSearch={handleHaku} 
             ehdotukset={ehdotukset} 
             setEhdotukset={setEhdotukset} 
-            onToggleAllCountries={handleToggleAllCountries}
+            kaikkiMaatValittuna={kaikkiMaatValittuna}
             asetaHakuKoko={asetaHakuKoko}
           />
           <div id="valitutmaat" className="valitutMaat">

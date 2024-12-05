@@ -3,19 +3,19 @@ import { useState } from 'react';
 
 
 // TODO: korjaa -> haku lisää automaattisesti esim Finland, kun sen kirjoittaa ilman enterin painamista, tai muuta lisäämistä
-const Search = ({ onSearch, ehdotukset, setEhdotukset, onToggleAllCountries, asetaHakuKoko }) => {
+const Search = ({ onSearch, ehdotukset, setEhdotukset, kaikkiMaatValittuna, asetaHakuKoko }) => {
     const [hakusana, setHakusana] = useState('');       //hakusana ja sen muuttamisfunktio
-    const [showAll, setShowAll] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
+    const [naytaKaikki, setNaytaKaikki] = useState(false);      //apumuuttuja kaikkien maiden näyttämiselle
 
     /**
      * Hakupalkin muutos otetaan talteen valueen ja
      * se asetetaan hakusanaksi. 
      * @param {*} e tapahtuma 
      */
-    const handleChange = (e) => {
-        const value = e.target.value
-        setHakusana(value);
-        onSearch(value);
+    const kasitteleMuutos = (e) => {
+        const syote = e.target.value
+        setHakusana(syote);
+        onSearch(syote);
     };
 
 
@@ -37,8 +37,8 @@ const Search = ({ onSearch, ehdotukset, setEhdotukset, onToggleAllCountries, ase
      */
     const handleCheckboxChange = (e) => {
         const isChecked = e.target.checked;
-        setShowAll(isChecked);
-        onToggleAllCountries(isChecked);    //Pääohjelmaan tieto tilasta
+        setNaytaKaikki(isChecked);
+        kaikkiMaatValittuna(isChecked);    //Pääohjelmaan tieto tilasta
 
         //Jos checkbox chekattu
         if (isChecked) {
@@ -55,14 +55,14 @@ const Search = ({ onSearch, ehdotukset, setEhdotukset, onToggleAllCountries, ase
                         type="text" 
                         value = {hakusana}
                         placeholder="Search for a country" 
-                        onChange={handleChange}>
+                        onChange={kasitteleMuutos}>
                     </input>
                 </div>
                 <label id='showEveryCountry'>
                     <input                  
                         type="checkbox"
                         onChange={handleCheckboxChange}
-                        checked={showAll}
+                        checked={naytaKaikki}
                     />
                     Show every country
               </label>
