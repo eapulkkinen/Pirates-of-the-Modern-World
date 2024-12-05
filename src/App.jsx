@@ -171,53 +171,55 @@ function App() {
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
    * löytyvät haetut maat valituiksi.
-   * @param {*} hakusana Hakuun syötetty merkkijono
+   * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
    */
   const handleHaku = (hakusana) => {
-    const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
-    
-    const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
+    const syote = hakusana.trim();
     const datanMaat = new Set(maaTaulukko);
-    const realMaat = maaList.filter(maa => datanMaat.has(maa))   //syötetyt maat suodatetaan datasta löytyvistä maista
+    let valitutMaat = maat;
 
-    const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
-
-    if (newMaat.length == 0) { 
-      setPaivita(false); // Ei päivitetä turhaan
-    }
-
-    const valitutMaat = [...maat, ...newMaat].sort();
-
-    setMaat(valitutMaat);   //mahdollisiin ennalta valittuihin lisätään newMaat
-    
-    if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
-      kasitteleHakuehdotukset(maaList);
-      // Jos haussa ei muuta kuin tyhjää
+    if (datanMaat.has(syote) && valitsemattomatMaat.includes(syote)) {
+      valitutMaat.push(syote);
+      setMaat(valitutMaat);
     } else {
-      setEhdotukset([]);
-      asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
+      setPaivita(false);
     }
-    console.log('Syötetyt maat:', newMaat);
+
+    kasitteleHakuehdotukset(valitutMaat, syote);
   };
 
 
-  const kasitteleHakuehdotukset = (syotetytMaat) => {
-    const viimeinenSyotettyMaa = syotetytMaat[syotetytMaat.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
-      
-    //jos syöte ei ole vain tyhjää eli esim "Suomi +     " vaan vaikka "Suomi +     Ruotsi" niin mennään if sisään
-    if (viimeinenSyotettyMaa.trim() !== '') {
-         if (maat.length > 0) valitsemattomatMaat = valitsemattomatMaat.filter(maa => !maat.includes(maa)); //kun maita on valittu, valitut poistetaan ehdotuksista
-        const filteredehdotukset = valitsemattomatMaat.filter(maa => 
-          maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
-        );
-        setEhdotukset(filteredehdotukset);
-        asetaHakuKoko(filteredehdotukset); //asetetaan hakuboxin koko hakuehdotuksien määrän mukaan
-      }
-      //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
-      else {
-        setEhdotukset([]);
-        asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
-      }
+  /**
+   * Hakuehdotusten käsittely
+   * @param {*} valitutMaat Taulukko valituiden maiden nimistä
+   * @param {*} hakusana Hakupalkkiin kirjoitettu teksti
+   */
+  const kasitteleHakuehdotukset = (valitutMaat, hakusana) => {
+    if (valitutMaat.length > 0) {
+      paivitaValitsemattomatMaat(valitutMaat);
+    }
+
+    if (hakusana.length > 0 ) {
+      const ehdotukset = valitsemattomatMaat.filter(maa =>
+          maa.toLowerCase().startsWith(hakusana.toLowerCase())
+      );
+      setEhdotukset(ehdotukset);
+      asetaHakuKoko(ehdotukset); 
+    } else {
+      setEhdotukset([]);
+      asetaHakuKoko([]);
+    }
+  }
+
+
+  /**
+   * Päivittää valitsemattomatMaat-atribuutin vastaamaan nykyhetkeä.
+   * @param {*} valitutMaat vakiona valitut maat, mutta varmuuden vuoksi parametrimahdollisuus (jos setMaat ei kerkeä muuttamaan maa-attribuuttia ennen tämän suoritusta)
+   * @returns 
+   */
+  const paivitaValitsemattomatMaat = (valitutMaat = maat) => {
+    valitsemattomatMaat = maaTaulukko.filter(maa => !valitutMaat.includes(maa));
+    return valitsemattomatMaat;
   }
 
 
@@ -234,7 +236,9 @@ function App() {
       hakuDiv.style.height = "8.8%";
     } else {
       let x = 14.8 + taulukko.length * 3.89; // Hakudiv isommaksi kerrottuna ehdotusten määrällä
-      if (x > 70) { x = 70; } // Jos ehdotuksia on liikaa asetetaan maksimi
+      if (x > 70) { 
+        x = 70;
+      } // Jos ehdotuksia on liikaa asetetaan maksimi
       hakuDiv.style.height =  x + "%";
     }
   };
@@ -314,18 +318,18 @@ function App() {
    */
   const getHyokkaysmaara = (country) => {
     const countryCode = palautaMaataVastaavaMaakoodi(country);
-    let count = 0;
+    let maara = 0;
     let hyokkaykset = haeMaidenHyokkaykset(countryCode);
     if (hyokkaykset.length == 0) { return 0; } // Ei hyökkäyksiä
     if (vuosi === "all") { return hyokkaykset.length; } // Palautetaan kaikki maan hyökkäykset
     for (let i = 0; i < hyokkaykset.length; i++) {
-      if (hyokkaykset[i].date.slice(0, 4) == vuosi) { count++; }
+      if (hyokkaykset[i].date.slice(0, 4) == vuosi) { maara++; }
       // Hyökkäykset ovat vuosijärjestyksessä datassa, eli jos data on päässyt seuraavaan vuoteen
       // Keskeytetään toiminta
       if (hyokkaykset[i].date.slice(0, 4) > vuosi) { break; } 
     }
     
-    return count;
+    return maara;
   }
 
 
