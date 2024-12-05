@@ -1,27 +1,40 @@
 import React, { useState } from 'react';
 import { useMemo } from 'react';
 
-function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
-    const [sortOrder, setSortOrder] = useState("alphabetical");
-    const [thIcon, setThIcon] = useState("🔤");
 
-    const handleSort = () => {
-        let icon = "🔤";
-        if (sortOrder === "alphabetical") {
-            setSortOrder("descending");
-            icon = "⬆️";
-        } else if (sortOrder === "descending") {
-            setSortOrder("ascending");
+/**
+ * Tähän käyttöoikeudet
+ */
+function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
+    const [sortJarjestys, setSortJarjestys] = useState("alphabetical");
+    const [sortIkoni, setSortIkoni] = useState("🔤");
+
+
+    /**
+     * Muuttaa sorttaus järjestyksen ja ikonin sen mukaan
+     */
+    const muutaSortJarjestys = () => {
+        let ikoni = "🔤";
+        if (sortJarjestys === "alphabetical") {
+            setSortJarjestys("descending");
             icon = "⬇️";
+        } else if (sortJarjestys === "descending") {
+            setSortJarjestys("ascending");
+            ikoni = "⬆️";
         } else {
-            setSortOrder("alphabetical");
-            icon = "🔤";
+            setSortJarjestys("alphabetical");
+            ikoni = "🔤";
         }
-        setThIcon(icon);
+        setSortIkoni(ikoni);
     };
 
-    const sortedMaat = () => {
-        const attackCounts = useMemo(() => {
+
+    /**
+     * Järjestää maat ja hyökkäykset valitun järjestystavan mukaisesti
+     * @returns Taulukon järjestetyistä maista ja niiden hyokkäysmääristä
+     */
+    const jarjestaMaat = () => {
+        const hyokkaysmaara = useMemo(() => {
             const attackCounts = {};
             maat.forEach((maa) => {
                 attackCounts[maa] = getHyokkaysmaara(maa);
@@ -29,30 +42,31 @@ function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
             return attackCounts;
         }, [maat, getHyokkaysmaara]);
     
-        if (sortOrder === "alphabetical") {
+        if (sortJarjestys === "alphabetical") {
             return maat;
         } else {
             return [...maat].sort((a, b) => {
-                if (sortOrder === "descending") {
-                    return attackCounts[b] - attackCounts[a];
-                } else if (sortOrder === "ascending") {
-                    return attackCounts[a] - attackCounts[b];
+                if (sortJarjestys === "descending") {
+                    return hyokkaysmaara[b] - hyokkaysmaara[a];
+                } else if (sortJarjestys === "ascending") {
+                    return hyokkaysmaara[a] - hyokkaysmaara[b];
                 }
             });
         }
     };
+
 
     return (
         <table id="valituttaulukko">
         <thead>
             <tr className="valittutr" id='valittuOtsikot'>
                     <th className='thCountry'>Country</th>
-                    <th id="hyokkaystenmaara" onClick={handleSort} style={{ cursor: "pointer"}}> Number of attacks </th>
-                    <th id="nuoli" onClick={handleSort} style={{ cursor: "pointer"}}> {thIcon}</th>
+                    <th id="hyokkaystenmaara" onClick={muutaSortJarjestys} style={{ cursor: "pointer"}}> Number of attacks </th>
+                    <th id="nuoli" onClick={muutaSortJarjestys} style={{ cursor: "pointer"}}> {sortIkoni}</th>
             </tr>
         </thead>
         <tbody>
-            {sortedMaat().map((maa, index) => (
+            {jarjestaMaat().map((maa, index) => (
             <tr className="valittutr" key={index}>
                 <td>{maa}</td>
                 <td className='tdAttackCount'>{getHyokkaysmaara(maa)}</td>
