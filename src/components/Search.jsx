@@ -60,7 +60,7 @@ const Search = ({ hae, ehdotukset, setEhdotukset, kaikkiMaatValittuna, asetaHaku
                         onChange={muutaCheckbox}
                         checked={naytaKaikki}
                     />
-                    Select every country
+                    Select all countries
               </label>
               {ehdotukset.length > 0 && (
                 <ul className='suggestions'>

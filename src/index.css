@@ -65,12 +65,26 @@ body {
     margin-top: 5px;
     border-radius: 100px;
     background-color: var(--neljasVari);
-    border: 3px solid var(--kolmasVari);
+    border: 4px solid var(--kolmasVari);
     font-size: 16px;
 }
 
 #header button:hover {
     background-color: var(--neljasVariAlt);
+}
+
+#mainNappi {
+    padding-left: 1vh;
+    padding-right: 1vh;
+    padding-bottom: 0.5vh;
+    padding-top: 0.5vh;
+}
+
+#tokaNappi {
+    padding-left: 1vh;
+    padding-right: 1vh;
+    padding-bottom: 0.5vh;
+    padding-top: 0.5vh;
 }
 
 
@@ -79,7 +93,7 @@ body {
     margin-top: 0;
     margin-bottom: 0;
     text-align: center;
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .valitutMaat {
@@ -95,13 +109,7 @@ body {
     padding-left: 0.5vw;
     font-size: 17px;
 
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE ja Edge */
-
-    /* WebKit selaimet (Chrome, Safari, etc.) */
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    scrollbar-width: thin; /* Firefox */
 }
 
 .valitutMaat tr:nth-child(odd) td {
@@ -239,23 +247,15 @@ body {
     padding-left: 10px;
     padding-right: 10px;
     height: 53vh;
+    width: 18vw;
     font-size: 17px;
 
     overflow-y: auto;
 
     
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE ja Edge */
-
-    /* WebKit selaimet (Chrome, Safari, etc.) */
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    scrollbar-width: thin; /* Firefox */
 }
 
-#infobox:empty {
-    display: none;
-}
   
 #vasendiv {
     overflow-x: hidden;
@@ -267,9 +267,8 @@ body {
 
 .inactivenappi {
     background-color: var(--neljasVariAlt) !important;
-    border: 3px solid black !important;
+    border: 4px solid black !important;
     color: black;
-    text-decoration: underline;
     cursor: default;
 }
 
@@ -355,12 +354,13 @@ body {
     padding-left: 1vw;
     padding-right: 1vw;
     font-size: 17px;
+    width: 12.3vw;
 }
 
 .tooltip-container {
     position: relative;
     display: inline-block;
-    z-index: 998;
+    z-index: 4;
     width: auto;
     justify-content: center;
 }
@@ -485,9 +485,10 @@ body {
     margin-top: 0;
     background-color: var(--kolmasVari);
     border-radius: 0px 0px 20px 20px;
-    width: 35vw;
+    width: 20vw;
     position: absolute;
-    left: 32.5vw;
+    left: 40vw;
+    padding-bottom: 1vh;
 }
 
 
@@ -506,6 +507,10 @@ body {
 .tokaSivuChart h2 {
     text-align: center;
     font-size: 30px;
+}
+
+#vikaChart {
+    margin-bottom: 5vh;
 }
 
 #disclaimerP {
@@ -536,13 +541,7 @@ body {
     left: 1.35vw;
     width: 17.4vw;
 
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE ja Edge */
-
-    /* WebKit selaimet (Chrome, Safari, etc.) */
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    scrollbar-width: thin; /* Firefox */
 }
 
 .suggestions li{

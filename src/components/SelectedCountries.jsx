@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMemo } from 'react';
+import Question_Mark from './Question_Mark';
 
 
 /**
@@ -8,6 +9,7 @@ import { useMemo } from 'react';
 function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
     const [sortJarjestys, setSortJarjestys] = useState("alphabetical");
     const [sortIkoni, setSortIkoni] = useState("🔤");
+    const [sortTeksti, setSortTeksti] = useState("Click to sort by attack count from most attacks to least, click twice to sort by least attacks to most");
 
 
     /**
@@ -15,17 +17,22 @@ function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
      */
     const muutaSortJarjestys = () => {
         let ikoni = "🔤";
+        let teksti = ""
         if (sortJarjestys === "alphabetical") {
             setSortJarjestys("descending");
             ikoni = "⬇️";
+            teksti = "Click to sort by attack count from least attacks to most, click twice to sort alphabetically";
         } else if (sortJarjestys === "descending") {
             setSortJarjestys("ascending");
             ikoni = "⬆️";
+            teksti = "Click to sort alphabetically, click twice to sort by attack count from most attacks to least"
         } else {
             setSortJarjestys("alphabetical");
             ikoni = "🔤";
+            teksti = "Click to sort by attack count from most attacks to least, click twice to sort by least attacks to most";
         }
         setSortIkoni(ikoni);
+        setSortTeksti(teksti)
     };
 
 
@@ -61,8 +68,10 @@ function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
         <thead>
             <tr className="valittutr" id='valittuOtsikot'>
                     <th className='thCountry'>Country</th>
-                    <th id="hyokkaystenmaara" onClick={muutaSortJarjestys} style={{ cursor: "pointer"}}> Number of attacks </th>
-                    <th id="nuoli" onClick={muutaSortJarjestys} style={{ cursor: "pointer"}}> {sortIkoni}</th>
+                    <th id="hyokkaystenmaara"> Number of attacks </th>
+                    <th id="nuoli" onClick={muutaSortJarjestys}>
+                        <Question_Mark ikoni={sortIkoni} teksti={sortTeksti} style={{ cursor: "pointer"}}></Question_Mark>
+                    </th>
             </tr>
         </thead>
         <tbody>

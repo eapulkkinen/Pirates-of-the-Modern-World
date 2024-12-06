@@ -51,7 +51,7 @@ const Header = () => {
     return (
         <div id="header">
             <div id="titlejanav">
-                <h1 id="headertitle">Pirates of the Modern World</h1>
+                <h1 id="headertitle">Pirates of the Modern World 🏴‍☠️ Mapping Dangers of the High Seas</h1>
                 <div id='navnapit'>
                     <button type='submit'
                         onClick={toggleMain}
@@ -66,7 +66,7 @@ const Header = () => {
                         id='tokaNappi'
                         className={!onkoMain() ? 'inactivenappi' : ''}
                     >
-                    Additional graphs
+                    Attack statistics
                     </button>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import {Chart} from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import './index.css';
 import Header from './components/Header';
+import Question_Mark from './components/Question_Mark';
 import Footer from './components/Footer';
 import pirate_attacks from './data/pirate_attacks';
 import country_codes from './data/country_codes';
@@ -41,11 +42,7 @@ function App() {
 
   // Luodaan muutama taulukko väreistä joita käytetään sivun piirakkakaavioissa
   // Värivalinnat perustuu https://www.simplifiedsciencepublishing.com/resources/best-color-palettes-for-scientific-figures-and-data-visualizations
-  const varitGrayscale = ["#0d0d0d", "#262626", "#595959", "#7f7f7f", "#a1a1a1", "#bababa", "#d4d4d4", "#ededed"];
-  const varitBright = ["#003a7d", "#008dff", "#ff73b6", "#c701ff", "#4ecb8d", "#ff9d3a", "#f9e858", "#d83034"];
-  const varitMuted = ["#f0c571", "#59a89c", "#0b81a2", "#e25759", "#9d2c00", "#7E4794", "#36b700", "#c8c8c8"]; // Toimii hyvin värisokeuden kanssa
-  const varitAlternating = ["#8fd7d7", "#00b0be", "#ff8ca1", "#f45f74", "#bdd373", "#98c127", "#ffcd8e", "#ffb255"];
-
+  const varitMuted = ["#f0c571", "#59a89c", "#0b81a2", "#e25759", "#9d2c00", "#7E4794", "#36b700", "#c8c8c8", "#a85f00", "#8c0081", "#853434"]; // Toimii hyvin värisokeuden kanssa
   const rajaVari = "#000000"; // Charttien rajojen väri
 
   Chart.register(ChartDataLabels);
@@ -737,21 +734,21 @@ function App() {
   <>
       <div id="tokaSivuDiv">
         <Header />
-        <h1 id='paaOtsikko'>Additional charts based on the data</h1>
+        <h1 id='paaOtsikko'>Descriptive statistics</h1>
         <div className='tokaSivuChart'>
           <h2>Top 10 countries with the most attacks between 1993-2020</h2>
           <canvas ref={attackPieChartRef} id="attackPie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <h2>Most common attack types*</h2>
+          <h2>Most common attack types<Question_Mark ikoni={'*'} teksti={"some attacks may be missing attack type data, this chart only reflects those cases that do have that data"}></Question_Mark></h2> 
           <canvas ref={atkTypeChartRef} id="atkTypePie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <h2>Most common vessel types*</h2>
+          <h2>Most common vessel types<Question_Mark ikoni={'*'} teksti={"some attacks may be missing vessel type data, this chart only reflects those cases that do have that data"}></Question_Mark></h2>
           <canvas ref={vesselTypeChartRef} id="vesselTypePie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <h2>Most common vessel status*</h2>
+          <h2>Most common vessel status<Question_Mark ikoni={'*'} teksti={"some attacks may be missing vessel status data, this chart only reflects those cases that do have that data"}></Question_Mark></h2>
           <canvas ref={vesselStatusChartRef} id="vesselStatusPie"></canvas>
         </div>
         <div className='tokaSivuChart'>
@@ -763,14 +760,13 @@ function App() {
           <canvas ref={distanceChartRef} id="distancePie"></canvas>
         </div>
         <div className='tokaSivuChart'>
-          <h2>Attacks by year</h2>
+          <h2>Attacks by year for all countries</h2>
           <canvas ref={atkByYearRef} id="atkByYearRef"></canvas>
         </div>
-        <div className='tokaSivuChart'>
-          <h2>Attacks by time*</h2>
+        <div className='tokaSivuChart' id='vikaChart'>
+          <h2>Attacks by time for all countries<Question_Mark ikoni={'*'} teksti={"some attacks may be missing attack time data, this chart only reflects those cases that do have that data"}></Question_Mark></h2>
           <canvas ref={atkByTimeRef} id="atkByTimeRef"></canvas>
         </div>
-        <p id="disclaimerP">*some attacks may be missing certain data, this chart only reflects those cases that do have that data</p>
         <Footer />
       </div>
   </>

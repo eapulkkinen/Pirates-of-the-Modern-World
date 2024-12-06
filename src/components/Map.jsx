@@ -137,17 +137,17 @@ const Map = ({ koordinaattiLista }) => {
     useEffect(() => {
         if (kartta && markerRypas) {
             //Jos suodatuksilla ei löydy yhtään hyökkäystä, poistetaan karttapisteet varmuuden vuoksi
-            //ja markerit, valittumarker sekä infobox tyhjennetään.
+            //ja markerit, valittumarker sekä infobox asetetaan defaulttiin.
             if (koordinaattiLista.length === 0) {  
                 markerRypas.clearLayers();
-                document.getElementById('infobox').innerHTML = "";
+                setInfoboxDefault();
                 setMarkerit([]);
                 setValittuMarker(null);
                 return;
             }
 
             //Tarkastetaan löytyykö klikattu marker vielä suodatusvalinnoilla
-            //löydetyistä hyökkäyksistä, jos ei, infobox tyhjennetään ja
+            //löydetyistä hyökkäyksistä, jos ei, infobox asetetaan defaulttiin ja
             //valittu marker nulliksi.
             if (valittuMarker !== null  && !koordinaattiLista.some(
                 koord => 
@@ -157,7 +157,7 @@ const Map = ({ koordinaattiLista }) => {
                     koord.time === valittuMarker.time
                     )
                 ) {
-                    document.getElementById('infobox').innerHTML = "";
+                    setInfoboxDefault();
                     setValittuMarker(null)
             }
 
@@ -297,6 +297,21 @@ const Map = ({ koordinaattiLista }) => {
             setMarkerit(allmarkerit);
         }
     }, [kartta, koordinaattiLista]);
+
+    function setInfoboxDefault() {
+        let infobox = document.getElementById('infobox');
+        infobox.innerHTML = ""; // Tyhjennetään laatikon vanhat tiedot
+
+        // Asetetaan default teksti laatikkoon
+        let p = document.createElement("p");
+        p.classList.add("infoboxp");
+        let p2 = document.createElement("p");
+        p2.classList.add("infoboxp");
+        p.textContent = "Attack information will appear here when you click a marker on the map";
+        p2.textContent = "If you don't have markers on the map, try choosing a country from the left side of the screen";
+        infobox.appendChild(p);
+        infobox.appendChild(p2);
+    }
 
 
     return (
