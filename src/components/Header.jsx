@@ -78,12 +78,20 @@ const Header = () => {
             {aukiHelp && (
             <div className='modal'>
             <div className='modalSisalto' id='helpModal'>
-                <h1>Welcome to the Pirates of the Modern World App</h1>
-                <p>The app can show you information regarding pirate attacks between the years 1993 and 2020</p>
-                <p>Choose a country you want info on by searching for it, or just choose "Show every country" to see all countries</p>
-                <p>Choose the year with the slider below the map, or just choose "Show all" to see all years</p>
-                <p>Click "More information on chosen countries" to see a graph of chosen countries's attacks</p>
-                <p>Click a marker on the map for more information on the attack</p>
+                <h1>Welcome to the Pirates of the Modern World App!</h1>
+                <p>Did you know that pirates still exist? Well now you can see where they are active!</p>
+                <ul>
+                    <li>The app can show you information regarding pirate attacks between the years 1993 and 2020.</li>
+                    <li>Search for countries using the searchbar on the left side of the screen.</li>
+                    <li>Click a recommendation to choose a country or just click &quot;Select all countries&quot; to see all countries.</li>
+                    <li>Choose the year with the slider below the map, or just choose &quot;Show all&quot; to see all years.</li>
+                    <li>The map will show all attacks which fit the chosen year and countries</li>
+                    <li>Click a marker on the map to see additional information about the attack. You can even look it up on Google Maps!</li>
+                    <li>Click &quot;More information on chosen countries&quot; to see a graph of chosen countries&apos;s attacks</li>
+                    <li>You can additionally compare the amount of attacks to other indicators. How does unemployment rate affect piracy?</li>
+                    <li>Text highlighted in white hides additional information, just hover your cursor over them!</li>
+                    <li>Interested in additional statistics? Click &quot;Attack statistics&quot; to see more graphs.</li>
+                </ul>
                 <button
                 className='modalSulkuNappi'
                 onClick={toggleHelp}
