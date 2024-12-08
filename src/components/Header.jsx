@@ -102,8 +102,18 @@ const Header = () => {
             {aukiAbout && (
             <div className='modal'>
             <div className='modalSisalto' id='aboutModal'>
-                <h1>About</h1>
-                <p>Lorem ipsum jne jne</p>
+                <h1>About the application</h1>
+                <ul>
+                    <li>This application was made as a part of University of Jyväskylä&apos;s TIEA207 course.</li>
+                    <li>If you find some data missing for an attack, that is because the original data was missing that data.</li>
+                    <li>This application is made with the <a href="https://react.dev/" target="_blank">React</a> library 
+                    and uses the <a href="https://leafletjs.com/" target="_blank">Leaflet</a>, <span></span>
+                    <a href="https://www.chartjs.org/" target="_blank">Graph.js</a> and <span></span>
+                    <a href="https://www.npmjs.com/package/geolib" target="_blank">Geolib</a> libraries.</li>
+                    <li>Code for our modals from <a href="https://www.youtube.com/watch?v=9DwGahSqcEc" target="_blank">The Web School</a>.</li>
+                    <li>Git repository: (linkki gitti repoon)</li>
+                    <li>Remember to read the README.md!</li>
+                </ul>
                 <button
                 className='modalSulkuNappi'
                 onClick={toggleAbout}

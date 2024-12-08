@@ -444,12 +444,20 @@ body {
     background-color: var(--mainVari);
     border: 8px solid var(--kolmasVari);
     border-radius: 20px;
-    text-align: center;
+    text-align: left;
     font-size: 20px;
 }
 
 #aboutModal h1 {
     font-size: 35px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#aboutModal li {
+    border-bottom: 2px solid var(--mainVariAlt);
+    width:fit-content;
 }
 
 /*Footer*/

@@ -1,52 +1,36 @@
-## Projektin hakeminen jotakuinkin näin
-1. mkdir x
-2. cd x
-3. git init x
-4. git remote add origin https://gitlab.jyu.fi/aaptappe/tiea207.git
-5. git branch -M main
-6. git pull origin main
+## Pirates of the Modern World
+Pirates of the Modern World is an application for visualizing pirate attacks between the years 1993-2020.
+It was made for University of Jyväskylä's TIEA207 course in 2024.
 
-jos vikisee personal access token, kuten mulla teki, niin sen saa luotua ja kopioitua talteen
-https://gitlab.jyu.fi/-/user_settings/personal_access_tokens
+## Instructions
+Download npm https://www.npmjs.com/
+Download the project to your own computer ("git clone LINKKI")
+Open up Git Bash in the project folder and type "npm install"
+You now have the project and all necessary dependicies downloaded
 
-## Käyttö
+Open the project on in your code editor
+Open a bash-terminal inside your code editor
+Type "npm run dev", this will start up a local server
+After a while a link will appear, open it in your browser
+The server can be shut down with ctrl+c
 
-Vaatii npm:n asennuksen.
-Kun npm ja projekti on haettu omalle koneelle,
-riippuvuudet saadaan automaattisesti asennettua ainakin gitbashissa komennolla "npm install" (projektihakemistossa).
-Sen jälkeen pystyy testaamaan sovellusta.
+## Open data source
+Benden, P., Feng, A., Howell, C., & Dalla Riva G. V. (2021)
+Crime at Sea: A Global Database of Maritime Pirate Attacks (1993–2020)
+Journal of Open Humanities Data, 7: 19, pp. 1–6. DOI: https://doi.org/10.5334/johd.39
+Github repository: https://github.com/newzealandpaul/Maritime-Pirate-Attacks
 
-Helpoin tapa omasta mielestä:
-1. open folder -> projekti
-2. avaa vsc sisällä bash-terminaali
-3. kirjoita "npm run dev" joka käynnistää "serverin"
-ja ctrl+left click saa sovelluksen auki linkkiä klikkaamalla. 
-4. serveri sulkeutuu ctrl+c ja sama näppäinyhdistelmä toimii myös terminaalissa serverin sulkemiselle
+## Alterations to the data
+Data used was converted from csv to json.
+None of the data used was altered.
+However, the "attacks" variable of country_indicators.json was added by the creators of the application.
+This attack number is based on the open data, but any possible mistakes in the numbers are probably made by the creators of the application.
 
-## Git Ohjeet
-Aluksi
+## Creators
+Aapo Peltokangas
+Eero Pulkkinen
+Valtteri Sivula
+Vili Sihvo
 
- git pull
-
-
-Siirry omaan branchiin
-
-git checkout [omanimi]
-
-
-Kun haluat tallentaa 
-
-git add --all
-
-git commit -m "..."
-
-git push
-
-
-Kun haluat siirtää mainiin (Muista tallentaa branchiin)
-
-git checkout main
-
-git merge -m "..." [omanimi]
-
-git push
+## Repository
+Repo linkki
