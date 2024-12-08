@@ -6,7 +6,7 @@ It was made for University of Jyväskylä's TIEA207 course in 2024.
 ## Instructions
 Download npm https://www.npmjs.com/
 
-Download the project to your own computer ("git clone LINKKI")
+Download the project to your own computer (for example "git clone https://github.com/eapulkkinen/Pirates-of-the-Modern-World.git")
 
 Open up Git Bash in the project folder and type "npm install"
 
