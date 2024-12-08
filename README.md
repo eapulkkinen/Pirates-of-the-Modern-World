@@ -50,4 +50,4 @@ Valtteri Sivula
 Vili Sihvo
 
 ## Repository
-Repo linkki
+https://github.com/eapulkkinen/Pirates-of-the-Modern-World

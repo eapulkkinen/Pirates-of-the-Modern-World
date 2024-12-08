@@ -111,7 +111,7 @@ const Header = () => {
                     <a href="https://www.chartjs.org/" target="_blank">Graph.js</a> and <span></span>
                     <a href="https://www.npmjs.com/package/geolib" target="_blank">Geolib</a> libraries.</li>
                     <li>Code for our modals from <a href="https://www.youtube.com/watch?v=9DwGahSqcEc" target="_blank">The Web School</a>.</li>
-                    <li>Git repository: (linkki gitti repoon)</li>
+                    <li>Git repository: <a href="https://github.com/eapulkkinen/Pirates-of-the-Modern-World" target="_blank">Click here</a></li>
                     <li>Remember to read the README.md!</li>
                 </ul>
                 <button
