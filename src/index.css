@@ -325,6 +325,7 @@ body {
     justify-content: center;
     text-align: center;
 }
+
 .modalNappi {
     border-radius: 100px;
     background-color: var(--neljasVari);
@@ -543,6 +544,7 @@ body {
     color: black; 
     padding-left: 2px;
     padding-right: 2px;
+    padding-bottom: 2px;
     z-index: 998;
 }
 

@@ -16,7 +16,7 @@ const IndicatorDropdown = ({onIndicatorChange}) =>  {
 
     return (
 
-            <select onChange={e => onIndicatorChange(e.target.value)}>
+            <select className='indikaattoriDroppari' onChange={e => onIndicatorChange(e.target.value)}>
                 <option value="">Select an indicator</option>
                 <option value="corruption_index">Corruption Index</option>
                 <option value="homicide_rate">Homicide Rate</option>
@@ -67,11 +67,6 @@ const Modal = (props) => {
             setHuomautus(!huomautus);   // arvoja true/false
         }
     }
-
-    //country_codes tiedostosta filtteröity taulukko valituista maista
-    const valitutMaat = country_codes.filter(maa => {
-        return props.maat.includes(maa.country_name);
-    })
 
     /**
     * Hakee maan nimeä vastaavan maakoodin
@@ -160,7 +155,7 @@ const Modal = (props) => {
             className='overlay'></div>  
 
             <div className='modalSisalto'>
-                <select onChange={handleCountryChange} value={valittuMaa} >
+                <select className='maaDroppari' onChange={handleCountryChange} value={valittuMaa} >
                     {props.maat.map((option, index) => (
                         <option key={index} value={option}>
                          {option}
