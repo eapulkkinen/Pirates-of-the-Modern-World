@@ -2,8 +2,9 @@ import {useState} from 'react';
 import './Modal/Modal.css';
 
 
-/**
- * Tähän käyttöoikeudet
+/** 
+ * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
+ * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
  */
 const Header = () => {
     const [aukiHelp, setAukiHelp] = useState(false);
@@ -108,9 +109,9 @@ const Header = () => {
                     <li>If you find some data missing for an attack, that is because the original data was missing that data.</li>
                     <li>This application is made with the <a href="https://react.dev/" target="_blank">React</a> library 
                     and uses the <a href="https://leafletjs.com/" target="_blank">Leaflet</a>, <span></span>
-                    <a href="https://www.chartjs.org/" target="_blank">Graph.js</a> and <span></span>
+                    <a href="https://www.chartjs.org/" target="_blank">Chart.js</a> and <span></span>
                     <a href="https://www.npmjs.com/package/geolib" target="_blank">Geolib</a> libraries.</li>
-                    <li>Code for our modals from <a href="https://www.youtube.com/watch?v=9DwGahSqcEc" target="_blank">The Web School</a>.</li>
+                    <li>Code for our modal windows from <a href="https://www.youtube.com/watch?v=9DwGahSqcEc" target="_blank">The Web School</a>.</li>
                     <li>Git repository: <a href="https://github.com/eapulkkinen/Pirates-of-the-Modern-World" target="_blank">Click here</a></li>
                     <li>Remember to read the README.md!</li>
                 </ul>

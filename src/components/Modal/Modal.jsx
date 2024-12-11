@@ -6,32 +6,10 @@ import '../Country_Chart';
 import Country_Chart from '../Country_Chart';
 import Question_Mark from '../Question_Mark';
 
-
-/**
- * tekee dropdown valikon ja muuttaa modalin tilaa parametrina tuodulla funktiolla
- * @param {function} param0 modalin tilaa vaihtava funktio
- * @returns dropdown valikon
+/** 
+ * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
+ * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
  */
-const IndicatorDropdown = ({onIndicatorChange}) =>  {
-
-    return (
-
-            <select className='indikaattoriDroppari' onChange={e => onIndicatorChange(e.target.value)}>
-                <option value="">Select an indicator</option>
-                <option value="corruption_index">Corruption Index</option>
-                <option value="homicide_rate">Homicide Rate</option>
-                <option value="GDP">GDP Per Capita</option>
-                <option value="total_fisheries_per_ton">Fisheries Production</option>
-                <option value="total_military">Armed Forces Personnel</option>
-                <option value="population">Population</option>
-                <option value="unemployment_rate">Unemployment Rate</option>
-                <option value="totalgr">Total Government Revenue</option>
-                <option value="industryofgdp">Industry of GDP</option>
-                <option value="all_attacks">All Attacks</option>
-            </select>
-
-    );
-}
 
 /**
  * The base idea for this component was learned from this video:
@@ -162,7 +140,19 @@ const Modal = (props) => {
                         </option>
                     ))}
                 </select>
-                <IndicatorDropdown onIndicatorChange={handleIndicatorChange}/>
+                <select className='indikaattoriDroppari' onChange={e => handleIndicatorChange(e.target.value)}>
+                  <option value="">Select an indicator</option>
+                  <option value="corruption_index">Corruption Index</option>
+                  <option value="homicide_rate">Homicide Rate</option>
+                  <option value="GDP">GDP Per Capita</option>
+                  <option value="total_fisheries_per_ton">Fisheries Production</option>
+                  <option value="total_military">Armed Forces Personnel</option>
+                  <option value="population">Population</option>
+                  <option value="unemployment_rate">Unemployment Rate</option>
+                  <option value="totalgr">Total Government Revenue</option>
+                  <option value="industryofgdp">Industry of GDP</option>
+                  <option value="all_attacks">All Attacks</option>
+                </select>
                 <Question_Mark ikoni={'?'}teksti={valitseKysymysmerkkiTeksti()}/>
                 <p> {valittuMaa} </p>
                 <>

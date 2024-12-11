@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
 import pirate_attacks from '../data/pirate_attacks';
+/** 
+ * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
+ * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
+ */
 
 /**
- * Tähän käyttöoikeudet
- * 
  * Luo kaavion halutuilla spekseillä
  * @param {*} props indikaattorit = kaikki valitun maan indikaattorit, valittuIndikaattori = indikaattori joka halutaan näyttää
  * @returns kaavio

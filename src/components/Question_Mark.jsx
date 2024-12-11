@@ -1,9 +1,11 @@
 import React from "react";
 import '../index.css';
+/** 
+ * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
+ * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
+ */
 
 /**
- * Tähän käyttöoikeudet
- * 
  * Tekee pienen halutun näköisen merkin (kirjain, emoji tms.), jonka päälle kursorin asettaessa näytetään laatikko, jossa on tekstiä
  * @param {*} ikoni joku merkki
  * @param {*} teksti haluttu teksti
