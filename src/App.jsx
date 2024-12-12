@@ -174,13 +174,12 @@ function App() {
     return maidenHyokkaykset;
   };
 
-/** 
   /**
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
    * löytyvät haetut maat valituiksi.
    * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
-   
+   */
   const handleHaku = (hakusana) => {
     const syote = hakusana.trim();
     const datanMaat = new Set(maaTaulukko);
@@ -195,7 +194,7 @@ function App() {
 
     kasitteleHakuehdotukset(valitutMaat, syote);
   };
-  */
+
 
   /**
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
@@ -203,7 +202,7 @@ function App() {
    * löytyvät haetut maat valituiksi.
    * @param {*} hakusana Hakuun syötetty merkkijono
    */
-  const handleHaku = (hakusana) => {
+  const handleHHaku = (hakusana) => {
     setHaku(hakusana);
     console.log("Haettavat maat:", hakusana)
     const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
