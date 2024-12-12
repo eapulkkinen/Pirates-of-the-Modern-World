@@ -172,7 +172,7 @@ function App() {
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
    * löytyvät haetut maat valituiksi.
-   * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
+   * @param {string} hakusana Hakuun syötetty merkkijono (potentiaalinen maa) tai ehdotuksista valittu maa
    */
   const handleHaku = (hakusana) => {
     setHaku(hakusana);
