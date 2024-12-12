@@ -20,6 +20,7 @@ function App() {
   const [vuosi, setVuosi] = useState('1993'); // valittu vuosi
   const [ehdotukset, setEhdotukset] = useState([]); // [ "Afghanistan", ... ]
   const [paivita, setPaivita] = useState(true); // boolean, jolla estetään päivittyminen kesken haun
+  const [haku, setHaku] = useState('')
 
   // Hakee datasta löytyvät maiden nimet taulukkoon
   let maaTaulukko = CountryCodes.map(i => i.country_name); 
@@ -36,17 +37,24 @@ function App() {
   //Kartan päivitys AINA kun valitut maat tai vuosi muuttuu.
   useEffect(() => {
     if (!paivita) { // Ei suoriteta jos paivita === false
+      console.log("päivitä kusee")
       setPaivita(true);
       return;
     }
 
-    if (maitaValittu()) {
+    console.log(maat.length > 0)
+
+    if (maat.length > 0) {
       const sortatutMaakoodit = palautaMaidenKooditNimenPerusteella();
       const maidenHyokkaykset = haeMaidenHyokkaykset(sortatutMaakoodit);  //kaikki valittujen maiden hyökkäykset
+
+      console.log("yksi vuosi valittu")
 
       const hyokkaykset = yksiVuosiValittu()
         ? suodataHyokkayksetVuodella(maidenHyokkaykset) //jos yksi vuosi valittu, valitaan hyökkäykset sen mukaan
         : maidenHyokkaykset;  //muuten voidaan käyttää jo kaikkia haettujen maiden hyökkäyksiä
+
+      console.log("hyökkäykset", hyokkaykset)
 
       setKoordinaatit(
         hyokkaykset.map(hyokkays => ({
@@ -73,7 +81,7 @@ function App() {
    * @returns Yksittäinen vuosi valittu => true, muuten false
    */
   const yksiVuosiValittu = () => {
-    return !(vuosi == 'all');
+    return !(vuosi === 'all');
   };
 
 
@@ -166,17 +174,16 @@ function App() {
     return maidenHyokkaykset;
   };
 
-
   /**
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
    * löytyvät haetut maat valituiksi.
    * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
    */
-  const handleHaku = (hakusana) => {
+  const handleHHaku = (hakusana) => {
     const syote = hakusana.trim();
     const datanMaat = new Set(maaTaulukko);
-    let valitutMaat = maat;
+    let valitutMaat = [...maat];
 
     if (datanMaat.has(syote) && valitsemattomatMaat.includes(syote)) {
       valitutMaat.push(syote);
@@ -187,6 +194,55 @@ function App() {
 
     kasitteleHakuehdotukset(valitutMaat, syote);
   };
+
+
+  /**
+   * Käsittelee hakusanan ja hakupalkin logiikkaa.
+   * Kutsuu ehdotuksien luontia ja lisää datasta
+   * löytyvät haetut maat valituiksi.
+   * @param {*} hakusana Hakuun syötetty merkkijono
+   */
+  const handleHaku = (hakusana) => {
+    setHaku(hakusana);
+    console.log("Haettavat maat:", hakusana)
+    const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
+    
+    const uniqMaat = new Set(maat);     //poistaa duplikaatit maaListasta
+    const maaSet = new Set(maaTaulukko);
+    const realMaat = maaList.filter(maa => maaSet.has(maa))   //syötetyt maat suodatetaan datasta löytyvistä maista
+
+    const newMaat = realMaat.filter(maa => !uniqMaat.has(maa));   //varmistetaan ettei näissä duplikaatteja
+
+    // Jos input on vain haku ja ei lisää uutta maata, asetetaa paivita = false
+    // Tämä estää turhan päivittämisen ja vähentää lagia kun markkereita on paljon
+    if (newMaat.length == 0) { setPaivita(false); } 
+    setMaat((maatEnnenLisaysta => [...maatEnnenLisaysta, ...newMaat]));   //mahdollisiin ennalta valittuihin lisätään newMaat
+    
+    if (hakusana.trim().length > 0) {  //Käsitellään hakuehdotukset
+      const viimeinenSyotettyMaa = maaList[maaList.length - 1].trim(); //jos on syötetty useampi maa, ehdotuksiin näytetään viimeisimmän ehdotus
+      
+      //jos syöte ei ole vain tyhjää eli esim "Suomi +     " vaan vaikka "Suomi +     Ruotsi" niin mennään if sisään
+      if (viimeinenSyotettyMaa.trim() !== '') {
+          if (maat.length > 0) valitsemattomatMaat = valitsemattomatMaat.filter(maa => !maat.includes(maa)); //kun maita on valittu, valitut poistetaan ehdotuksista
+        const filteredSuggestions = valitsemattomatMaat.filter(maa => 
+          maa.toLowerCase().startsWith(viimeinenSyotettyMaa.trim().toLowerCase())
+        );
+        setEhdotukset(filteredSuggestions);
+        asetaHakuKoko(filteredSuggestions); //asetetaan hakuboxin koko hakuehdotuksien määrän mukaan
+      }
+      //Jos syötetty tyhjää + merkin jälkeen eli esim "Suomi +      "
+      else {
+        setEhdotukset([]);
+        asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
+      }
+      // Jos haussa ei muuta kuin tyhjää
+    } else {
+      setEhdotukset([]);
+      asetaHakuKoko([]); //asetetaan hakuboxin koko defaulttiin
+    }
+    console.log('Syötetyt maat:', newMaat);
+  };
+
 
 
   /**
