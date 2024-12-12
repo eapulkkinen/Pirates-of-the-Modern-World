@@ -308,7 +308,7 @@ const Map = ({ koordinaattiLista }) => {
         let p2 = document.createElement("p");
         p2.classList.add("infoboxp");
         p.textContent = "Attack information will appear here when you click a marker on the map";
-        p2.textContent = "If you don't have markers on the map, try choosing a country from the left side of the screen";
+        p2.textContent = "If you don't have markers on the map, try choosing a country from the left side of the screen and choose a different year";
         infobox.appendChild(p);
         infobox.appendChild(p2);
     }
