@@ -180,7 +180,7 @@ function App() {
    * löytyvät haetut maat valituiksi.
    * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
    */
-  const handleHaku = (hakusana) => {
+  const handleHHaku = (hakusana) => {
     const syote = hakusana.trim();
     const datanMaat = new Set(maaTaulukko);
     let valitutMaat = [...maat];
@@ -202,7 +202,7 @@ function App() {
    * löytyvät haetut maat valituiksi.
    * @param {*} hakusana Hakuun syötetty merkkijono
    */
-  const handleHHaku = (hakusana) => {
+  const handleHaku = (hakusana) => {
     setHaku(hakusana);
     console.log("Haettavat maat:", hakusana)
     const maaList = hakusana.split('+').map(maa => maa.trim()); // "suomi, ruotsi,   norja" --> ["suomi", "ruotsi", "norja"]
