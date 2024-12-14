@@ -61,7 +61,19 @@ This attack number is based on the open data, but any possible mistakes in the n
 - chartjs-plugin-datalabels: MIT License [license in github](https://github.com/chartjs/chartjs-plugin-datalabels/blob/master/LICENSE.md)
 
 - Modal windows from [The Web School](https://www.youtube.com/watch?v=9DwGahSqcEc) YouTube video. At 0:24 in the video the author states: "You can find the 
-  source code in the description (of the video) and reuse it as you want." Video seen on 14.11.2025.
+  source code in the description (of the video) and reuse it as you want." Video seen on 14.11.2024.
+
+## Attribution
+
+If you are using Pirates of the Modern World application in your own project, make sure to attribute the use of
+
+Pirates of the Modern World application by Aapo Peltokangas, Eero Pulkkinen, Valtteri Sivula & Vili Sihvo
+
+with a link to this Github repository: https://github.com/eapulkkinen/Pirates-of-the-Modern-World
+
+in your Readme file or About page, etc.
+
+This project is licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
 
 ## Creators
 Aapo Peltokangas
