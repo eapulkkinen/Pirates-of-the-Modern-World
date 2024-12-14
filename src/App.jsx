@@ -21,6 +21,7 @@ function App() {
   const [vuosi, setVuosi] = useState('1993'); // valittu vuosi
   const [ehdotukset, setEhdotukset] = useState([]); // [ "Afghanistan", ... ]
   const [paivita, setPaivita] = useState(true); // boolean, jolla estetään päivittyminen kesken haun
+  const [, setHaku] = useState(''); //hakusyötteen asetus
 
   // Hakee datasta löytyvät maiden nimet taulukkoon
   let maaTaulukko = CountryCodes.map(i => i.country_name); 
@@ -74,7 +75,7 @@ function App() {
    * @returns Yksittäinen vuosi valittu => true, muuten false
    */
   const yksiVuosiValittu = () => {
-    return !(vuosi == 'all');
+    return !(vuosi === 'all');
   };
 
 
@@ -172,16 +173,20 @@ function App() {
    * Käsittelee hakusanan ja hakupalkin logiikkaa.
    * Kutsuu ehdotuksien luontia ja lisää datasta
    * löytyvät haetut maat valituiksi.
-   * @param {*} hakusana Hakuun syötetty merkkijono (potentiaalinen maa)
+   * @param {string} hakusana Hakuun syötetty merkkijono (potentiaalinen maa) tai ehdotuksista valittu maa
    */
   const handleHaku = (hakusana) => {
+    setHaku(hakusana);
+
     const syote = hakusana.trim();
     const datanMaat = new Set(maaTaulukko);
-    let valitutMaat = maat;
+
+    let valitutMaat = [...maat];
 
     if (datanMaat.has(syote) && valitsemattomatMaat.includes(syote)) {
       valitutMaat.push(syote);
       setMaat(valitutMaat);
+      setPaivita(true);
     } else {
       setPaivita(false);
     }
@@ -232,7 +237,6 @@ function App() {
   const asetaHakuKoko = (taulukko) => {
     const hakuDiv = document.getElementById("searchdiv"); // haun ja valittujen maiden div joilla säädetään ulkonäköä
 
-    console.log(taulukko);
     if (taulukko.length == 0) { // Ei ehdostuksia eli asetetaan default numerot
       hakuDiv.style.height = "8.8%";
     } else {
@@ -258,7 +262,6 @@ function App() {
       setMaat(maaTaulukko)
     }
     else {
-      console.log("Ei chekattu, poistetaan:", maat)
       setMaat([]);
       setKoordinaatit([]);
     }
@@ -289,7 +292,6 @@ function App() {
 
       if (vuosi === "all") {
         hyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
-        console.log('Vuosi : all')
       } else {
         const maanHyokkaykset = haeMaidenHyokkaykset([poistettavaMaa]);
         hyokkaykset = suodataHyokkayksetVuodella(maanHyokkaykset);
