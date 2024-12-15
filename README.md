@@ -73,7 +73,12 @@ with a link to this Github repository: https://github.com/eapulkkinen/Pirates-of
 
 in your Readme file or About page, etc.
 
+
+## Licensing
+
 This project is licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND.
 
 ## Creators
 Aapo Peltokangas
