@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-
 /** 
  * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
  * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
+ * 
+ * Luo ja palauttaa slider-elementin. Käsittelee sliderin arvon talteenoton.
  */
 const Slider = ({ onChange, vuosi }) => {
   const [naytaKaikki, setNaytaKaikki] = useState(false);

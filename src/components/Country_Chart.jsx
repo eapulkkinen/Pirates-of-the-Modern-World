@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react';
 import {Chart} from 'chart.js/auto';
 import pirate_attacks from '../data/pirate_attacks';
+
 /** 
  * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
  * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
- */
-
-/**
+ *
  * Luo kaavion halutuilla spekseillä
  * @param {*} props indikaattorit = kaikki valitun maan indikaattorit, valittuIndikaattori = indikaattori joka halutaan näyttää
  * @returns kaavio
@@ -33,12 +32,13 @@ const Country_Chart = (props) => {
      */
     const valitseIndikaattori = () => {
 
-      let indikaattoriTaulukko 
+      let indikaattoriTaulukko;
 
       switch (props.valittuIndikaattori) {
         case "all_attacks":
           let hyokkaykset = [];
           let index = 0;
+
           for (let i = 1993; i <= 2020; i++) {      // kopioitu TokaApp.jsx: ästä pienellä muutoksella
             hyokkaykset.push(0);
             for (let hyokkays of pirate_attacks) {
@@ -48,6 +48,7 @@ const Country_Chart = (props) => {
             }
             index++;
           }
+          
           indikaattoriTaulukko = hyokkaykset;
           break;
         case "corruption_index": 
@@ -96,9 +97,11 @@ const Country_Chart = (props) => {
     useEffect(() => {
       const ctx = chartRef.current.getContext("2d");
       const vuosi = [];     // luodaan datasta taulukot
+
       for (let i = 1993; i <= 2020; i++) {
         vuosi.push(i);
       };
+
       const indicator = valitseIndikaattori();
       const attacks = props.indikaattorit.map(i => i.attacks);
       const hyokkaysLabel = `Attacks in ${props.maa}`;
@@ -176,16 +179,14 @@ const Country_Chart = (props) => {
       });
 
       return () => {
-        kuvaaja.destroy(); // cleanup
+        kuvaaja.destroy(); 
       };
 
     });
 
     return (
     <>
-        
         <canvas ref={chartRef} width="170" height="50"></canvas>
-        
     </>
     );
 }

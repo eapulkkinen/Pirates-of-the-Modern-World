@@ -1,15 +1,12 @@
 /** 
  * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
  * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
- */
 
-/**
-* The base for this css file has been taken from https://github.com/ecole-du-web/react-modal/blob/main/src/Components/Modal/Modal.css
-* and modified to our needs.
-* https://www.youtube.com/watch?v=9DwGahSqcEc at 0:24 the author states: "You can find the source code in 
-* the description (of the video) and reuse it as you want." Video seen on 14.11.2025.
-* 
-*/
+ * The base for this css file has been taken from https://github.com/ecole-du-web/react-modal/blob/main/src/Components/Modal/Modal.css
+ * and modified to our needs.
+ * https://www.youtube.com/watch?v=9DwGahSqcEc at 0:24 the author states: "You can find the source code in 
+ * the description (of the video) and reuse it as you want." Video seen on 14.11.2025. 
+ */
 
 .modalNappi {
     padding: 10px 10px;

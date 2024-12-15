@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useMemo } from 'react';
 import Question_Mark from './Question_Mark';
 
-
 /** 
  * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
  * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
+ * 
+ * Luo ja palauttaa valittujen maiden listan taulukkona. Sisältää maiden lajitteluominaisuuden logiikan.
  */
 function SelectedCountries({ maat, getHyokkaysmaara, handleMaaPoisto }) {
     const [sortJarjestys, setSortJarjestys] = useState("alphabetical");

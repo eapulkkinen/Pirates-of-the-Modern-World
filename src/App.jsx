@@ -10,10 +10,11 @@ import CountryCodes from './data/country_codes';
 import PirateAttacks from './data/pirate_attacks';
 import Modal from './components/Modal/Modal';
 
-
 /** 
  * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
  * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
+ * 
+ * Sovelluksen pääohjelma
  */
 function App() {
   const [koordinaattiLista, setKoordinaatit] = useState([]);  // [ {longitude, latitude, countrycode}, ... ]

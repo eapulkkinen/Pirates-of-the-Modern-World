@@ -8,10 +8,11 @@ import Footer from './components/Footer';
 import pirate_attacks from './data/pirate_attacks';
 import country_codes from './data/country_codes';
 
-
 /** 
  * This project is licensed under the CC BY-NC-SA 4.0 license. https://creativecommons.org/licenses/by-nc-sa/4.0/
  * See https://github.com/eapulkkinen/Pirates-of-the-Modern-World?tab=License-1-ov-file#readme
+ * 
+ * Tilastosivun pääohjelma
  */
 function App() {
 
